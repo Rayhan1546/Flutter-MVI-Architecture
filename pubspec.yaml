@@ -1,0 +1,35 @@
+name: github_repo_list
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: 3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.8
+  provider: 6.1.2
+  http: 1.2.2
+  drift: 2.23.1
+  drift_flutter: 0.1.0
+  cached_network_image: 3.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+  build_runner: 2.4.13
+  drift_dev: 2.23.1
+
+flutter:
+
+  uses-material-design: true
+
