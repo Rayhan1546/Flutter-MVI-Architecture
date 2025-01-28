@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/common/edit_button.dart';
 import 'package:github_repo_list/presentation/common/primary_button.dart';
-import 'package:github_repo_list/presentation/widgets/custom_text_field.dart';
-import 'package:github_repo_list/utils/efficient_builder.dart';
 import 'package:github_repo_list/presentation/repo_list/repo_list_view_model.dart';
+import 'package:github_repo_list/presentation/widgets/custom_text_field.dart';
+import 'package:github_repo_list/utils/builder_extension.dart';
 
 class RepoListUi extends StatefulWidget {
   const RepoListUi({super.key});
@@ -18,6 +18,15 @@ class _RepoListUiState extends State<RepoListUi> {
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmNewPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    oldPasswordController.dispose();
+    newPasswordController.dispose();
+    confirmNewPasswordController.dispose();
+    viewModel.onDispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +63,12 @@ class _RepoListUiState extends State<RepoListUi> {
               ),
         ),
         const Spacer(),
-        EfficientBuilder(
-          valueListenable: viewModel.states,
-          buildFor: (state) => state.isPasswordEditMode,
+        viewModel.states.efficientBuild(
+          buildWhen: (prev, now) {
+            return prev.isPasswordEditMode != now.isPasswordEditMode;
+          },
           builder: (context, states, _) {
+            print("Edit Button");
             return Visibility(
               visible: !states.isPasswordEditMode,
               child: EditButton(
@@ -72,13 +83,13 @@ class _RepoListUiState extends State<RepoListUi> {
   }
 
   Widget _oldPasswordTextField(BuildContext context) {
-    return EfficientBuilder(
-      valueListenable: viewModel.states,
+    return viewModel.states.efficientBuild(
       buildWhen: (prev, now) {
-        return (prev.oldPasswordErrorText != now.oldPasswordErrorText ||
-            prev.isPasswordEditMode != now.isPasswordEditMode);
+        return prev.oldPasswordErrorText != now.oldPasswordErrorText ||
+            prev.isPasswordEditMode != now.isPasswordEditMode;
       },
       builder: (context, state, _) {
+        print("Old Password");
         return CustomTextField(
           controller: oldPasswordController,
           textFieldName: 'old Password',
@@ -93,13 +104,13 @@ class _RepoListUiState extends State<RepoListUi> {
   }
 
   Widget _newPasswordTextField(BuildContext context) {
-    return EfficientBuilder(
-      valueListenable: viewModel.states,
+    return viewModel.states.efficientBuild(
       buildWhen: (prev, now) {
-        return (prev.newPasswordErrorText != now.newPasswordErrorText ||
-            prev.isPasswordEditMode != now.isPasswordEditMode);
+        return prev.newPasswordErrorText != now.newPasswordErrorText ||
+            prev.isPasswordEditMode != now.isPasswordEditMode;
       },
       builder: (context, state, _) {
+        print("New Password");
         return CustomTextField(
           controller: newPasswordController,
           textFieldName: 'New Password',
@@ -114,14 +125,14 @@ class _RepoListUiState extends State<RepoListUi> {
   }
 
   Widget _confirmNewPasswordTextField(BuildContext context) {
-    return EfficientBuilder(
-      valueListenable: viewModel.states,
+    return viewModel.states.efficientBuild(
       buildWhen: (prev, now) {
-        return (prev.confirmNewPasswordErrorText !=
+        return prev.confirmNewPasswordErrorText !=
                 now.confirmNewPasswordErrorText ||
-            prev.isPasswordEditMode != now.isPasswordEditMode);
+            prev.isPasswordEditMode != now.isPasswordEditMode;
       },
       builder: (context, state, _) {
+        print("Confirm New Password");
         return CustomTextField(
           controller: confirmNewPasswordController,
           textFieldName: 'Confirm New Password',
@@ -137,10 +148,13 @@ class _RepoListUiState extends State<RepoListUi> {
   }
 
   Widget _buildUpdateButton(BuildContext context) {
-    return EfficientBuilder(
-      valueListenable: viewModel.states,
-      buildFor: (state) => state.showButton,
+    return viewModel.states.efficientBuild(
+      buildWhen: (prev, now) {
+        return prev.showButton != now.showButton ||
+            prev.isPasswordEditMode != now.isPasswordEditMode;
+      },
       builder: (context, states, _) {
+        print("primary Button");
         return Visibility(
           visible: states.isPasswordEditMode,
           child: PrimaryButton(

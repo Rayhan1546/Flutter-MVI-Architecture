@@ -23,13 +23,12 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   bool _isPasswordVisible = false;
 
-  // Material Design colors
-  final Color _primaryColor = const Color(0xFF6200EE);    // Purple 500
-  final Color _labelColor = const Color(0xFF666666);      // Grey 700
-  final Color _errorColor = const Color(0xFFB00020);      // Error red
-  final Color _textColor = const Color(0xFF121212);       // Almost black
-  final Color _borderColor = const Color(0xFFE0E0E0);     // Grey 300
-  final Color _focusedBorderColor = const Color(0xFF6200EE); // Purple 500
+  final Color _primaryColor = const Color(0xFF6200EE);
+  final Color _labelColor = const Color(0xFF666666);
+  final Color _errorColor = const Color(0xFFB00020);
+  final Color _textColor = const Color(0xFF121212);
+  final Color _borderColor = const Color(0xFFE0E0E0);
+  final Color _focusedBorderColor = const Color(0xFF6200EE);
 
   @override
   Widget build(BuildContext context) {

@@ -22,8 +22,6 @@ class RepoListViewModel extends ChangeNotifier {
 
   void togglePasswordEditBtnState(bool value) {
     states.value = states.value.copyWith(isPasswordEditMode: value);
-
-    _checkUpdateButtonState();
   }
 
   void _checkUpdateButtonState() {
@@ -43,5 +41,9 @@ class RepoListViewModel extends ChangeNotifier {
     states.value = state.copyWith(
       showButton: hasAllFieldsFilled && hasNoErrors,
     );
+  }
+
+  void onDispose() {
+    states.dispose();
   }
 }
