@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 extension BuilderExtension<T> on ValueListenable<T> {
-  Widget efficientBuild<R>({
+  Widget build<R>({
     final bool Function(T previous, T current)? buildWhen,
     required Widget Function(BuildContext context, T value, Widget? child) builder,
     Widget? child,
@@ -14,6 +14,26 @@ extension BuilderExtension<T> on ValueListenable<T> {
       buildWhen: buildWhen,
       builder: builder,
       child: child,
+    );
+  }
+}
+
+extension BuildForExtension<T> on ValueListenable<T> {
+  Widget buildFor<R>({
+    required R Function(T state) select,
+    required Widget Function(BuildContext context, T state, Widget? child) builder,
+    Widget? child,
+    Key? key,
+  }) {
+    return _EfficientBuilder<T>(
+      valueListenable: this,
+      buildWhen: (previous, current) {
+        final previousValue = select(previous);
+        final currentValue = select(current);
+        return previousValue != currentValue;
+      },
+      builder: builder,
+      key: key,
     );
   }
 }

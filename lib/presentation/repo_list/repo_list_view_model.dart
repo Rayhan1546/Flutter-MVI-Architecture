@@ -1,32 +1,40 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:github_repo_list/presentation/repo_list/state/password_tab_states.dart';
 
-class RepoListViewModel extends ChangeNotifier {
-  final states = ValueNotifier<PasswordTabState>(PasswordTabState.initial());
+class RepoListViewModel {
+  final _passwordTabStates = ValueNotifier<PasswordTabState>(
+    PasswordTabState.initial(),
+  );
+
+  ValueListenable<PasswordTabState> get passwordStates => _passwordTabStates;
+
+  PasswordTabState get state => _passwordTabStates.value;
 
   void onChangedOldPassword({required String? oldPassword}) {
-    states.value = states.value.validateOldPassword(oldPassword);
+    _passwordTabStates.value = state.validateOldPassword(oldPassword);
+
+    _checkUpdateButtonState();
   }
 
   void onChangedNewPassword({required String? newPassword}) {
-    states.value = states.value.validateNewPassword(newPassword);
+    _passwordTabStates.value = state.validateNewPassword(newPassword);
 
     _checkUpdateButtonState();
   }
 
   void onChangedConfirmNewPassword({required String? confirmNewPassword}) {
-    states.value = states.value.validateConfirmPassword(confirmNewPassword);
+    _passwordTabStates.value = state.validateConfirmPassword(
+      confirmNewPassword,
+    );
 
     _checkUpdateButtonState();
   }
 
   void togglePasswordEditBtnState(bool value) {
-    states.value = states.value.copyWith(isPasswordEditMode: value);
+    _passwordTabStates.value = state.copyWith(isPasswordEditMode: value);
   }
 
   void _checkUpdateButtonState() {
-    final state = states.value;
-
     final hasAllFieldsFilled = state.oldPassword != null &&
         state.oldPassword!.isNotEmpty &&
         state.newPassword != null &&
@@ -38,12 +46,19 @@ class RepoListViewModel extends ChangeNotifier {
         state.newPasswordErrorText == null &&
         state.confirmNewPasswordErrorText == null;
 
-    states.value = state.copyWith(
+    _passwordTabStates.value = state.copyWith(
       showButton: hasAllFieldsFilled && hasNoErrors,
     );
   }
 
+  void onTapUpdatePasswordBtn() {
+    _passwordTabStates.value = state.copyWith(
+      showSuccessMessage: true,
+      isPasswordEditMode: false,
+    );
+  }
+
   void onDispose() {
-    states.dispose();
+    _passwordTabStates.dispose();
   }
 }

@@ -10,6 +10,7 @@ class PasswordTabState {
   final String? newPassword;
   final String? confirmNewPassword;
   final bool showButton;
+  final bool showSuccessMessage;
 
   const PasswordTabState({
     required this.isPasswordEditMode,
@@ -20,6 +21,7 @@ class PasswordTabState {
     this.newPassword,
     this.confirmNewPassword,
     this.showButton = false,
+    this.showSuccessMessage = false,
   });
 
   PasswordTabState copyWith({
@@ -31,37 +33,48 @@ class PasswordTabState {
     String? Function()? newPassword,
     String? Function()? confirmNewPassword,
     bool? showButton,
+    bool? showSuccessMessage,
   }) {
     return PasswordTabState(
       isPasswordEditMode: isPasswordEditMode ?? this.isPasswordEditMode,
-      oldPasswordErrorText: oldPasswordErrorText != null ? oldPasswordErrorText() : this.oldPasswordErrorText,
-      newPasswordErrorText: newPasswordErrorText != null ? newPasswordErrorText() : this.newPasswordErrorText,
-      confirmNewPasswordErrorText: confirmNewPasswordErrorText != null ? confirmNewPasswordErrorText() : this.confirmNewPasswordErrorText,
+      oldPasswordErrorText: oldPasswordErrorText != null
+          ? oldPasswordErrorText()
+          : this.oldPasswordErrorText,
+      newPasswordErrorText: newPasswordErrorText != null
+          ? newPasswordErrorText()
+          : this.newPasswordErrorText,
+      confirmNewPasswordErrorText: confirmNewPasswordErrorText != null
+          ? confirmNewPasswordErrorText()
+          : this.confirmNewPasswordErrorText,
       oldPassword: oldPassword != null ? oldPassword() : this.oldPassword,
       newPassword: newPassword != null ? newPassword() : this.newPassword,
-      confirmNewPassword: confirmNewPassword != null ? confirmNewPassword() : this.confirmNewPassword,
+      confirmNewPassword: confirmNewPassword != null
+          ? confirmNewPassword()
+          : this.confirmNewPassword,
       showButton: showButton ?? this.showButton,
+      showSuccessMessage: showSuccessMessage ?? this.showSuccessMessage,
     );
   }
 
   factory PasswordTabState.initial() {
     return const PasswordTabState(
-      isPasswordEditMode: false,
-      oldPasswordErrorText: null,
-      newPasswordErrorText: null,
-      confirmNewPasswordErrorText: null,
-      oldPassword: null,
-      newPassword: null,
-      confirmNewPassword: null,
-      showButton: false,
-    );
+        isPasswordEditMode: false,
+        oldPasswordErrorText: null,
+        newPasswordErrorText: null,
+        confirmNewPasswordErrorText: null,
+        oldPassword: null,
+        newPassword: null,
+        confirmNewPassword: null,
+        showButton: false,
+        showSuccessMessage: false);
   }
 
   PasswordTabState validateOldPassword(String? password) {
     if (password == null || password.isEmpty) {
       return copyWith(
         oldPassword: () => password,
-        oldPasswordErrorText: () => PasswordValidator.getValidationError(password),
+        oldPasswordErrorText: () =>
+            PasswordValidator.getValidationError(password),
       );
     }
     return copyWith(
@@ -73,7 +86,8 @@ class PasswordTabState {
   PasswordTabState validateNewPassword(String? password) {
     final state = copyWith(
       newPassword: () => password,
-      newPasswordErrorText: () => PasswordValidator.getValidationError(password),
+      newPasswordErrorText: () =>
+          PasswordValidator.getValidationError(password),
     );
 
     if (confirmNewPassword != null && confirmNewPassword!.isNotEmpty) {

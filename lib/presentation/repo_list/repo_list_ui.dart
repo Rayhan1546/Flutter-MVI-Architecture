@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/presentation/common/edit_button.dart';
-import 'package:github_repo_list/presentation/common/primary_button.dart';
+import 'package:github_repo_list/presentation/common/widgets/edit_button.dart';
+import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
 import 'package:github_repo_list/presentation/repo_list/repo_list_view_model.dart';
 import 'package:github_repo_list/presentation/widgets/custom_text_field.dart';
 import 'package:github_repo_list/utils/builder_extension.dart';
@@ -18,6 +18,12 @@ class _RepoListUiState extends State<RepoListUi> {
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmNewPasswordController = TextEditingController();
+
+  void clearTextFields() {
+    oldPasswordController.clear();
+    newPasswordController.clear();
+    confirmNewPasswordController.clear();
+  }
 
   @override
   void dispose() {
@@ -47,6 +53,8 @@ class _RepoListUiState extends State<RepoListUi> {
             _confirmNewPasswordTextField(context),
             const SizedBox(height: 40),
             _buildUpdateButton(context),
+            const SizedBox(height: 60),
+            _buildSuccessMessage(context),
           ],
         ),
       ),
@@ -63,7 +71,7 @@ class _RepoListUiState extends State<RepoListUi> {
               ),
         ),
         const Spacer(),
-        viewModel.states.efficientBuild(
+        viewModel.passwordStates.build(
           buildWhen: (prev, now) {
             return prev.isPasswordEditMode != now.isPasswordEditMode;
           },
@@ -83,7 +91,7 @@ class _RepoListUiState extends State<RepoListUi> {
   }
 
   Widget _oldPasswordTextField(BuildContext context) {
-    return viewModel.states.efficientBuild(
+    return viewModel.passwordStates.build(
       buildWhen: (prev, now) {
         return prev.oldPasswordErrorText != now.oldPasswordErrorText ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
@@ -104,7 +112,7 @@ class _RepoListUiState extends State<RepoListUi> {
   }
 
   Widget _newPasswordTextField(BuildContext context) {
-    return viewModel.states.efficientBuild(
+    return viewModel.passwordStates.build(
       buildWhen: (prev, now) {
         return prev.newPasswordErrorText != now.newPasswordErrorText ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
@@ -125,7 +133,7 @@ class _RepoListUiState extends State<RepoListUi> {
   }
 
   Widget _confirmNewPasswordTextField(BuildContext context) {
-    return viewModel.states.efficientBuild(
+    return viewModel.passwordStates.build(
       buildWhen: (prev, now) {
         return prev.confirmNewPasswordErrorText !=
                 now.confirmNewPasswordErrorText ||
@@ -138,17 +146,18 @@ class _RepoListUiState extends State<RepoListUi> {
           textFieldName: 'Confirm New Password',
           enable: state.isPasswordEditMode,
           errorText: state.confirmNewPasswordErrorText?.getError(),
-          onChanged: (confirmNewPassword) =>
-              viewModel.onChangedConfirmNewPassword(
-            confirmNewPassword: confirmNewPassword,
-          ),
+          onChanged: (confirmNewPassword) {
+            viewModel.onChangedConfirmNewPassword(
+              confirmNewPassword: confirmNewPassword,
+            );
+          },
         );
       },
     );
   }
 
   Widget _buildUpdateButton(BuildContext context) {
-    return viewModel.states.efficientBuild(
+    return viewModel.passwordStates.build(
       buildWhen: (prev, now) {
         return prev.showButton != now.showButton ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
@@ -159,9 +168,28 @@ class _RepoListUiState extends State<RepoListUi> {
           visible: states.isPasswordEditMode,
           child: PrimaryButton(
             label: 'Update Password',
-            onPressed: () {},
+            onPressed: () {
+              clearTextFields();
+              viewModel.onTapUpdatePasswordBtn();
+            },
             minWidth: double.infinity,
             isDisabled: !states.showButton,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSuccessMessage(BuildContext context) {
+    return viewModel.passwordStates.buildFor(
+      select: (state) => state.showSuccessMessage,
+      builder: (context, state, _) {
+        print("Success Message");
+        return Visibility(
+          visible: state.showSuccessMessage,
+          child: Text(
+            'Successfully updated the password.',
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         );
       },
