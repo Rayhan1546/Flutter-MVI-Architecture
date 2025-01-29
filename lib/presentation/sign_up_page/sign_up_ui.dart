@@ -1,0 +1,195 @@
+import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/common/widgets/edit_button.dart';
+import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
+import 'package:github_repo_list/presentation/sign_up_page/sign_up_view_model.dart';
+import 'package:github_repo_list/presentation/widgets/custom_text_field.dart';
+import 'package:github_repo_list/utils/builder_extension.dart';
+
+class SignUpUI extends StatefulWidget {
+  const SignUpUI({super.key});
+
+  @override
+  State<SignUpUI> createState() => _SignUpUIState();
+}
+
+class _SignUpUIState extends State<SignUpUI> {
+  final viewModel = SignUpViewModel();
+
+  final _oldPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmNewPasswordController = TextEditingController();
+
+  void clearTextFields() {
+    _oldPasswordController.clear();
+    _newPasswordController.clear();
+    _confirmNewPasswordController.clear();
+  }
+
+  @override
+  void dispose() {
+    _oldPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmNewPasswordController.dispose();
+    viewModel.onDispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("SIGN UP"),
+      ),
+      body: Container(
+        margin: const EdgeInsets.only(left: 20, right: 20),
+        child: Column(
+          children: [
+            _buildHeaders(context),
+            const SizedBox(height: 24),
+            _oldPasswordTextField(context),
+            const SizedBox(height: 24),
+            _newPasswordTextField(context),
+            const SizedBox(height: 24),
+            _confirmNewPasswordTextField(context),
+            const SizedBox(height: 40),
+            _buildUpdateButton(context),
+            const SizedBox(height: 60),
+            _buildSuccessMessage(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaders(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          "Change Password",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: 18,
+              ),
+        ),
+        const Spacer(),
+        viewModel.passwordStates.build(
+          buildWhen: (prev, now) {
+            return prev.isPasswordEditMode != now.isPasswordEditMode;
+          },
+          builder: (context, states, _) {
+            return Visibility(
+              visible: !states.isPasswordEditMode,
+              child: EditButton(
+                onPressed: () => viewModel.togglePasswordEditBtnState(true),
+                buttonName: "Edit",
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _oldPasswordTextField(BuildContext context) {
+    return viewModel.passwordStates.build(
+      buildWhen: (prev, now) {
+        return prev.oldPasswordErrorText != now.oldPasswordErrorText ||
+            prev.isPasswordEditMode != now.isPasswordEditMode;
+      },
+      builder: (context, state, _) {
+        return CustomTextField(
+          controller: _oldPasswordController,
+          textFieldName: 'old Password',
+          enable: state.isPasswordEditMode,
+          textFieldType: TextFieldType.password,
+          errorText: state.oldPasswordErrorText?.getError(),
+          onChanged: (password) => viewModel.onChangedOldPassword(
+            oldPassword: password,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _newPasswordTextField(BuildContext context) {
+    return viewModel.passwordStates.build(
+      buildWhen: (prev, now) {
+        return prev.newPasswordErrorText != now.newPasswordErrorText ||
+            prev.isPasswordEditMode != now.isPasswordEditMode;
+      },
+      builder: (context, state, _) {
+        return CustomTextField(
+          controller: _newPasswordController,
+          textFieldName: 'New Password',
+          enable: state.isPasswordEditMode,
+          textFieldType: TextFieldType.password,
+          errorText: state.newPasswordErrorText?.getError(),
+          onChanged: (newPassword) => viewModel.onChangedNewPassword(
+            newPassword: newPassword,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _confirmNewPasswordTextField(BuildContext context) {
+    return viewModel.passwordStates.build(
+      buildWhen: (prev, now) {
+        return prev.confirmNewPasswordErrorText !=
+                now.confirmNewPasswordErrorText ||
+            prev.isPasswordEditMode != now.isPasswordEditMode;
+      },
+      builder: (context, state, _) {
+        return CustomTextField(
+          controller: _confirmNewPasswordController,
+          textFieldName: 'Confirm New Password',
+          enable: state.isPasswordEditMode,
+          textFieldType: TextFieldType.password,
+          errorText: state.confirmNewPasswordErrorText?.getError(),
+          onChanged: (confirmNewPassword) {
+            viewModel.onChangedConfirmNewPassword(
+              confirmNewPassword: confirmNewPassword,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildUpdateButton(BuildContext context) {
+    return viewModel.passwordStates.build(
+      buildWhen: (prev, now) {
+        return prev.showButton != now.showButton ||
+            prev.isPasswordEditMode != now.isPasswordEditMode;
+      },
+      builder: (context, states, _) {
+        return Visibility(
+          visible: states.isPasswordEditMode,
+          child: PrimaryButton(
+            label: 'Update Password',
+            onPressed: () {
+              clearTextFields();
+              viewModel.onTapUpdatePasswordBtn();
+            },
+            minWidth: double.infinity,
+            isDisabled: !states.showButton,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSuccessMessage(BuildContext context) {
+    return viewModel.passwordStates.buildFor(
+      select: (state) => state.showSuccessMessage,
+      builder: (context, state, _) {
+        return Visibility(
+          visible: state.showSuccessMessage,
+          child: Text(
+            'Successfully updated the password.',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        );
+      },
+    );
+  }
+}

@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+enum TextFieldType {
+  email,
+  password,
+  number,
+  text
+}
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -6,6 +14,7 @@ class CustomTextField extends StatefulWidget {
   final String? errorText;
   final bool? enable;
   final ValueChanged<String>? onChanged;
+  final TextFieldType textFieldType;
 
   const CustomTextField({
     super.key,
@@ -14,6 +23,7 @@ class CustomTextField extends StatefulWidget {
     this.errorText,
     this.enable = true,
     this.onChanged,
+    this.textFieldType = TextFieldType.text,
   });
 
   @override
@@ -30,13 +40,38 @@ class _CustomTextFieldState extends State<CustomTextField> {
   final Color _borderColor = const Color(0xFFE0E0E0);
   final Color _focusedBorderColor = const Color(0xFF6200EE);
 
+  // Helper method to get keyboard type based on field type
+  TextInputType _getKeyboardType() {
+    switch (widget.textFieldType) {
+      case TextFieldType.email:
+        return TextInputType.emailAddress;
+      case TextFieldType.number:
+        return TextInputType.number;
+      case TextFieldType.password:
+      case TextFieldType.text:
+        return TextInputType.text;
+    }
+  }
+
+  // Helper method to get input formatters based on field type
+  List<TextInputFormatter>? _getInputFormatters() {
+    switch (widget.textFieldType) {
+      case TextFieldType.number:
+        return [FilteringTextInputFormatter.digitsOnly];
+      default:
+        return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
       enabled: widget.enable,
-      obscureText: !_isPasswordVisible,
+      obscureText: widget.textFieldType == TextFieldType.password ? !_isPasswordVisible : false,
       onChanged: widget.onChanged,
+      keyboardType: _getKeyboardType(),
+      inputFormatters: _getInputFormatters(),
       decoration: InputDecoration(
         labelText: widget.textFieldName,
         labelStyle: TextStyle(
@@ -49,7 +84,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
           fontSize: 12,
           fontWeight: FontWeight.w400,
         ),
-        suffixIcon: IconButton(
+        suffixIcon: widget.textFieldType == TextFieldType.password
+            ? IconButton(
           icon: Icon(
             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
             color: widget.enable == false ? Colors.grey : _labelColor,
@@ -61,7 +97,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
               _isPasswordVisible = !_isPasswordVisible;
             });
           },
-        ),
+        )
+            : null,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: _borderColor),
@@ -91,16 +128,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
           vertical: 12,
         ),
         filled: true,
-        fillColor: widget.enable == false
-            ? Colors.grey.shade100
-            : Colors.white,
+        fillColor: widget.enable == false ? Colors.grey.shade100 : Colors.white,
       ),
       style: TextStyle(
         fontSize: 16,
         color: widget.enable == false ? Colors.grey : _textColor,
       ),
       cursorColor: _primaryColor,
-      keyboardType: TextInputType.visiblePassword,
       textCapitalization: TextCapitalization.none,
       textInputAction: TextInputAction.next,
     );

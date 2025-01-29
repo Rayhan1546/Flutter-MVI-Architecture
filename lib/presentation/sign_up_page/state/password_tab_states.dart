@@ -1,7 +1,7 @@
 import 'package:github_repo_list/presentation/common/validation/password_validator.dart';
 import 'package:github_repo_list/presentation/common/validation/validation_error.dart';
 
-class PasswordTabState {
+class SignUpStates {
   final bool isPasswordEditMode;
   final ValidationError? oldPasswordErrorText;
   final ValidationError? newPasswordErrorText;
@@ -12,7 +12,7 @@ class PasswordTabState {
   final bool showButton;
   final bool showSuccessMessage;
 
-  const PasswordTabState({
+  const SignUpStates({
     required this.isPasswordEditMode,
     this.oldPasswordErrorText,
     this.newPasswordErrorText,
@@ -24,7 +24,21 @@ class PasswordTabState {
     this.showSuccessMessage = false,
   });
 
-  PasswordTabState copyWith({
+  factory SignUpStates.initial() {
+    return const SignUpStates(
+      isPasswordEditMode: false,
+      oldPasswordErrorText: null,
+      newPasswordErrorText: null,
+      confirmNewPasswordErrorText: null,
+      oldPassword: null,
+      newPassword: null,
+      confirmNewPassword: null,
+      showButton: false,
+      showSuccessMessage: false,
+    );
+  }
+
+  SignUpStates copyWith({
     bool? isPasswordEditMode,
     ValidationError? Function()? oldPasswordErrorText,
     ValidationError? Function()? newPasswordErrorText,
@@ -35,7 +49,7 @@ class PasswordTabState {
     bool? showButton,
     bool? showSuccessMessage,
   }) {
-    return PasswordTabState(
+    return SignUpStates(
       isPasswordEditMode: isPasswordEditMode ?? this.isPasswordEditMode,
       oldPasswordErrorText: oldPasswordErrorText != null
           ? oldPasswordErrorText()
@@ -56,25 +70,13 @@ class PasswordTabState {
     );
   }
 
-  factory PasswordTabState.initial() {
-    return const PasswordTabState(
-        isPasswordEditMode: false,
-        oldPasswordErrorText: null,
-        newPasswordErrorText: null,
-        confirmNewPasswordErrorText: null,
-        oldPassword: null,
-        newPassword: null,
-        confirmNewPassword: null,
-        showButton: false,
-        showSuccessMessage: false);
-  }
-
-  PasswordTabState validateOldPassword(String? password) {
+  SignUpStates validateOldPassword(String? password) {
     if (password == null || password.isEmpty) {
       return copyWith(
         oldPassword: () => password,
-        oldPasswordErrorText: () =>
-            PasswordValidator.getValidationError(password),
+        oldPasswordErrorText: () {
+          return PasswordValidator.getValidationError(password);
+        },
       );
     }
     return copyWith(
@@ -83,11 +85,12 @@ class PasswordTabState {
     );
   }
 
-  PasswordTabState validateNewPassword(String? password) {
+  SignUpStates validateNewPassword(String? password) {
     final state = copyWith(
       newPassword: () => password,
-      newPasswordErrorText: () =>
-          PasswordValidator.getValidationError(password),
+      newPasswordErrorText: () {
+        return PasswordValidator.getValidationError(password);
+      },
     );
 
     if (confirmNewPassword != null && confirmNewPassword!.isNotEmpty) {
@@ -96,7 +99,7 @@ class PasswordTabState {
     return state;
   }
 
-  PasswordTabState validateConfirmPassword(String? confirmPassword) {
+  SignUpStates validateConfirmPassword(String? confirmPassword) {
     return copyWith(
       confirmNewPassword: () => confirmPassword,
       confirmNewPasswordErrorText: () {
