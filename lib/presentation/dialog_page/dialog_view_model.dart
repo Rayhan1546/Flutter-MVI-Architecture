@@ -13,16 +13,8 @@ class DialogViewModel {
   }
 
   void showShimmer() {
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       _dialogSates.value = _states.stopShimmer();
-    });
-  }
-
-  void showToast() {
-    _dialogSates.value = _states.showToastMessage('Hello, Flutter');
-
-    Future.delayed(const Duration(seconds: 2), () {
-      _dialogSates.value = _states.resetToastValues();
     });
   }
 
