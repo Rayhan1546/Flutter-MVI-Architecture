@@ -25,6 +25,11 @@ class _LoginUiState extends State<LoginUi> {
     super.dispose();
   }
 
+  void onTapLogIn() {
+    _emailController.clear();
+    _passwordController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +49,7 @@ class _LoginUiState extends State<LoginUi> {
             _buildPasswordField(context),
             const SizedBox(height: 40),
             _buildLogInButton(context),
+            const SizedBox(height: 24),
           ],
         ),
       ),
@@ -51,14 +57,14 @@ class _LoginUiState extends State<LoginUi> {
   }
 
   Widget _buildEmailField(BuildContext context) {
-    return viewModel.passwordStates.buildFor(
-      select: (state) => state.emailErrorText,
+    return viewModel.loginStates.buildFor(
+      select: (state) => state.errorStates.emailErrorText,
       builder: (context, state, _) {
         return CustomTextField(
           controller: _emailController,
           textFieldName: 'Email',
           textFieldType: TextFieldType.email,
-          errorText: state.emailErrorText?.getError(),
+          errorText: state.errorStates.emailErrorText?.getError(),
           onChanged: (email) => viewModel.onChangedEmail(email: email),
         );
       },
@@ -66,13 +72,13 @@ class _LoginUiState extends State<LoginUi> {
   }
 
   Widget _buildPasswordField(BuildContext context) {
-    return viewModel.passwordStates.buildFor(
-      select: (state) => state.passwordErrorText,
+    return viewModel.loginStates.buildFor(
+      select: (state) => state.errorStates.passwordErrorText,
       builder: (context, state, _) {
         return CustomTextField(
           controller: _passwordController,
           textFieldName: 'Password',
-          errorText: state.passwordErrorText?.getError(),
+          errorText: state.errorStates.passwordErrorText?.getError(),
           textFieldType: TextFieldType.password,
           onChanged: (password) {
             viewModel.onChangedPassword(password: password);
@@ -83,12 +89,15 @@ class _LoginUiState extends State<LoginUi> {
   }
 
   Widget _buildLogInButton(BuildContext context) {
-    return viewModel.passwordStates.buildFor(
+    return viewModel.loginStates.buildFor(
       select: (state) => state.showButton,
       builder: (context, state, _) {
         return PrimaryButton(
           label: "LOG IN",
-          onPressed: () {},
+          onPressed: () {
+            onTapLogIn();
+            viewModel.onTapLoginButton();
+          },
           minWidth: double.infinity,
           isDisabled: !state.showButton,
         );

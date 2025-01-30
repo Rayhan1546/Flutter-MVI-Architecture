@@ -3,43 +3,71 @@ import 'package:github_repo_list/presentation/login_page/state/login_states.dart
 
 class LoginViewModel {
   //ValueNotifier Initialization
-  final _passwordTabStates = ValueNotifier<LoginStates>(
+  final _loginStates = ValueNotifier<LoginStates>(
     LoginStates.initial(),
   );
 
   //ValueListenable for UI
-  ValueListenable<LoginStates> get passwordStates => _passwordTabStates;
+  ValueListenable<LoginStates> get loginStates => _loginStates;
 
   //State getter to handle state
-  LoginStates get _state => _passwordTabStates.value;
+  LoginStates get _state => _loginStates.value;
 
   void onChangedEmail({required String? email}) {
-    _passwordTabStates.value = _state.validateEmail(email);
+    if (email == null || email.isEmpty) {
+      _loginStates.value = _state.copyWith(
+        emailEmpty: true,
+      );
+      return;
+    }
+
+    final errorState = _state.errorStates.validateEmail(email);
+
+    _loginStates.value = _state.copyWith(
+      errorStates: errorState,
+      emailEmpty: false,
+    );
 
     _checkUpdateButtonState();
   }
 
   void onChangedPassword({required String? password}) {
-    _passwordTabStates.value = _state.validatePassword(password);
+    if (password == null || password.isEmpty) {
+      _loginStates.value = _state.copyWith(
+        passwordEmpty: true,
+      );
+      return;
+    }
+
+    final errorState = _state.errorStates.validatePassword(password);
+
+    _loginStates.value = _state.copyWith(
+      errorStates: errorState,
+      passwordEmpty: false,
+    );
 
     _checkUpdateButtonState();
   }
 
   void _checkUpdateButtonState() {
-    final hasAllFieldsFilled = _state.email != null &&
-        _state.email!.isNotEmpty &&
-        _state.password != null &&
-        _state.password!.isNotEmpty;
+    final hasAllFieldsFilled =
+        _state.emailEmpty == false && _state.passwordEmpty == false;
 
-    final hasNoErrors =
-        _state.emailErrorText == null && _state.passwordErrorText == null;
+    final hasNoErrors = _state.errorStates.emailErrorText == null &&
+        _state.errorStates.passwordErrorText == null;
 
-    _passwordTabStates.value = _state.copyWith(
-      showButton: hasAllFieldsFilled && hasNoErrors,
+    _loginStates.value = _state.copyWith(
+      showButton: hasNoErrors && hasAllFieldsFilled,
+    );
+  }
+
+  void onTapLoginButton() {
+    _loginStates.value = _state.copyWith(
+      showButton: false,
     );
   }
 
   void onDispose() {
-    _passwordTabStates.dispose();
+    _loginStates.dispose();
   }
 }

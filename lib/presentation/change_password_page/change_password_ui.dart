@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/change_password_page/change_password_view_model.dart';
 import 'package:github_repo_list/presentation/common/widgets/edit_button.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
-import 'package:github_repo_list/presentation/sign_up_page/sign_up_view_model.dart';
 import 'package:github_repo_list/presentation/widgets/custom_text_field.dart';
 import 'package:github_repo_list/utils/builder_extension.dart';
 
-class SignUpUI extends StatefulWidget {
-  const SignUpUI({super.key});
+class ChangePasswordUi extends StatefulWidget {
+  const ChangePasswordUi({super.key});
 
   @override
-  State<SignUpUI> createState() => _SignUpUIState();
+  State<ChangePasswordUi> createState() => _ChangePasswordUiState();
 }
 
-class _SignUpUIState extends State<SignUpUI> {
-  final viewModel = SignUpViewModel();
+class _ChangePasswordUiState extends State<ChangePasswordUi> {
+  final viewModel = ChangePasswordViewModel();
 
   final _oldPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
@@ -38,12 +38,13 @@ class _SignUpUIState extends State<SignUpUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("SIGN UP"),
+        title: const Text("Change Password"),
       ),
       body: Container(
         margin: const EdgeInsets.only(left: 20, right: 20),
         child: Column(
           children: [
+            const SizedBox(height: 10),
             _buildHeaders(context),
             const SizedBox(height: 24),
             _oldPasswordTextField(context),
@@ -65,7 +66,7 @@ class _SignUpUIState extends State<SignUpUI> {
     return Row(
       children: [
         Text(
-          "Change Password",
+          "Please fill the forms",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: 18,
               ),
@@ -92,7 +93,8 @@ class _SignUpUIState extends State<SignUpUI> {
   Widget _oldPasswordTextField(BuildContext context) {
     return viewModel.passwordStates.build(
       buildWhen: (prev, now) {
-        return prev.oldPasswordErrorText != now.oldPasswordErrorText ||
+        return prev.errorStates.oldPasswordErrorText !=
+                now.errorStates.oldPasswordErrorText ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
       },
       builder: (context, state, _) {
@@ -101,7 +103,7 @@ class _SignUpUIState extends State<SignUpUI> {
           textFieldName: 'old Password',
           enable: state.isPasswordEditMode,
           textFieldType: TextFieldType.password,
-          errorText: state.oldPasswordErrorText?.getError(),
+          errorText: state.errorStates.oldPasswordErrorText?.getError(),
           onChanged: (password) => viewModel.onChangedOldPassword(
             oldPassword: password,
           ),
@@ -113,7 +115,8 @@ class _SignUpUIState extends State<SignUpUI> {
   Widget _newPasswordTextField(BuildContext context) {
     return viewModel.passwordStates.build(
       buildWhen: (prev, now) {
-        return prev.newPasswordErrorText != now.newPasswordErrorText ||
+        return prev.errorStates.newPasswordErrorText !=
+                now.errorStates.newPasswordErrorText ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
       },
       builder: (context, state, _) {
@@ -122,7 +125,7 @@ class _SignUpUIState extends State<SignUpUI> {
           textFieldName: 'New Password',
           enable: state.isPasswordEditMode,
           textFieldType: TextFieldType.password,
-          errorText: state.newPasswordErrorText?.getError(),
+          errorText: state.errorStates.newPasswordErrorText?.getError(),
           onChanged: (newPassword) => viewModel.onChangedNewPassword(
             newPassword: newPassword,
           ),
@@ -134,8 +137,8 @@ class _SignUpUIState extends State<SignUpUI> {
   Widget _confirmNewPasswordTextField(BuildContext context) {
     return viewModel.passwordStates.build(
       buildWhen: (prev, now) {
-        return prev.confirmNewPasswordErrorText !=
-                now.confirmNewPasswordErrorText ||
+        return prev.errorStates.confirmNewPasswordErrorText !=
+                now.errorStates.confirmNewPasswordErrorText ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
       },
       builder: (context, state, _) {
@@ -144,7 +147,7 @@ class _SignUpUIState extends State<SignUpUI> {
           textFieldName: 'Confirm New Password',
           enable: state.isPasswordEditMode,
           textFieldType: TextFieldType.password,
-          errorText: state.confirmNewPasswordErrorText?.getError(),
+          errorText: state.errorStates.confirmNewPasswordErrorText?.getError(),
           onChanged: (confirmNewPassword) {
             viewModel.onChangedConfirmNewPassword(
               confirmNewPassword: confirmNewPassword,
