@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/presentation/change_password_page/change_password_view_model.dart';
 import 'package:github_repo_list/presentation/common/widgets/edit_button.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
-import 'package:github_repo_list/presentation/widgets/custom_text_field.dart';
-import 'package:github_repo_list/utils/builder_extension.dart';
+import 'package:github_repo_list/presentation/feature/change_password_page/change_password_view_model.dart';
+import 'package:github_repo_list/presentation/common/widgets/custom_text_field.dart';
+import 'package:github_repo_list/state_handler/builder_extension.dart';
 
 class ChangePasswordUi extends StatefulWidget {
   const ChangePasswordUi({super.key});

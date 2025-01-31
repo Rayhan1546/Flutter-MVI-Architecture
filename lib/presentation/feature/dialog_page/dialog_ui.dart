@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
-import 'package:github_repo_list/presentation/dialog_page/dialog_view_model.dart';
-import 'package:github_repo_list/presentation/login_page/login_ui.dart';
-import 'package:github_repo_list/utils/Builder_extension.dart';
+import 'package:github_repo_list/presentation/feature/dialog_page/dialog_view_model.dart';
+import 'package:github_repo_list/presentation/feature/login_page/login_ui.dart';
+import 'package:github_repo_list/state_handler/builder_extension.dart';
 
 class DialogUi extends StatefulWidget {
   const DialogUi({super.key});

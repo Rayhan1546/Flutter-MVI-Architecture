@@ -2,13 +2,13 @@ import 'package:github_repo_list/presentation/common/validation/email_validator.
 import 'package:github_repo_list/presentation/common/validation/password_validator.dart';
 import 'package:github_repo_list/presentation/common/validation/validation_error.dart';
 
-class LoginErrorStates {
+class LoginErrorStates with EmailValidator, PasswordValidator {
   final ValidationError? emailErrorText;
   final ValidationError? passwordErrorText;
 
   LoginErrorStates({
-    this.emailErrorText,
-    this.passwordErrorText,
+    this.emailErrorText = null,
+    this.passwordErrorText = null,
   });
 
   factory LoginErrorStates.initial() {
@@ -30,13 +30,13 @@ class LoginErrorStates {
 
   LoginErrorStates validateEmail(String? email) {
     return copyWith(
-      emailErrorText: () => EmailValidator.getValidationError(email),
+      emailErrorText: () => getEmailValidation(email),
     );
   }
 
   LoginErrorStates validatePassword(String? password) {
     return copyWith(
-      passwordErrorText: () => PasswordValidator.getValidationError(password),
+      passwordErrorText: () => getPasswordValidationError(password),
     );
   }
 }

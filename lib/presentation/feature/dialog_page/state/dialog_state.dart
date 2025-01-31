@@ -1,4 +1,4 @@
-import 'package:github_repo_list/utils/base_state.dart';
+import 'package:github_repo_list/state_handler/base_state.dart';
 
 class DialogStates extends BaseState<DialogStates> {
   final bool showButton;

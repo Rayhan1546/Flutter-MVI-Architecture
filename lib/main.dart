@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/presentation/change_password_page/change_password_ui.dart';
-import 'package:github_repo_list/presentation/dialog_page/dialog_ui.dart';
+import 'package:github_repo_list/presentation/feature/login_page/login_ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,10 +14,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
         useMaterial3: true,
       ),
-      home: const DialogUi(),
+      home: const LoginUi(),
     );
   }
 }

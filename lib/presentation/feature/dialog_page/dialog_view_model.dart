@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:github_repo_list/presentation/dialog_page/state/dialog_state.dart';
+import 'package:github_repo_list/presentation/feature/dialog_page/state/dialog_state.dart';
 
 class DialogViewModel {
   final _dialogSates = ValueNotifier<DialogStates>(DialogStates());

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:github_repo_list/presentation/login_page/state/login_states.dart';
+import 'package:github_repo_list/presentation/feature/login_page/state/login_states.dart';
 
 class LoginViewModel {
   //ValueNotifier Initialization
@@ -50,8 +50,7 @@ class LoginViewModel {
   }
 
   void _checkUpdateButtonState() {
-    final hasAllFieldsFilled =
-        _state.emailEmpty == false && _state.passwordEmpty == false;
+    final hasAllFieldsFilled = _state.emailEmpty == false && _state.passwordEmpty == false;
 
     final hasNoErrors = _state.errorStates.emailErrorText == null &&
         _state.errorStates.passwordErrorText == null;
@@ -63,7 +62,7 @@ class LoginViewModel {
 
   void onTapLoginButton() {
     _loginStates.value = _state.copyWith(
-      showButton: false,
+      navigate: true,
     );
   }
 

@@ -1,7 +1,7 @@
 import 'package:github_repo_list/presentation/common/validation/password_validator.dart';
 import 'package:github_repo_list/presentation/common/validation/validation_error.dart';
 
-class ChangePasswordErrorStates {
+class ChangePasswordErrorStates with PasswordValidator {
   final ValidationError? oldPasswordErrorText;
   final ValidationError? newPasswordErrorText;
   final ValidationError? confirmNewPasswordErrorText;
@@ -41,9 +41,7 @@ class ChangePasswordErrorStates {
   ChangePasswordErrorStates validateOldPassword(String? password) {
     if (password == null || password.isEmpty) {
       return copyWith(
-        oldPasswordErrorText: () {
-          return PasswordValidator.getValidationError(password);
-        },
+        oldPasswordErrorText: () => getPasswordValidationError(password),
       );
     }
     return copyWith(
@@ -53,9 +51,7 @@ class ChangePasswordErrorStates {
 
   ChangePasswordErrorStates validateNewPassword(String? password) {
     final state = copyWith(
-      newPasswordErrorText: () {
-        return PasswordValidator.getValidationError(password);
-      },
+      newPasswordErrorText: () => getPasswordValidationError(password),
     );
 
     return state;
@@ -67,7 +63,7 @@ class ChangePasswordErrorStates {
   ) {
     return copyWith(
       confirmNewPasswordErrorText: () {
-        return PasswordValidator.matchTwoPassword(
+        return matchTwoPassword(
           newPassword,
           confirmNewPassword,
         );
