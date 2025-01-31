@@ -1,5 +1,3 @@
-
-
 import 'package:github_repo_list/presentation/feature/change_password_page/state/change_password_error_states.dart';
 
 class ChangePasswordStates {

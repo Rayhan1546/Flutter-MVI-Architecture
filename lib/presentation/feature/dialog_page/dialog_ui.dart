@@ -43,11 +43,11 @@ class _DialogUiState extends State<DialogUi> {
   Widget _buildBody(BuildContext context) {
     return viewModel.dialogStates.build(
       buildWhen: (prev, now) {
-        return prev.showShimmer != now.showShimmer ||
+        return prev.isLoading != now.isLoading ||
             prev.shouldNavigate != now.shouldNavigate;
       },
       builder: (context, states, _) {
-        if (states.showShimmer) {
+        if (states.isLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );

@@ -16,12 +16,20 @@ class GithubRepoViewModel {
     _getRepoList();
   }
 
-  void _getRepoList() async {
+  Future<void> onRefresh() async {
+    _gitRepoState.value = _state.copyWith(
+      isLoading: true,
+    );
+
+    await _getRepoList();
+  }
+
+  Future<void> _getRepoList() async {
     final repoList = await githubRepository.getGithubRepository();
 
     _gitRepoState.value = _state.copyWith(
       repoList: repoList,
-      showShimmer: false,
+      isLoading: false,
     );
   }
 

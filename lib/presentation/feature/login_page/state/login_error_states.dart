@@ -7,8 +7,8 @@ class LoginErrorStates with EmailValidator, PasswordValidator {
   final ValidationError? passwordErrorText;
 
   LoginErrorStates({
-    this.emailErrorText = null,
-    this.passwordErrorText = null,
+    this.emailErrorText,
+    this.passwordErrorText,
   });
 
   factory LoginErrorStates.initial() {
@@ -23,8 +23,11 @@ class LoginErrorStates with EmailValidator, PasswordValidator {
     ValidationError? Function()? passwordErrorText,
   }) {
     return LoginErrorStates(
-      emailErrorText: emailErrorText != null ? emailErrorText() : this.emailErrorText,
-      passwordErrorText: passwordErrorText != null ? passwordErrorText() : this.passwordErrorText,
+      emailErrorText:
+          emailErrorText != null ? emailErrorText() : this.emailErrorText,
+      passwordErrorText: passwordErrorText != null
+          ? passwordErrorText()
+          : this.passwordErrorText,
     );
   }
 

@@ -14,7 +14,9 @@ class DialogViewModel {
 
   void showShimmer() {
     Future.delayed(const Duration(seconds: 3), () {
-      _dialogSates.value = _states.stopShimmer();
+      _dialogSates.value = _states.copyWith(
+        isLoading: false,
+      );
     });
   }
 

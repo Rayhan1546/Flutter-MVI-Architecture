@@ -1,7 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:github_repo_list/presentation/feature/change_password_page/change_password_ui.dart';
+import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_ui.dart';
 import 'package:github_repo_list/presentation/feature/login_page/state/login_states.dart';
+import 'package:github_repo_list/state_handler/base_view_model.dart';
+import 'package:github_repo_list/state_handler/navigation_type.dart';
 
-class LoginViewModel {
+class LoginViewModel extends BaseViewModel {
   //ValueNotifier Initialization
   final _loginStates = ValueNotifier<LoginStates>(
     LoginStates.initial(),
@@ -50,7 +54,7 @@ class LoginViewModel {
   }
 
   void _checkUpdateButtonState() {
-    final hasAllFieldsFilled = _state.emailEmpty == false && _state.passwordEmpty == false;
+    final hasAllFieldsFilled = !_state.emailEmpty && !_state.passwordEmpty;
 
     final hasNoErrors = _state.errorStates.emailErrorText == null &&
         _state.errorStates.passwordErrorText == null;
@@ -61,11 +65,20 @@ class LoginViewModel {
   }
 
   void onTapLoginButton() {
-    _loginStates.value = _state.copyWith(
-      navigate: true,
+    navigate(
+      routePage: GithubRepoUi.routeName,
+      navigationType: NavigationType.replace,
     );
   }
 
+  void onTapChangeButton() {
+    navigate(
+      routePage: ChangePasswordUi.routeName,
+      navigationType: NavigationType.push,
+    );
+  }
+
+  @override
   void onDispose() {
     _loginStates.dispose();
   }

@@ -1,25 +1,30 @@
 import 'package:github_repo_list/state_handler/base_state.dart';
+import 'package:github_repo_list/state_handler/navigation_type.dart';
 
 class DialogStates extends BaseState<DialogStates> {
   final bool showButton;
   final bool shouldNavigate;
+  final bool isLoading;
 
   DialogStates({
     this.showButton = false,
     this.shouldNavigate = false,
-    super.showShimmer,
+    this.isLoading = true,
   });
 
   @override
   DialogStates copyWith({
-    bool? showShimmer,
+    bool? isLoading,
     bool? showButton,
     bool? shouldNavigate,
+    bool? navigate,
+    String? routePage,
+    NavigationType? navigationType,
   }) {
     return DialogStates(
       showButton: showButton ?? this.showButton,
       shouldNavigate: shouldNavigate ?? this.shouldNavigate,
-      showShimmer: showShimmer ?? this.showShimmer,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

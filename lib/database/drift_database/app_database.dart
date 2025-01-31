@@ -27,7 +27,7 @@ class AppDatabase extends _$AppDatabase {
 
 LazyDatabase _openConnection() {
   return LazyDatabase(
-        () async {
+    () async {
       final dbFolder = await getApplicationDocumentsDirectory();
       final file = File(p.join(dbFolder.path, 'appDatabase.db'));
       return NativeDatabase(file);

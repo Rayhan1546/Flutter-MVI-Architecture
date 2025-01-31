@@ -6,6 +6,7 @@ import 'package:github_repo_list/presentation/common/widgets/custom_text_field.d
 import 'package:github_repo_list/state_handler/builder_extension.dart';
 
 class ChangePasswordUi extends StatefulWidget {
+  static String routeName = '/change_password';
   const ChangePasswordUi({super.key});
 
   @override
