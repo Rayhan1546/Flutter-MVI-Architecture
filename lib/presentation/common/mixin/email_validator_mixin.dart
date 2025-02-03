@@ -1,6 +1,6 @@
-import 'package:github_repo_list/presentation/common/validation/validation_error.dart';
+import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
 
-mixin EmailValidator {
+mixin EmailValidatorIn {
   final RegExp _emailRegExp = RegExp(
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
   );

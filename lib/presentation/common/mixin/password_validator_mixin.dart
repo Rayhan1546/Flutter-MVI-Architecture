@@ -1,6 +1,6 @@
-import 'package:github_repo_list/presentation/common/validation/validation_error.dart';
+import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
 
-mixin PasswordValidator {
+mixin PasswordValidatorMixIn {
   ValidationError? getPasswordValidationError(String? password) {
     if (password == null) return null;
     if (password.isEmpty) return ValidationError.passwordEmpty;

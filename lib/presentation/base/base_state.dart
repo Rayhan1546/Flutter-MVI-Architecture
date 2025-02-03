@@ -1,4 +1,4 @@
-import 'package:github_repo_list/state_handler/navigation_type.dart';
+import 'package:github_repo_list/presentation/common/enum/navigation_type.dart';
 
 abstract class BaseState<T> {
   BaseState();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/common/extension/build_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
 import 'package:github_repo_list/presentation/feature/dialog_page/dialog_view_model.dart';
 import 'package:github_repo_list/presentation/feature/login_page/login_ui.dart';
-import 'package:github_repo_list/state_handler/builder_extension.dart';
 
 class DialogUi extends StatefulWidget {
   const DialogUi({super.key});
@@ -46,7 +46,7 @@ class _DialogUiState extends State<DialogUi> {
         return prev.isLoading != now.isLoading ||
             prev.shouldNavigate != now.shouldNavigate;
       },
-      builder: (context, states, _) {
+      builder: (context, states) {
         if (states.isLoading) {
           return const Center(
             child: CircularProgressIndicator(),

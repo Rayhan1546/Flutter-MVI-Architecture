@@ -1,33 +1,29 @@
 import 'package:flutter/foundation.dart';
+import 'package:github_repo_list/presentation/base/base_view_model.dart';
+import 'package:github_repo_list/presentation/common/enum/navigation_type.dart';
 import 'package:github_repo_list/presentation/feature/change_password_page/change_password_ui.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_ui.dart';
 import 'package:github_repo_list/presentation/feature/login_page/state/login_states.dart';
-import 'package:github_repo_list/state_handler/base_view_model.dart';
-import 'package:github_repo_list/state_handler/navigation_type.dart';
 
-class LoginViewModel extends BaseViewModel {
-  //ValueNotifier Initialization
+class LoginViewModel extends BaseViewModel<LoginStates> {
   final _loginStates = ValueNotifier<LoginStates>(
     LoginStates.initial(),
   );
 
-  //ValueListenable for UI
-  ValueListenable<LoginStates> get loginStates => _loginStates;
-
-  //State getter to handle state
-  LoginStates get _state => _loginStates.value;
+  @override
+  ValueListenable<LoginStates> getValue() => _loginStates;
 
   void onChangedEmail({required String? email}) {
     if (email == null || email.isEmpty) {
-      _loginStates.value = _state.copyWith(
+      _loginStates.value = stateSetter.copyWith(
         emailEmpty: true,
       );
       return;
     }
 
-    final errorState = _state.errorStates.validateEmail(email);
+    final errorState = stateSetter.errorStates.validateEmail(email);
 
-    _loginStates.value = _state.copyWith(
+    _loginStates.value = stateSetter.copyWith(
       errorStates: errorState,
       emailEmpty: false,
     );
@@ -37,15 +33,15 @@ class LoginViewModel extends BaseViewModel {
 
   void onChangedPassword({required String? password}) {
     if (password == null || password.isEmpty) {
-      _loginStates.value = _state.copyWith(
+      _loginStates.value = stateSetter.copyWith(
         passwordEmpty: true,
       );
       return;
     }
 
-    final errorState = _state.errorStates.validatePassword(password);
+    final errorState = stateSetter.errorStates.validatePassword(password);
 
-    _loginStates.value = _state.copyWith(
+    _loginStates.value = stateSetter.copyWith(
       errorStates: errorState,
       passwordEmpty: false,
     );
@@ -54,12 +50,13 @@ class LoginViewModel extends BaseViewModel {
   }
 
   void _checkUpdateButtonState() {
-    final hasAllFieldsFilled = !_state.emailEmpty && !_state.passwordEmpty;
+    final hasAllFieldsFilled =
+        !stateSetter.emailEmpty && !stateSetter.passwordEmpty;
 
-    final hasNoErrors = _state.errorStates.emailErrorText == null &&
-        _state.errorStates.passwordErrorText == null;
+    final hasNoErrors = stateSetter.errorStates.emailErrorText == null &&
+        stateSetter.errorStates.passwordErrorText == null;
 
-    _loginStates.value = _state.copyWith(
+    _loginStates.value = stateSetter.copyWith(
       showButton: hasNoErrors && hasAllFieldsFilled,
     );
   }
@@ -81,5 +78,6 @@ class LoginViewModel extends BaseViewModel {
   @override
   void onDispose() {
     _loginStates.dispose();
+    super.onDispose();
   }
 }

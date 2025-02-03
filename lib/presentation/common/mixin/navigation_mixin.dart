@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/state_handler/navigation_type.dart';
+import 'package:github_repo_list/presentation/common/enum/navigation_type.dart';
 import 'package:go_router/go_router.dart';
 
 mixin NavigationMixin {

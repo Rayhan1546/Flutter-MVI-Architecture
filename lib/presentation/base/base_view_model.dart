@@ -1,11 +1,15 @@
 import 'package:flutter/foundation.dart';
-import 'package:github_repo_list/state_handler/base_state.dart';
-import 'package:github_repo_list/state_handler/navigation_type.dart';
+import 'package:github_repo_list/presentation/base/base_state.dart';
+import 'package:github_repo_list/presentation/common/enum/navigation_type.dart';
 
-abstract class BaseViewModel {
+abstract class BaseViewModel<T extends BaseState<T>> {
   final _baseState = ValueNotifier<BaseState?>(null);
 
   ValueListenable<BaseState?> get baseState => _baseState;
+
+  ValueListenable<T> getValue();
+  ValueListenable<T> get stateListener => getValue();
+  T get stateSetter => getValue().value;
 
   void navigate({
     required String routePage,

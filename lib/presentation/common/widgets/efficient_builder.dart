@@ -1,50 +1,13 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
-extension BuilderExtension<T> on ValueListenable<T> {
-  Widget build<R>({
-    final bool Function(T previous, T current)? buildWhen,
-    required Widget Function(BuildContext context, T value, Widget? child) builder,
-    Widget? child,
-    Key? key,
-  }) {
-    return _EfficientBuilder<T>(
-      key: key,
-      valueListenable: this,
-      buildWhen: buildWhen,
-      builder: builder,
-      child: child,
-    );
-  }
-}
-
-extension BuildForExtension<T> on ValueListenable<T> {
-  Widget buildFor<R>({
-    required R Function(T state) select,
-    required Widget Function(BuildContext context, T state, Widget? child) builder,
-    Widget? child,
-    Key? key,
-  }) {
-    return _EfficientBuilder<T>(
-      valueListenable: this,
-      buildWhen: (previous, current) {
-        final previousValue = select(previous);
-        final currentValue = select(current);
-        return previousValue != currentValue;
-      },
-      builder: builder,
-      key: key,
-    );
-  }
-}
-
-class _EfficientBuilder<T> extends StatefulWidget {
+class EfficientBuilder<T> extends StatefulWidget {
   final ValueListenable<T> valueListenable;
   final ValueWidgetBuilder<T> builder;
   final bool Function(T previous, T current)? buildWhen;
   final Widget? child;
 
-  const _EfficientBuilder({
+  const EfficientBuilder({
     super.key,
     required this.valueListenable,
     required this.builder,
@@ -56,7 +19,7 @@ class _EfficientBuilder<T> extends StatefulWidget {
   State<StatefulWidget> createState() => _EfficientBuilderState<T>();
 }
 
-class _EfficientBuilderState<T> extends State<_EfficientBuilder<T>> {
+class _EfficientBuilderState<T> extends State<EfficientBuilder<T>> {
   late T value;
 
   @override
@@ -67,7 +30,7 @@ class _EfficientBuilderState<T> extends State<_EfficientBuilder<T>> {
   }
 
   @override
-  void didUpdateWidget(_EfficientBuilder<T> oldWidget) {
+  void didUpdateWidget(EfficientBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.valueListenable != widget.valueListenable) {
       oldWidget.valueListenable.removeListener(_valueChanged);

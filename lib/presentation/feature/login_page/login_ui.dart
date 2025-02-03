@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/custom_text_field.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
 import 'package:github_repo_list/presentation/feature/login_page/login_view_model.dart';
-import 'package:github_repo_list/state_handler/base_ui_state.dart';
-import 'package:github_repo_list/state_handler/base_view_model.dart';
-import 'package:github_repo_list/state_handler/builder_extension.dart';
+import 'package:github_repo_list/presentation/base/base_ui_state.dart';
+import 'package:github_repo_list/presentation/base/base_view_model.dart';
 
 class LoginUi extends StatefulWidget {
   static String routeName = '/';
@@ -68,9 +68,9 @@ class _LoginUiState extends BaseUIState<LoginUi> {
   }
 
   Widget _buildEmailField(BuildContext context) {
-    return _viewModel.loginStates.buildFor(
+    return _viewModel.stateListener.buildFor(
       select: (state) => state.errorStates.emailErrorText,
-      builder: (context, state, _) {
+      builder: (context, state) {
         return CustomTextField(
           controller: _emailController,
           textFieldName: 'Email',
@@ -83,9 +83,9 @@ class _LoginUiState extends BaseUIState<LoginUi> {
   }
 
   Widget _buildPasswordField(BuildContext context) {
-    return _viewModel.loginStates.buildFor(
+    return _viewModel.stateListener.buildFor(
       select: (state) => state.errorStates.passwordErrorText,
-      builder: (context, state, _) {
+      builder: (context, state) {
         return CustomTextField(
           controller: _passwordController,
           textFieldName: 'Password',
@@ -100,9 +100,9 @@ class _LoginUiState extends BaseUIState<LoginUi> {
   }
 
   Widget _buildLogInButton(BuildContext context) {
-    return _viewModel.loginStates.buildFor(
+    return _viewModel.stateListener.buildFor(
       select: (state) => state.showButton,
-      builder: (context, state, _) {
+      builder: (context, state) {
         return PrimaryButton(
           label: "LOG IN",
           onPressed: () {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/common/mixin/navigation_mixin.dart';
-import 'package:github_repo_list/state_handler/base_state.dart';
-import 'package:github_repo_list/state_handler/base_view_model.dart';
-import 'package:github_repo_list/state_handler/navigation_type.dart';
+import 'package:github_repo_list/presentation/base/base_state.dart';
+import 'package:github_repo_list/presentation/base/base_view_model.dart';
+import 'package:github_repo_list/presentation/common/enum/navigation_type.dart';
 
 abstract class BaseUIState<T extends StatefulWidget> extends State<T> with NavigationMixin {
   BaseViewModel getViewModel();

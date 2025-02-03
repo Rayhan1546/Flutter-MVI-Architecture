@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/common/extension/build_ext.dart';
+import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/edit_button.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
 import 'package:github_repo_list/presentation/feature/change_password_page/change_password_view_model.dart';
 import 'package:github_repo_list/presentation/common/widgets/custom_text_field.dart';
-import 'package:github_repo_list/state_handler/builder_extension.dart';
 
 class ChangePasswordUi extends StatefulWidget {
   static String routeName = '/change_password';
@@ -77,7 +78,7 @@ class _ChangePasswordUiState extends State<ChangePasswordUi> {
           buildWhen: (prev, now) {
             return prev.isPasswordEditMode != now.isPasswordEditMode;
           },
-          builder: (context, states, _) {
+          builder: (context, states) {
             return Visibility(
               visible: !states.isPasswordEditMode,
               child: EditButton(
@@ -98,7 +99,7 @@ class _ChangePasswordUiState extends State<ChangePasswordUi> {
                 now.errorStates.oldPasswordErrorText ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
       },
-      builder: (context, state, _) {
+      builder: (context, state) {
         return CustomTextField(
           controller: _oldPasswordController,
           textFieldName: 'old Password',
@@ -120,7 +121,7 @@ class _ChangePasswordUiState extends State<ChangePasswordUi> {
                 now.errorStates.newPasswordErrorText ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
       },
-      builder: (context, state, _) {
+      builder: (context, state) {
         return CustomTextField(
           controller: _newPasswordController,
           textFieldName: 'New Password',
@@ -142,7 +143,7 @@ class _ChangePasswordUiState extends State<ChangePasswordUi> {
                 now.errorStates.confirmNewPasswordErrorText ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
       },
-      builder: (context, state, _) {
+      builder: (context, state) {
         return CustomTextField(
           controller: _confirmNewPasswordController,
           textFieldName: 'Confirm New Password',
@@ -165,7 +166,7 @@ class _ChangePasswordUiState extends State<ChangePasswordUi> {
         return prev.showButton != now.showButton ||
             prev.isPasswordEditMode != now.isPasswordEditMode;
       },
-      builder: (context, states, _) {
+      builder: (context, states) {
         return Visibility(
           visible: states.isPasswordEditMode,
           child: PrimaryButton(
@@ -185,7 +186,7 @@ class _ChangePasswordUiState extends State<ChangePasswordUi> {
   Widget _buildSuccessMessage(BuildContext context) {
     return viewModel.passwordStates.buildFor(
       select: (state) => state.showSuccessMessage,
-      builder: (context, state, _) {
+      builder: (context, state) {
         return Visibility(
           visible: state.showSuccessMessage,
           child: Text(

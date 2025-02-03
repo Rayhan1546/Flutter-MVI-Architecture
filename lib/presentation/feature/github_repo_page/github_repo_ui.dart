@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_view_model.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/widgets/repository_card.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/widgets/repository_shimmer_card.dart';
-import 'package:github_repo_list/state_handler/builder_extension.dart';
 
 class GithubRepoUi extends StatefulWidget {
   static String routeName = '/repos';
@@ -35,7 +35,7 @@ class _GithubRepoUiState extends State<GithubRepoUi> {
   Widget _buildBody(BuildContext context) {
     return viewModel.gitRepoState.buildFor(
       select: (state) => state.isLoading,
-      builder: (context, state, _) {
+      builder: (context, state) {
         if (state.isLoading) {
           return ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -59,7 +59,7 @@ class _GithubRepoUiState extends State<GithubRepoUi> {
   Widget _buildRepoCard(BuildContext context) {
     return viewModel.gitRepoState.buildFor(
       select: (state) => state.repoList,
-      builder: (context, state, _) {
+      builder: (context, state) {
         return Scrollbar(
           thumbVisibility: true,
           child: ListView.builder(

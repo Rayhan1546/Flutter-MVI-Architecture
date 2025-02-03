@@ -1,5 +1,5 @@
-import 'package:github_repo_list/state_handler/base_state.dart';
-import 'package:github_repo_list/state_handler/navigation_type.dart';
+import 'package:github_repo_list/presentation/base/base_state.dart';
+import 'package:github_repo_list/presentation/common/enum/navigation_type.dart';
 
 class DialogStates extends BaseState<DialogStates> {
   final bool showButton;

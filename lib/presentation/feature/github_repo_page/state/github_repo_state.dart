@@ -1,6 +1,5 @@
 import 'package:github_repo_list/domain/model/repository.dart';
-import 'package:github_repo_list/state_handler/base_state.dart';
-import 'package:github_repo_list/state_handler/navigation_type.dart';
+import 'package:github_repo_list/presentation/base/base_state.dart';
 
 class GithubRepoState extends BaseState<GithubRepoState> {
   final List<Repository> repoList;
