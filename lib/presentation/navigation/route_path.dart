@@ -17,7 +17,6 @@ abstract class RoutePaths {
 
 final GoRouter routerConfig = GoRouter(
   initialLocation: RoutePaths.login,
-  debugLogDiagnostics: true,
   routes: [
     GoRoute(
       path: RoutePaths.login,

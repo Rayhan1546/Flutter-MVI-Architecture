@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
-import 'package:github_repo_list/presentation/common/enum/navigation_type.dart';
-import 'package:github_repo_list/presentation/feature/change_password_page/change_password_ui.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_ui.dart';
 import 'package:github_repo_list/presentation/feature/login_page/state/login_states.dart';
+import 'package:github_repo_list/presentation/navigation/route_params.dart';
+import 'package:github_repo_list/presentation/navigation/route_path.dart';
 
 class LoginViewModel extends BaseViewModel<LoginStates> {
   final _loginStates = ValueNotifier<LoginStates>(
@@ -62,16 +61,20 @@ class LoginViewModel extends BaseViewModel<LoginStates> {
   }
 
   void onTapLoginButton() {
-    navigate(
-      routePage: GithubRepoUi.routeName,
-      navigationType: NavigationType.replace,
+    navigateTo(
+      routePath: RoutePaths.githubRepoPage,
+      routeParams: GithubRepoParams(
+        email: 'herjrj',
+        password: 'fdhvufv',
+      ),
+      isClearBackStack: true,
     );
   }
 
   void onTapChangeButton() {
-    navigate(
-      routePage: ChangePasswordUi.routeName,
-      navigationType: NavigationType.push,
+    navigateTo(
+      routePath: RoutePaths.changePassword,
+      routeParams: ChangePasswordParams(),
     );
   }
 

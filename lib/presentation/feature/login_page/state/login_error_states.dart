@@ -2,7 +2,7 @@ import 'package:github_repo_list/presentation/common/mixin/email_validator_mixin
 import 'package:github_repo_list/presentation/common/mixin/password_validator_mixin.dart';
 import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
 
-class LoginErrorStates with EmailValidatorIn, PasswordValidatorMixIn {
+class LoginErrorStates with EmailValidator, PasswordValidatorMixIn {
   final ValidationError? emailErrorText;
   final ValidationError? passwordErrorText;
 

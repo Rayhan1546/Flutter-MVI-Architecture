@@ -9,3 +9,5 @@ class GithubRepoParams extends RouteParams {
     required this.password,
   });
 }
+
+class ChangePasswordParams extends RouteParams {}

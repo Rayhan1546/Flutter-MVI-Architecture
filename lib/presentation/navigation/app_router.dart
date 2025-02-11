@@ -6,7 +6,7 @@ class AppRouter {
   static Future<void> navigateTo<T extends RouteParams>({
     required BuildContext context,
     required String routeName,
-    required T routeParams,
+    required RouteParams routeParams,
   }) async {
     if (context.mounted) {
       context.push(
@@ -19,7 +19,7 @@ class AppRouter {
   static Future<void> replaceTo<T extends RouteParams>({
     required BuildContext context,
     required String routeName,
-    required T routeParams,
+    required RouteParams routeParams,
   }) async {
     if (context.mounted) {
       return context.replace(
@@ -32,10 +32,10 @@ class AppRouter {
   static Future<void> clearStackAndGo<T extends RouteParams>({
     required BuildContext context,
     required String routeName,
-    required T routeParams,
+    required RouteParams routeParams,
   }) async {
     if (context.mounted) {
-      return context.goNamed(
+      return context.pushReplacement(
         routeName,
         extra: routeParams,
       );
