@@ -2,10 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:github_repo_list/presentation/base/base_arguments.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 
-abstract class BaseViewModel {
+abstract class BaseViewModel<A extends BaseArguments> {
   final _baseState = ValueNotifier<BaseState?>(null);
 
   ValueListenable<BaseState?> get baseState => _baseState;
+
+  void onViewReady({A? argument}) {}
 
   void navigateTo({
     required String routePath,

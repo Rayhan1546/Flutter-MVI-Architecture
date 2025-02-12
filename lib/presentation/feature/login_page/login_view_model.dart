@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/route/github_repo_params.dart';
+import 'package:github_repo_list/presentation/feature/login_page/route/login_arguments.dart';
 import 'package:github_repo_list/presentation/feature/login_page/state/login_states.dart';
 import 'package:github_repo_list/presentation/navigation/route_path.dart';
 
-class LoginViewModel extends BaseViewModel {
+class LoginViewModel extends BaseViewModel<LoginArguments> {
   final _loginStates = ValueNotifier<LoginStates>(
     LoginStates.initial(),
   );
@@ -12,6 +13,12 @@ class LoginViewModel extends BaseViewModel {
   LoginStates get _states => _loginStates.value;
 
   ValueListenable<LoginStates> get loginStates => _loginStates;
+
+  @override
+  void onViewReady({LoginArguments? argument}) {
+    // TODO: implement onViewReady
+    super.onViewReady(argument: argument);
+  }
 
   void onChangedEmail({required String? email}) {
     if (email == null || email.isEmpty) {

@@ -12,7 +12,7 @@ class GithubRepoState extends BaseState<GithubRepoState> {
 
   factory GithubRepoState.initial() {
     return GithubRepoState(
-      repoList: [],
+      repoList: const [],
       isLoading: true,
     );
   }

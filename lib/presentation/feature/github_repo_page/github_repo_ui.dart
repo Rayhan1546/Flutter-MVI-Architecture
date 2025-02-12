@@ -23,6 +23,12 @@ class _GithubRepoUiState extends BaseUI<GithubRepoUi> {
   BaseViewModel getViewModel() => _viewModel;
 
   @override
+  void addPostFrameCallback() {
+    _viewModel.onViewReady(argument: widget.githubRepoParams);
+    super.addPostFrameCallback();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

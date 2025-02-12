@@ -5,11 +5,12 @@ import 'package:github_repo_list/presentation/common/widgets/custom_text_field.d
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
 import 'package:github_repo_list/presentation/feature/login_page/login_view_model.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
+import 'package:github_repo_list/presentation/feature/login_page/route/login_arguments.dart';
 
 class LoginUi extends StatefulWidget {
-  static String routeName = '/';
+  final LoginArguments? arguments;
 
-  const LoginUi({super.key});
+  const LoginUi({super.key, this.arguments});
 
   @override
   State<LoginUi> createState() => _LoginUiState();
@@ -23,6 +24,12 @@ class _LoginUiState extends BaseUI<LoginUi> {
 
   @override
   BaseViewModel getViewModel() => _viewModel;
+
+  @override
+  void addPostFrameCallback() {
+    _viewModel.onViewReady(argument: widget.arguments);
+    super.addPostFrameCallback();
+  }
 
   @override
   void dispose() {

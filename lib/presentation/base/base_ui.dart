@@ -5,12 +5,27 @@ import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/navigation/app_router.dart';
 
 abstract class BaseUI<T extends StatefulWidget> extends State<T> {
+  final BaseArguments? baseArguments;
+
+  BaseUI({this.baseArguments});
+
   BaseViewModel getViewModel();
 
   @override
   void initState() {
     super.initState();
+    _initializeDependencies();
+  }
+
+  void _initializeDependencies() {
     _setupListener();
+    addPostFrameCallback();
+  }
+
+  void addPostFrameCallback() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {},
+    );
   }
 
   void _setupListener() {
