@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/base/base_ui.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/custom_text_field.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
 import 'package:github_repo_list/presentation/feature/login_page/login_view_model.dart';
-import 'package:github_repo_list/presentation/base/base_ui_state.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 
 class LoginUi extends StatefulWidget {
@@ -15,7 +15,7 @@ class LoginUi extends StatefulWidget {
   State<LoginUi> createState() => _LoginUiState();
 }
 
-class _LoginUiState extends BaseUIState<LoginUi> {
+class _LoginUiState extends BaseUI<LoginUi> {
   final _viewModel = LoginViewModel();
 
   final _emailController = TextEditingController();
@@ -31,11 +31,6 @@ class _LoginUiState extends BaseUIState<LoginUi> {
     super.dispose();
   }
 
-  void onTapLogIn() {
-    _emailController.clear();
-    _passwordController.clear();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,11 +43,7 @@ class _LoginUiState extends BaseUIState<LoginUi> {
 
   Widget _buildBody(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(
-        top: 20,
-        left: 20,
-        right: 20,
-      ),
+      margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(
         children: [
           _buildEmailField(context),
@@ -60,15 +51,13 @@ class _LoginUiState extends BaseUIState<LoginUi> {
           _buildPasswordField(context),
           const SizedBox(height: 40),
           _buildLogInButton(context),
-          const SizedBox(height: 24),
-          _buildChangeButton(context),
         ],
       ),
     );
   }
 
   Widget _buildEmailField(BuildContext context) {
-    return _viewModel.stateListener.buildFor(
+    return _viewModel.loginStates.buildFor(
       select: (state) => state.errorStates.emailErrorText,
       builder: (context, state) {
         return CustomTextField(
@@ -83,7 +72,7 @@ class _LoginUiState extends BaseUIState<LoginUi> {
   }
 
   Widget _buildPasswordField(BuildContext context) {
-    return _viewModel.stateListener.buildFor(
+    return _viewModel.loginStates.buildFor(
       select: (state) => state.errorStates.passwordErrorText,
       builder: (context, state) {
         return CustomTextField(
@@ -100,27 +89,21 @@ class _LoginUiState extends BaseUIState<LoginUi> {
   }
 
   Widget _buildLogInButton(BuildContext context) {
-    return _viewModel.stateListener.buildFor(
+    return _viewModel.loginStates.buildFor(
       select: (state) => state.showButton,
       builder: (context, state) {
         return PrimaryButton(
           label: "LOG IN",
           onPressed: () {
-            onTapLogIn();
-            _viewModel.onTapLoginButton();
+            _viewModel.onTapLoginButton(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            );
           },
           minWidth: double.infinity,
           isDisabled: !state.showButton,
         );
       },
-    );
-  }
-
-  Widget _buildChangeButton(BuildContext context) {
-    return PrimaryButton(
-      label: "Change Password",
-      onPressed: () => _viewModel.onTapChangeButton(),
-      minWidth: double.infinity,
     );
   }
 }

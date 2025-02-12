@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/base/base_ui.dart';
+import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_view_model.dart';
+import 'package:github_repo_list/presentation/feature/github_repo_page/route/github_repo_params.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/widgets/repository_card.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/widgets/repository_shimmer_card.dart';
 
 class GithubRepoUi extends StatefulWidget {
-  static String routeName = '/repos';
+  final GithubRepoArgument githubRepoParams;
 
-  const GithubRepoUi({super.key});
+  const GithubRepoUi({super.key, required this.githubRepoParams});
 
   @override
   State<GithubRepoUi> createState() => _GithubRepoUiState();
 }
 
-class _GithubRepoUiState extends State<GithubRepoUi> {
-  final viewModel = GithubRepoViewModel();
+class _GithubRepoUiState extends BaseUI<GithubRepoUi> {
+  final _viewModel = GithubRepoViewModel();
 
   @override
-  void dispose() {
-    viewModel.onDispose();
-    super.dispose();
-  }
+  BaseViewModel getViewModel() => _viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _GithubRepoUiState extends State<GithubRepoUi> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return viewModel.gitRepoState.buildFor(
+    return _viewModel.gitRepoState.buildFor(
       select: (state) => state.isLoading,
       builder: (context, state) {
         if (state.isLoading) {
@@ -48,7 +48,7 @@ class _GithubRepoUiState extends State<GithubRepoUi> {
 
         return RefreshIndicator(
           onRefresh: () async {
-            return viewModel.onRefresh();
+            return _viewModel.onRefresh();
           },
           child: _buildRepoCard(context),
         );
@@ -57,7 +57,7 @@ class _GithubRepoUiState extends State<GithubRepoUi> {
   }
 
   Widget _buildRepoCard(BuildContext context) {
-    return viewModel.gitRepoState.buildFor(
+    return _viewModel.gitRepoState.buildFor(
       select: (state) => state.repoList,
       builder: (context, state) {
         return Scrollbar(

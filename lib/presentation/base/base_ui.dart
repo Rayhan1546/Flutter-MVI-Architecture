@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/base/base_arguments.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/navigation/app_router.dart';
-import 'package:github_repo_list/presentation/navigation/route_params.dart';
 
-abstract class BaseUIState<T extends StatefulWidget> extends State<T> {
+abstract class BaseUI<T extends StatefulWidget> extends State<T> {
   BaseViewModel getViewModel();
 
   @override
   void initState() {
     super.initState();
-    _setupNavigationListener();
+    _setupListener();
   }
 
-  void _setupNavigationListener() {
+  void _setupListener() {
     getViewModel().baseState.addListener(
       () {
         final baseState = getViewModel().baseState.value;
@@ -23,7 +23,7 @@ abstract class BaseUIState<T extends StatefulWidget> extends State<T> {
         if (baseState is NavigateState) {
           _navigateTo(
             routePath: baseState.routePath,
-            routeParams: baseState.routeParams,
+            arguments: baseState.arguments,
             isReplace: baseState.isReplace,
             isClearBackStack: baseState.isClearBackStack,
           );
@@ -34,27 +34,27 @@ abstract class BaseUIState<T extends StatefulWidget> extends State<T> {
 
   void _navigateTo({
     required String routePath,
-    required RouteParams routeParams,
+    required BaseArguments arguments,
     required bool isReplace,
     required bool isClearBackStack,
   }) async {
     if (isReplace) {
       await AppRouter.replaceTo(
         context: context,
-        routeName: routePath,
-        routeParams: routeParams,
+        routePath: routePath,
+        arguments: arguments,
       );
     } else if (isClearBackStack) {
       await AppRouter.clearStackAndGo(
         context: context,
-        routeName: routePath,
-        routeParams: routeParams,
+        routePath: routePath,
+        arguments: arguments,
       );
     } else {
       await AppRouter.navigateTo(
         context: context,
-        routeName: routePath,
-        routeParams: routeParams,
+        routePath: routePath,
+        arguments: arguments,
       );
     }
   }

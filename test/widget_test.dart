@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:github_repo_list/main/main.dart';
+import 'package:github_repo_list/presentation/feature/app/app.dart';
 
 
 void main() {

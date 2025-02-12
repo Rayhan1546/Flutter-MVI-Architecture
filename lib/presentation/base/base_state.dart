@@ -1,5 +1,4 @@
-import 'package:github_repo_list/presentation/common/enum/navigation_type.dart';
-import 'package:github_repo_list/presentation/navigation/route_params.dart';
+import 'package:github_repo_list/presentation/base/base_arguments.dart';
 
 abstract class BaseState<T> {
   BaseState();
@@ -7,37 +6,21 @@ abstract class BaseState<T> {
   T copyWith();
 }
 
-class NavigationState extends BaseState<NavigationState> {
-  final String routePage;
-  final NavigationType navigationType;
-
-  NavigationState({
-    required this.routePage,
-    required this.navigationType,
-  });
-
-  @override
-  NavigationState copyWith() {
-    // TODO: implement copyWith
-    throw UnimplementedError();
-  }
-}
-
-class NavigateState extends BaseState<NavigationState> {
+class NavigateState extends BaseState<NavigateState> {
   final String routePath;
-  final RouteParams routeParams;
+  final BaseArguments arguments;
   final bool isReplace;
   final bool isClearBackStack;
 
   NavigateState({
     required this.routePath,
-    required this.routeParams,
+    required this.arguments,
     required this.isReplace,
     required this.isClearBackStack,
   });
 
   @override
-  NavigationState copyWith() {
+  NavigateState copyWith() {
     // TODO: implement copyWith
     throw UnimplementedError();
   }
