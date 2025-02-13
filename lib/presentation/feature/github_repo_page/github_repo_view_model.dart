@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
-import 'package:github_repo_list/data/repository/github_repository_impl.dart';
 import 'package:github_repo_list/domain/repository/github_repository.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/route/github_repo_params.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/state/github_repo_state.dart';
 
 class GithubRepoViewModel extends BaseViewModel<GithubRepoArgument> {
+  final GithubRepository githubRepository;
+
+  GithubRepoViewModel({required this.githubRepository});
+
   final _gitRepoState = ValueNotifier<GithubRepoState>(
     GithubRepoState.initial(),
   );
@@ -14,12 +17,8 @@ class GithubRepoViewModel extends BaseViewModel<GithubRepoArgument> {
 
   ValueListenable<GithubRepoState> get gitRepoState => _gitRepoState;
 
-  GithubRepository githubRepository = GithubRepositoryImpl();
-
   @override
-  void onViewReady({GithubRepoArgument? argument}) {}
-
-  GithubRepoViewModel() {
+  void onViewReady({GithubRepoArgument? argument}) {
     _getRepoList();
   }
 
@@ -42,7 +41,7 @@ class GithubRepoViewModel extends BaseViewModel<GithubRepoArgument> {
 
   @override
   void onDispose() {
-    _gitRepoState.dispose();
     super.onDispose();
+    _gitRepoState.dispose();
   }
 }

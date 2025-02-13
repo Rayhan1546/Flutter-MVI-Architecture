@@ -1,6 +1,5 @@
 import 'package:github_repo_list/presentation/feature/login_page/state/login_error_states.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
-import 'package:github_repo_list/presentation/common/enum/navigation_type.dart';
 
 class LoginStates extends BaseState<LoginStates> {
   final bool emailEmpty;
@@ -32,7 +31,6 @@ class LoginStates extends BaseState<LoginStates> {
     bool? showButton,
     LoginErrorStates? errorStates,
     String? routePage,
-    NavigationType? navigationType,
   }) {
     return LoginStates(
       emailEmpty: emailEmpty ?? this.emailEmpty,

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/presentation/base/base_arguments.dart';
+import 'package:github_repo_list/presentation/base/base_argument.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/navigation/app_router.dart';
 
-abstract class BaseUI<T extends StatefulWidget> extends State<T> {
-  final BaseArguments? baseArguments;
-
-  BaseUI({this.baseArguments});
-
-  BaseViewModel getViewModel();
+abstract class BaseAdaptiveUI<T extends StatefulWidget> extends State<T> {
+  BaseViewModel viewModel();
 
   @override
   void initState() {
@@ -29,9 +25,9 @@ abstract class BaseUI<T extends StatefulWidget> extends State<T> {
   }
 
   void _setupListener() {
-    getViewModel().baseState.addListener(
+    viewModel().baseState.addListener(
       () {
-        final baseState = getViewModel().baseState.value;
+        final baseState = viewModel().baseState.value;
         if (!mounted) {
           return;
         }
@@ -49,7 +45,7 @@ abstract class BaseUI<T extends StatefulWidget> extends State<T> {
 
   void _navigateTo({
     required String routePath,
-    required BaseArguments arguments,
+    required BaseArgument arguments,
     required bool isReplace,
     required bool isClearBackStack,
   }) async {
@@ -76,7 +72,7 @@ abstract class BaseUI<T extends StatefulWidget> extends State<T> {
 
   @override
   void dispose() {
-    getViewModel().onDispose();
+    viewModel().onDispose();
     super.dispose();
   }
 }

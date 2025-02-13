@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:github_repo_list/presentation/base/base_arguments.dart';
+import 'package:github_repo_list/presentation/base/base_argument.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 
-abstract class BaseViewModel<A extends BaseArguments> {
+abstract class BaseViewModel<A extends BaseArgument> {
   final _baseState = ValueNotifier<BaseState?>(null);
 
   ValueListenable<BaseState?> get baseState => _baseState;
@@ -11,7 +11,7 @@ abstract class BaseViewModel<A extends BaseArguments> {
 
   void navigateTo({
     required String routePath,
-    required BaseArguments arguments,
+    required BaseArgument arguments,
     bool isReplace = false,
     bool isClearBackStack = false,
   }) {

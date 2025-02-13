@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/presentation/base/base_ui.dart';
+import 'package:github_repo_list/di/get_it_module.dart';
+import 'package:github_repo_list/presentation/base/base_adaptive_ui.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_view_model.dart';
@@ -16,16 +17,16 @@ class GithubRepoUi extends StatefulWidget {
   State<GithubRepoUi> createState() => _GithubRepoUiState();
 }
 
-class _GithubRepoUiState extends BaseUI<GithubRepoUi> {
-  final _viewModel = GithubRepoViewModel();
+class _GithubRepoUiState extends BaseAdaptiveUI<GithubRepoUi> {
+  final _viewModel = GetItModule().get<GithubRepoViewModel>();
 
   @override
-  BaseViewModel getViewModel() => _viewModel;
+  BaseViewModel viewModel() => _viewModel;
 
   @override
   void addPostFrameCallback() {
-    _viewModel.onViewReady(argument: widget.githubRepoParams);
     super.addPostFrameCallback();
+    _viewModel.onViewReady(argument: widget.githubRepoParams);
   }
 
   @override

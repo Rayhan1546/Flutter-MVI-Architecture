@@ -1,4 +1,4 @@
-import 'package:github_repo_list/presentation/base/base_arguments.dart';
+import 'package:github_repo_list/presentation/base/base_argument.dart';
 
 abstract class BaseState<T> {
   BaseState();
@@ -8,7 +8,7 @@ abstract class BaseState<T> {
 
 class NavigateState extends BaseState<NavigateState> {
   final String routePath;
-  final BaseArguments arguments;
+  final BaseArgument arguments;
   final bool isReplace;
   final bool isClearBackStack;
 

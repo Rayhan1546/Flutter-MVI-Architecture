@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/presentation/base/base_ui.dart';
+import 'package:github_repo_list/presentation/base/base_adaptive_ui.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/custom_text_field.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
@@ -16,14 +16,14 @@ class LoginUi extends StatefulWidget {
   State<LoginUi> createState() => _LoginUiState();
 }
 
-class _LoginUiState extends BaseUI<LoginUi> {
+class _LoginUiState extends BaseAdaptiveUI<LoginUi> {
   final _viewModel = LoginViewModel();
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
-  BaseViewModel getViewModel() => _viewModel;
+  BaseViewModel viewModel() => _viewModel;
 
   @override
   void addPostFrameCallback() {
