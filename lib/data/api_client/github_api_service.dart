@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:github_repo_list/data/response_model/git_response.dart';
+import 'package:github_repo_list/data/models/git_response.dart';
 import 'package:http/http.dart' as http;
 
 class GitHubApiService {

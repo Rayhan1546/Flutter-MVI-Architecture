@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/di/get_it_module.dart';
+import 'package:github_repo_list/di/di_module.dart';
 import 'package:github_repo_list/presentation/base/base_adaptive_ui.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
@@ -9,24 +9,24 @@ import 'package:github_repo_list/presentation/feature/github_repo_page/widgets/r
 import 'package:github_repo_list/presentation/feature/github_repo_page/widgets/repository_shimmer_card.dart';
 
 class GithubRepoUi extends StatefulWidget {
-  final GithubRepoArgument githubRepoParams;
+  final GithubRepoArgument githubRepoArguments;
 
-  const GithubRepoUi({super.key, required this.githubRepoParams});
+  const GithubRepoUi({super.key, required this.githubRepoArguments});
 
   @override
   State<GithubRepoUi> createState() => _GithubRepoUiState();
 }
 
 class _GithubRepoUiState extends BaseAdaptiveUI<GithubRepoUi> {
-  final _viewModel = GetItModule().get<GithubRepoViewModel>();
+  final _viewModel = DIModule().get<GithubRepoViewModel>();
 
   @override
   BaseViewModel viewModel() => _viewModel;
 
   @override
-  void addPostFrameCallback() {
-    super.addPostFrameCallback();
-    _viewModel.onViewReady(argument: widget.githubRepoParams);
+  void initState() {
+    super.initState();
+    _viewModel.onViewReady(argument: widget.githubRepoArguments);
   }
 
   @override

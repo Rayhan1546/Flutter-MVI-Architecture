@@ -32,7 +32,7 @@ final GoRouter routerConfig = GoRouter(
       path: RoutePaths.githubRepoPage,
       builder: (context, state) {
         final arguments = state.extra as GithubRepoArgument;
-        return GithubRepoUi(githubRepoParams: arguments);
+        return GithubRepoUi(githubRepoArguments: arguments);
       },
     ),
   ],

@@ -23,9 +23,9 @@ class _SplashScreenUiState extends BaseAdaptiveUI<SplashScreenUi> {
   BaseViewModel viewModel() => _viewModel;
 
   @override
-  void addPostFrameCallback() {
+  void initState() {
+    super.initState();
     _viewModel.onViewReady(argument: widget.argument);
-    super.addPostFrameCallback();
   }
 
   @override

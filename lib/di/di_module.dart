@@ -1,54 +1,27 @@
-import 'package:github_repo_list/data/api_client/github_api_service.dart';
-import 'package:github_repo_list/data/repository/github_repository_impl.dart';
-import 'package:github_repo_list/database/drift_database/app_database.dart';
-import 'package:github_repo_list/database/drift_database/github_database/github_dao.dart';
-import 'package:github_repo_list/di/get_it_module.dart';
-import 'package:github_repo_list/domain/repository/github_repository.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_view_model.dart';
+import 'package:get_it/get_it.dart';
 
 class DIModule {
   DIModule._internal();
   static final DIModule _instance = DIModule._internal();
   factory DIModule() => _instance;
 
-  final getIt = GetItModule();
+  final _getIt = GetIt.instance;
 
-  Future<void> injectDependencies() async {
-    await _registerDatabase();
-    await _registerApiServices();
-    await _registerRepositories();
-    await _registerViewModels();
+  T get<T extends Object>() => _getIt<T>();
+
+  void registerSingleton<T extends Object>(T instance) {
+    _getIt.registerSingleton<T>(instance);
   }
 
-  Future<void> _registerDatabase() async {
-    getIt.registerLazySingleton<GithubDao>(GithubDao(AppDatabase()));
+  void registerLazySingleton<T extends Object>(T instance) {
+    _getIt.registerLazySingleton<T>(() => instance);
   }
 
-  Future<void> _registerApiServices() async {
-    getIt.registerLazySingleton<GitHubApiService>(GitHubApiService());
+  void registerFactory<T extends Object>(T instance) {
+    _getIt.registerFactory<T>(() => instance);
   }
 
-  Future<void> _registerRepositories() async {
-    final gitHubService = getIt.get<GitHubApiService>();
-    final githubDao = getIt.get<GithubDao>();
-
-    getIt.registerLazySingleton<GithubRepository>(
-      GithubRepositoryImpl(
-        gitHubApiService: gitHubService,
-        githubDao: githubDao,
-      ),
-    );
-  }
-
-  Future<void> _registerViewModels() async {
-    final githubRepository = getIt.get<GithubRepository>();
-
-    getIt.registerFactory(
-      GithubRepoViewModel(githubRepository: githubRepository),
-    );
-  }
-
-  Future<void> removeDependencies() async {
-    getIt.reset();
+  Future<void> reset() async {
+    await _getIt.reset();
   }
 }

@@ -26,9 +26,9 @@ class _LoginUiState extends BaseAdaptiveUI<LoginUi> {
   BaseViewModel viewModel() => _viewModel;
 
   @override
-  void addPostFrameCallback() {
+  void initState() {
+    super.initState();
     _viewModel.onViewReady(argument: widget.arguments);
-    super.addPostFrameCallback();
   }
 
   @override

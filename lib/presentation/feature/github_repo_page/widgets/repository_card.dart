@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/domain/model/repository.dart';
+import 'package:github_repo_list/domain/entities/repository.dart';
 
 class RepositoryCard extends StatelessWidget {
   final Repository repository;
@@ -41,7 +41,6 @@ class RepositoryCard extends StatelessWidget {
             ),
             const SizedBox(width: 16),
 
-            // Repository Details
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +68,6 @@ class RepositoryCard extends StatelessWidget {
 
                   const SizedBox(height: 12),
 
-                  // Repository ID and other metadata
                   Row(
                     children: [
                       Icon(

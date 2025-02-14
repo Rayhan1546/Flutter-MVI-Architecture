@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:github_repo_list/domain/repository/github_repository.dart';
+import 'package:github_repo_list/domain/repositories/github_repository.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/route/github_repo_params.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/state/github_repo_state.dart';

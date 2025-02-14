@@ -15,14 +15,8 @@ abstract class BaseAdaptiveUI<T extends StatefulWidget> extends State<T> {
 
   void _initializeDependencies() {
     _setupListener();
-    addPostFrameCallback();
   }
 
-  void addPostFrameCallback() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {},
-    );
-  }
 
   void _setupListener() {
     viewModel().baseState.addListener(
