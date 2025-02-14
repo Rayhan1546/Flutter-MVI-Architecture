@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:github_repo_list/data/models/git_response.dart';
 import 'package:http/http.dart' as http;
 
-class GitHubApiService {
+class GitApiService {
   static const String baseUrl = 'https://api.github.com/repositories';
 
   Future<List<RepositoryResponse>> fetchRepositories() async {

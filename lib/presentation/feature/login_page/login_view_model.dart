@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/route/github_repo_params.dart';
-import 'package:github_repo_list/presentation/feature/login_page/route/login_arguments.dart';
+import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
+import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
 import 'package:github_repo_list/presentation/feature/login_page/state/login_states.dart';
 import 'package:github_repo_list/presentation/navigation/route_path.dart';
 
-class LoginViewModel extends BaseViewModel<LoginArguments> {
+class LoginViewModel extends BaseViewModel<LoginArgument> {
   final _loginStates = ValueNotifier<LoginStates>(
     LoginStates.initial(),
   );
@@ -15,16 +15,13 @@ class LoginViewModel extends BaseViewModel<LoginArguments> {
   ValueListenable<LoginStates> get loginStates => _loginStates;
 
   @override
-  void onViewReady({LoginArguments? argument}) {
+  void onViewReady({LoginArgument? argument}) {
     // TODO: implement onViewReady
     super.onViewReady(argument: argument);
   }
 
   void onChangedEmail({required String? email}) {
     if (email == null || email.isEmpty) {
-      _loginStates.value = _states.copyWith(
-        emailEmpty: true,
-      );
       return;
     }
 
@@ -32,7 +29,7 @@ class LoginViewModel extends BaseViewModel<LoginArguments> {
 
     _loginStates.value = _states.copyWith(
       errorStates: errorState,
-      emailEmpty: false,
+      email: email,
     );
 
     _checkUpdateButtonState();
@@ -40,9 +37,6 @@ class LoginViewModel extends BaseViewModel<LoginArguments> {
 
   void onChangedPassword({required String? password}) {
     if (password == null || password.isEmpty) {
-      _loginStates.value = _states.copyWith(
-        passwordEmpty: true,
-      );
       return;
     }
 
@@ -50,14 +44,15 @@ class LoginViewModel extends BaseViewModel<LoginArguments> {
 
     _loginStates.value = _states.copyWith(
       errorStates: errorState,
-      passwordEmpty: false,
+      password: password,
     );
 
     _checkUpdateButtonState();
   }
 
   void _checkUpdateButtonState() {
-    final hasAllFieldsFilled = !_states.emailEmpty && !_states.passwordEmpty;
+    final hasAllFieldsFilled =
+        _states.email.isNotEmpty && _states.password.isNotEmpty;
 
     final hasNoErrors = _states.errorStates.emailErrorText == null &&
         _states.errorStates.passwordErrorText == null;
@@ -67,15 +62,12 @@ class LoginViewModel extends BaseViewModel<LoginArguments> {
     );
   }
 
-  void onTapLoginButton({
-    required String email,
-    required String password,
-  }) {
+  void onTapLoginButton() {
     navigateTo(
       routePath: RoutePaths.githubRepoPage,
       arguments: GithubRepoArgument(
-        email: email,
-        password: password,
+        email: _states.email.trim(),
+        password: _states.password.trim(),
       ),
       isClearBackStack: true,
     );

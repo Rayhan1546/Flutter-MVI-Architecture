@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/base/base_adaptive_ui.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
-import 'package:github_repo_list/presentation/feature/splash_screen/route/splash_screen_argument.dart';
-import 'package:github_repo_list/presentation/feature/splash_screen/splash_screen_view_model.dart';
+import 'package:github_repo_list/presentation/feature/splash_page/argument/splash_argument.dart';
+import 'package:github_repo_list/presentation/feature/splash_page/splash_screen_view_model.dart';
 
-class SplashScreenUi extends StatefulWidget {
-  final SplashScreenArgument? argument;
+class SplashScreen extends StatefulWidget {
+  final SplashArgument? argument;
 
-  const SplashScreenUi({
+  const SplashScreen({
     super.key,
     this.argument,
   });
 
   @override
-  State<SplashScreenUi> createState() => _SplashScreenUiState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenUiState extends BaseAdaptiveUI<SplashScreenUi> {
+class _SplashScreenState extends BaseAdaptiveUI<SplashScreen> {
   final _viewModel = SplashScreenViewModel();
 
   @override

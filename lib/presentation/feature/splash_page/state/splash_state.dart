@@ -1,23 +1,23 @@
 import 'package:github_repo_list/presentation/base/base_state.dart';
 
-class SplashScreenState extends BaseState<SplashScreenState> {
+class SplashState extends BaseState<SplashState> {
   final bool isLoggedIn;
 
-  SplashScreenState({
+  SplashState({
     required this.isLoggedIn,
   });
 
-  factory SplashScreenState.inital() {
-    return SplashScreenState(
+  factory SplashState.inital() {
+    return SplashState(
       isLoggedIn: false,
     );
   }
 
   @override
-  SplashScreenState copyWith({
+  SplashState copyWith({
     bool? isLoggedIn,
   }) {
-    return SplashScreenState(
+    return SplashState(
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
     );
   }

@@ -1,6 +1,6 @@
-import 'package:github_repo_list/data/api_client/github_api_service.dart';
 import 'package:github_repo_list/data/data_sources/local/drift_database/app_database.dart';
 import 'package:github_repo_list/data/data_sources/local/drift_database/github_database/github_dao.dart';
+import 'package:github_repo_list/data/data_sources/remote/git_api_service.dart';
 import 'package:github_repo_list/data/repositories/github_repository_impl.dart';
 import 'package:github_repo_list/di/di_module.dart';
 import 'package:github_repo_list/domain/repositories/github_repository.dart';
@@ -25,11 +25,11 @@ class InjectionContainer {
   }
 
   Future<void> _registerApiServices() async {
-    diModule.registerLazySingleton<GitHubApiService>(GitHubApiService());
+    diModule.registerLazySingleton<GitApiService>(GitApiService());
   }
 
   Future<void> _registerRepositories() async {
-    final gitHubService = diModule.get<GitHubApiService>();
+    final gitHubService = diModule.get<GitApiService>();
     final githubDao = diModule.get<GithubDao>();
 
     diModule.registerLazySingleton<GithubRepository>(GithubRepositoryImpl(

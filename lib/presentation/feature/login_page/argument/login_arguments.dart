@@ -1,3 +1,3 @@
 import 'package:github_repo_list/presentation/base/base_argument.dart';
 
-class LoginArguments extends BaseArgument {}
+class LoginArgument extends BaseArgument {}
