@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/base/base_provider.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/custom_text_field.dart';
 import 'package:github_repo_list/presentation/feature/login_page/login_view_model.dart';
 
 class LoginEmailField extends StatefulWidget {
-  final LoginViewModel viewModel;
-
-  const LoginEmailField({super.key, required this.viewModel});
+  const LoginEmailField({super.key});
 
   @override
   State<LoginEmailField> createState() => _LoginEmailFieldState();
@@ -23,7 +22,9 @@ class _LoginEmailFieldState extends State<LoginEmailField> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.viewModel.loginStates.buildFor(
+    final viewModel = BaseProvider.of<LoginViewModel>(context);
+
+    return viewModel.stateListener.buildFor(
       select: (state) => state.errorStates.emailErrorText,
       builder: (context, state) {
         return CustomTextField(
@@ -31,7 +32,7 @@ class _LoginEmailFieldState extends State<LoginEmailField> {
           textFieldName: 'Email',
           textFieldType: TextFieldType.email,
           errorText: state.errorStates.emailErrorText?.getError(),
-          onChanged: (email) => widget.viewModel.onChangedEmail(email: email),
+          onChanged: (email) => viewModel.onChangedEmail(email: email),
         );
       },
     );

@@ -5,6 +5,7 @@ import 'package:github_repo_list/data/repositories/github_repository_impl.dart';
 import 'package:github_repo_list/di/di_module.dart';
 import 'package:github_repo_list/domain/repositories/github_repository.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_view_model.dart';
+import 'package:github_repo_list/presentation/feature/login_page/login_view_model.dart';
 
 class InjectionContainer {
   InjectionContainer._internal();
@@ -40,6 +41,8 @@ class InjectionContainer {
 
   Future<void> _registerViewModels() async {
     final githubRepository = diModule.get<GithubRepository>();
+
+    diModule.registerFactory<LoginViewModel>(LoginViewModel());
 
     diModule.registerFactory<GithubRepoViewModel>(GithubRepoViewModel(
       githubRepository: githubRepository,

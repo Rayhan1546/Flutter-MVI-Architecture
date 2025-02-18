@@ -17,7 +17,6 @@ abstract class BaseAdaptiveUI<T extends StatefulWidget> extends State<T> {
     _setupListener();
   }
 
-
   void _setupListener() {
     viewModel().baseState.addListener(
       () {

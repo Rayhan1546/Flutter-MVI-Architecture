@@ -1,18 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
 import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
 import 'package:github_repo_list/presentation/feature/login_page/state/login_states.dart';
 import 'package:github_repo_list/presentation/navigation/route_path.dart';
 
-class LoginViewModel extends BaseViewModel<LoginArgument> {
-  final _loginStates = ValueNotifier<LoginStates>(
-    LoginStates.initial(),
-  );
-
-  LoginStates get _states => _loginStates.value;
-
-  ValueListenable<LoginStates> get loginStates => _loginStates;
+class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
+  LoginViewModel() : super(LoginStates.initial());
 
   @override
   void onViewReady({LoginArgument? argument}) {
@@ -25,12 +18,12 @@ class LoginViewModel extends BaseViewModel<LoginArgument> {
       return;
     }
 
-    final errorState = _states.errorStates.validateEmail(email);
+    final errorState = currentState.errorStates.validateEmail(email);
 
-    _loginStates.value = _states.copyWith(
+    updateState(currentState.copyWith(
       errorStates: errorState,
       email: email,
-    );
+    ));
 
     _checkUpdateButtonState();
   }
@@ -40,42 +33,36 @@ class LoginViewModel extends BaseViewModel<LoginArgument> {
       return;
     }
 
-    final errorState = _states.errorStates.validatePassword(password);
+    final errorState = currentState.errorStates.validatePassword(password);
 
-    _loginStates.value = _states.copyWith(
+    updateState(currentState.copyWith(
       errorStates: errorState,
       password: password,
-    );
+    ));
 
     _checkUpdateButtonState();
   }
 
   void _checkUpdateButtonState() {
     final hasAllFieldsFilled =
-        _states.email.isNotEmpty && _states.password.isNotEmpty;
+        currentState.email.isNotEmpty && currentState.password.isNotEmpty;
 
-    final hasNoErrors = _states.errorStates.emailErrorText == null &&
-        _states.errorStates.passwordErrorText == null;
+    final hasNoErrors = currentState.errorStates.emailErrorText == null &&
+        currentState.errorStates.passwordErrorText == null;
 
-    _loginStates.value = _states.copyWith(
+    updateState(currentState.copyWith(
       showButton: hasNoErrors && hasAllFieldsFilled,
-    );
+    ));
   }
 
   void onTapLoginButton() {
     navigateTo(
       routePath: RoutePaths.githubRepoPage,
       arguments: GithubRepoArgument(
-        email: _states.email.trim(),
-        password: _states.password.trim(),
+        email: currentState.email.trim(),
+        password: currentState.password.trim(),
       ),
       isClearBackStack: true,
     );
-  }
-
-  @override
-  void onDispose() {
-    _loginStates.dispose();
-    super.onDispose();
   }
 }

@@ -21,7 +21,6 @@ class NavigateState extends BaseState<NavigateState> {
 
   @override
   NavigateState copyWith() {
-    // TODO: implement copyWith
     throw UnimplementedError();
   }
 }

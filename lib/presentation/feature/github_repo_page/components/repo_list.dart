@@ -10,7 +10,7 @@ class RepoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return viewModel.gitRepoState.buildFor(
+    return viewModel.stateListener.buildFor(
       select: (state) => state.repoList,
       builder: (context, state) {
         return Scrollbar(

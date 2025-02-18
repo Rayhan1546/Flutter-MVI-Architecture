@@ -1,21 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:github_repo_list/domain/repositories/github_repository.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/state/github_repo_state.dart';
 
-class GithubRepoViewModel extends BaseViewModel<GithubRepoArgument> {
+class GithubRepoViewModel extends BaseViewModel<GithubRepoArgument, GithubRepoState> {
   final GithubRepository githubRepository;
 
-  GithubRepoViewModel({required this.githubRepository});
-
-  final _gitRepoState = ValueNotifier<GithubRepoState>(
-    GithubRepoState.initial(),
-  );
-
-  GithubRepoState get _state => _gitRepoState.value;
-
-  ValueListenable<GithubRepoState> get gitRepoState => _gitRepoState;
+  GithubRepoViewModel({
+    required this.githubRepository,
+  }) : super(GithubRepoState.initial());
 
   @override
   void onViewReady({GithubRepoArgument? argument}) {
@@ -23,9 +16,7 @@ class GithubRepoViewModel extends BaseViewModel<GithubRepoArgument> {
   }
 
   Future<void> onRefresh() async {
-    _gitRepoState.value = _state.copyWith(
-      isLoading: true,
-    );
+    updateState(currentState.copyWith(isLoading: true));
 
     await _getRepoList();
   }
@@ -33,15 +24,9 @@ class GithubRepoViewModel extends BaseViewModel<GithubRepoArgument> {
   Future<void> _getRepoList() async {
     final repoList = await githubRepository.getGithubRepository();
 
-    _gitRepoState.value = _state.copyWith(
+    updateState(currentState.copyWith(
       repoList: repoList,
       isLoading: false,
-    );
-  }
-
-  @override
-  void onDispose() {
-    super.onDispose();
-    _gitRepoState.dispose();
+    ));
   }
 }

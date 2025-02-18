@@ -35,7 +35,7 @@ class _GithubRepoScreenState extends BaseAdaptiveUI<GithubRepoScreen> {
       appBar: AppBar(
         title: const Text('Repo List'),
       ),
-      body: _viewModel.gitRepoState.buildFor(
+      body: _viewModel.stateListener.buildFor(
         select: (state) => state.isLoading,
         builder: (context, state) {
           if (state.isLoading) {
