@@ -7,12 +7,6 @@ import 'package:github_repo_list/presentation/navigation/route_path.dart';
 class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
   LoginViewModel() : super(LoginStates.initial());
 
-  @override
-  void onViewReady({LoginArgument? argument}) {
-    // TODO: implement onViewReady
-    super.onViewReady(argument: argument);
-  }
-
   void onChangedEmail({required String? email}) {
     if (email == null || email.isEmpty) {
       return;

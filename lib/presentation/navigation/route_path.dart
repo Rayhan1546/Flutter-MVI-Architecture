@@ -18,7 +18,7 @@ final GoRouter routerConfig = GoRouter(
     GoRoute(
       path: RoutePaths.splash,
       builder: (context, state) {
-        return SplashScreen(argument: SplashArgument());
+        return SplashScreen(arguments: SplashArgument());
       },
     ),
     GoRoute(
@@ -32,7 +32,9 @@ final GoRouter routerConfig = GoRouter(
       path: RoutePaths.githubRepoPage,
       builder: (context, state) {
         final arguments = state.extra as GithubRepoArgument;
-        return GithubRepoScreen(githubRepoArguments: arguments);
+        return GithubRepoScreen(
+          arguments: arguments,
+        );
       },
     ),
   ],

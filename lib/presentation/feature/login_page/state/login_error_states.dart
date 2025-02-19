@@ -23,8 +23,11 @@ class LoginErrorStates with EmailValidator, PasswordValidatorMixIn {
     ValidationError? Function()? passwordErrorText,
   }) {
     return LoginErrorStates(
-      emailErrorText: emailErrorText != null ? emailErrorText() : this.emailErrorText,
-      passwordErrorText: passwordErrorText != null ? passwordErrorText() : this.passwordErrorText,
+      emailErrorText:
+          emailErrorText != null ? emailErrorText() : this.emailErrorText,
+      passwordErrorText: passwordErrorText != null
+          ? passwordErrorText()
+          : this.passwordErrorText,
     );
   }
 

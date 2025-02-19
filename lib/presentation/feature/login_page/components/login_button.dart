@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/presentation/base/base_provider.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
+import 'package:github_repo_list/presentation/common/extension/context_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
 import 'package:github_repo_list/presentation/feature/login_page/login_view_model.dart';
 
@@ -9,7 +9,7 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = BaseProvider.of<LoginViewModel>(context);
+    final viewModel = context.getViewModel<LoginViewModel>();
 
     return viewModel.stateListener.buildFor(
       select: (state) => state.showButton,

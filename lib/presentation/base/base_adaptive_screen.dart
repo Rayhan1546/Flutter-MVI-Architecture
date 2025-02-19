@@ -1,26 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_list/di/di_module/di_module.dart';
 import 'package:github_repo_list/presentation/base/base_argument.dart';
+import 'package:github_repo_list/presentation/base/base_provider.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/navigation/app_router.dart';
 
-abstract class BaseAdaptiveUI<T extends StatefulWidget> extends State<T> {
-  BaseViewModel viewModel();
+abstract class BaseAdaptiveScreen<VM extends BaseViewModel,
+    A extends BaseArgument> extends StatefulWidget {
+  final A? arguments;
+
+  const BaseAdaptiveScreen({super.key, required this.arguments});
+
+  @protected
+  Widget buildView(BuildContext context);
+
+  @override
+  State<BaseAdaptiveScreen<VM, A>> createState() =>
+      _BaseAdaptiveScreenState<VM, A>();
+}
+
+class _BaseAdaptiveScreenState<VM extends BaseViewModel, A extends BaseArgument>
+    extends State<BaseAdaptiveScreen<VM, A>> {
+  late final A? _arguments;
+  late final VM _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _initializeDependencies();
+    _initialize();
   }
 
-  void _initializeDependencies() {
+  void _initialize() {
+    _viewModel = DIModule().get<VM>();
+    _arguments = widget.arguments;
+    _onViewReady();
     _setupListener();
   }
 
+  @protected
+  void _onViewReady() {
+    _viewModel.onViewReady(argument: _arguments);
+  }
+
   void _setupListener() {
-    viewModel().baseState.addListener(
+    _viewModel.baseState.addListener(
       () {
-        final baseState = viewModel().baseState.value;
+        final baseState = _viewModel.baseState.value;
         if (!mounted) {
           return;
         }
@@ -64,8 +90,19 @@ abstract class BaseAdaptiveUI<T extends StatefulWidget> extends State<T> {
   }
 
   @override
+  @override
+  Widget build(BuildContext context) {
+    return BaseProvider(
+      viewModel: _viewModel,
+      builder: (context, viewModel) {
+        return widget.buildView(context);
+      },
+    );
+  }
+
+  @override
   void dispose() {
-    viewModel().onDispose();
+    _viewModel.onDispose();
     super.dispose();
   }
 }
