@@ -3,7 +3,7 @@ import 'package:github_repo_list/data/data_sources/local/drift_database/github_d
 import 'package:github_repo_list/di/di_module/di_module.dart';
 
 /// This class should always be LazySingleTon
-class DatabaseInjecter {
+class DatabaseRegisterModule {
   final diModule = DIModule();
 
   Future<void> registerDatabase() async {

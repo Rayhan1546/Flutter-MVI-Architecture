@@ -21,6 +21,12 @@ class DIModule {
     _getIt.registerFactory<T>(() => instance);
   }
 
+  void disposeViewModel<T extends Object>() {
+    if (_getIt.isRegistered<T>()) {
+      _getIt.unregister<T>();
+    }
+  }
+
   Future<void> reset() async {
     await _getIt.reset();
   }

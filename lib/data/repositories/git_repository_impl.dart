@@ -2,13 +2,13 @@ import 'package:github_repo_list/data/data_sources/local/drift_database/github_d
 import 'package:github_repo_list/data/data_sources/remote/git_api_service.dart';
 import 'package:github_repo_list/data/mapper/git_repository_mapper.dart';
 import 'package:github_repo_list/domain/entities/repository.dart';
-import 'package:github_repo_list/domain/repositories/github_repository.dart';
+import 'package:github_repo_list/domain/repositories/git_repository.dart';
 
-class GithubRepositoryImpl extends GithubRepository {
+class GitRepositoryImpl extends GitRepository {
   final GitApiService gitHubApiService;
   final GithubDao githubDao;
 
-  GithubRepositoryImpl({
+  GitRepositoryImpl({
     required this.gitHubApiService,
     required this.githubDao,
   });

@@ -24,6 +24,7 @@ class _BaseAdaptiveScreenState<VM extends BaseViewModel, A extends BaseArgument>
     extends State<BaseAdaptiveScreen<VM, A>> {
   late final A? _arguments;
   late final VM _viewModel;
+  final diModule = DIModule();
 
   @override
   void initState() {
@@ -31,8 +32,15 @@ class _BaseAdaptiveScreenState<VM extends BaseViewModel, A extends BaseArgument>
     _initialize();
   }
 
+  @override
+  void dispose() {
+    _viewModel.onDispose();
+    diModule.disposeViewModel<VM>();
+    super.dispose();
+  }
+
   void _initialize() {
-    _viewModel = DIModule().get<VM>();
+    _viewModel = diModule.get<VM>();
     _arguments = widget.arguments;
     _onViewReady();
     _setupListener();
@@ -98,11 +106,5 @@ class _BaseAdaptiveScreenState<VM extends BaseViewModel, A extends BaseArgument>
         return widget.buildView(context);
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _viewModel.onDispose();
-    super.dispose();
   }
 }

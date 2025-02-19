@@ -1,5 +1,5 @@
 import 'package:github_repo_list/domain/entities/repository.dart';
 
-abstract class GithubRepository {
+abstract class GitRepository {
   Future<List<Repository>> getGithubRepository();
 }
