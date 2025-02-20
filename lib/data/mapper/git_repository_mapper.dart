@@ -1,4 +1,4 @@
-import 'package:github_repo_list/data/data_sources/local/drift/app_database.dart';
+import 'package:github_repo_list/data/data_sources/local/drift/app_database/app_database.dart';
 import 'package:github_repo_list/data/models/git_response.dart';
 import 'package:github_repo_list/domain/entities/repository.dart';
 

@@ -1,3 +1,5 @@
+import 'package:github_repo_list/data/data_sources/local/app_config/login_state_manager.dart';
+import 'package:github_repo_list/data/data_sources/local/app_config/token_manager.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
@@ -6,7 +8,25 @@ import 'package:github_repo_list/presentation/feature/login_page/view_model/logi
 import 'package:github_repo_list/presentation/navigation/route_path.dart';
 
 class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
-  LoginViewModel() : super(LoginStates.initial());
+  final LoginStateManager loginStateManager;
+  final TokenManager tokenManager;
+
+  LoginViewModel({
+    required this.loginStateManager,
+    required this.tokenManager,
+  }) : super(LoginStates.initial());
+
+  @override
+  void onViewReady({LoginArgument? argument}) {
+    super.onViewReady(argument: argument);
+    _getCredentialData();
+  }
+
+  void _getCredentialData() async {
+    final data = await tokenManager.getLoginCredential();
+
+    updateState(currentState.copyWith(loginCredential: data));
+  }
 
   void onChangedEmail({required String? email}) {
     if (email == null || email.isEmpty) return;
@@ -36,7 +56,8 @@ class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
     ));
   }
 
-  void onTapLoginButton() {
+  void onTapLoginButton() async {
+    await loginStateManager.saveValue(true);
     navigateTo(
       routePath: RoutePaths.githubRepoPage,
       arguments: GithubRepoArgument(

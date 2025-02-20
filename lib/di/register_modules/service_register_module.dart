@@ -1,0 +1,10 @@
+import 'package:github_repo_list/core/services/encryption_service.dart';
+import 'package:github_repo_list/di/di_module/di_module.dart';
+
+class ServiceRegisterModule {
+  final diModule = DIModule();
+
+  Future<void> registerServices() async {
+    diModule.registerLazySingleton<EncryptionService>(EncryptionService());
+  }
+}

@@ -1,3 +1,4 @@
+import 'package:github_repo_list/domain/entities/login_credentials.dart';
 import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 import 'package:github_repo_list/presentation/common/validator/email_validator.dart';
@@ -9,6 +10,7 @@ class LoginStates extends BaseState<LoginStates> {
   final bool showButton;
   final ValidationError emailError;
   final ValidationError passwordError;
+  final LoginCredentials? loginCredentials;
 
   LoginStates({
     required this.email,
@@ -16,6 +18,7 @@ class LoginStates extends BaseState<LoginStates> {
     required this.showButton,
     required this.emailError,
     required this.passwordError,
+    this.loginCredentials,
   });
 
   factory LoginStates.initial() {
@@ -25,6 +28,7 @@ class LoginStates extends BaseState<LoginStates> {
       showButton: false,
       emailError: ValidationError.none,
       passwordError: ValidationError.none,
+      loginCredentials: null,
     );
   }
 
@@ -35,6 +39,7 @@ class LoginStates extends BaseState<LoginStates> {
     bool? showButton,
     ValidationError? emailError,
     ValidationError? passwordError,
+    LoginCredentials? loginCredential,
   }) {
     return LoginStates(
       email: email ?? this.email,
@@ -42,6 +47,7 @@ class LoginStates extends BaseState<LoginStates> {
       showButton: showButton ?? this.showButton,
       emailError: emailError ?? this.emailError,
       passwordError: passwordError ?? this.passwordError,
+      loginCredentials: loginCredential ?? this.loginCredentials,
     );
   }
 
