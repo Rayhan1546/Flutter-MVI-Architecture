@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/extension/context_ext.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_view_model.dart';
+import 'package:github_repo_list/presentation/feature/github_repo_page/view_model/github_repo_view_model.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/widgets/repository_card.dart';
 
 class RepoList extends StatelessWidget {

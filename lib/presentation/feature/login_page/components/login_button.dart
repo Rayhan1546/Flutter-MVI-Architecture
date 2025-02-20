@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/extension/context_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/primary_button.dart';
-import 'package:github_repo_list/presentation/feature/login_page/login_view_model.dart';
+import 'package:github_repo_list/presentation/feature/login_page/view_model/login_view_model.dart';
 
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key});

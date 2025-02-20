@@ -14,15 +14,16 @@ class BaseProvider<T> extends InheritedWidget {
     required T viewModel,
     required Widget Function(BuildContext context, T viewModel) builder,
   }) : this._(
-    key: key,
-    viewModel: viewModel,
-    child: Builder(
-      builder: (context) => builder(context, viewModel),
-    ),
-  );
+          key: key,
+          viewModel: viewModel,
+          child: Builder(
+            builder: (context) => builder(context, viewModel),
+          ),
+        );
 
   static T of<T>(BuildContext context) {
-    final provider = context.dependOnInheritedWidgetOfExactType<BaseProvider<T>>();
+    final provider =
+        context.dependOnInheritedWidgetOfExactType<BaseProvider<T>>();
     assert(provider != null, 'No BaseProvider<$T> found in context');
     return provider!.viewModel;
   }

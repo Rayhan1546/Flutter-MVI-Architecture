@@ -1,9 +1,9 @@
 import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/github_repo_screen.dart';
+import 'package:github_repo_list/presentation/feature/github_repo_page/view/github_repo_screen.dart';
 import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
-import 'package:github_repo_list/presentation/feature/login_page/login_screen.dart';
+import 'package:github_repo_list/presentation/feature/login_page/view/login_screen.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/argument/splash_argument.dart';
-import 'package:github_repo_list/presentation/feature/splash_page/splash_screen.dart';
+import 'package:github_repo_list/presentation/feature/splash_page/view/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class RoutePaths {

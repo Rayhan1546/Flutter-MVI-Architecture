@@ -1,8 +1,7 @@
 import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
 
-mixin PasswordValidatorMixIn {
-  ValidationError? getPasswordValidationError(String? password) {
-    if (password == null) return null;
+class PasswordValidator {
+  static ValidationError getPasswordValidation(String password) {
     if (password.isEmpty) return ValidationError.passwordEmpty;
     if (password.contains(' ')) {
       return ValidationError.passwordContainsSpace;
@@ -22,21 +21,15 @@ mixin PasswordValidatorMixIn {
     if (password.length < 8) {
       return ValidationError.passwordTooShort;
     }
-    return null;
+    return ValidationError.none;
   }
 
-  ValidationError? matchTwoPassword(
-    String? password1,
-    String? password2,
+  static ValidationError matchTwoPassword(
+    String password1,
+    String password2,
   ) {
-    if (password1 == null || password2 == null) return null;
     if (password2.isEmpty) return ValidationError.passwordEmpty;
     if (password1 != password2) return ValidationError.passwordNotMatched;
-    return null;
-  }
-
-  bool isValid(String? password) {
-    if (password == null) return false;
-    return getPasswordValidationError(password) == null;
+    return ValidationError.none;
   }
 }

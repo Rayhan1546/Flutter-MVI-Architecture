@@ -7,6 +7,6 @@ class GitRepoUseCase {
   GitRepoUseCase({required this.gitRepository});
 
   Future<List<Repository>> getGitRepositories() async {
-    return await gitRepository.getGithubRepository();
+    return await gitRepository.getGitRepositories();
   }
 }

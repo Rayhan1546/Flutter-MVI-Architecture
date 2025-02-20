@@ -1,4 +1,5 @@
 enum ValidationError {
+  none,
   invalidEmail,
   requiredField,
   passwordEmpty,
@@ -10,8 +11,10 @@ enum ValidationError {
   passwordNoSpecialChar,
   passwordTooShort;
 
-  String getError() {
+  String? getError() {
     switch (this) {
+      case ValidationError.none:
+        return null;
       case ValidationError.invalidEmail:
         return "Please enter a valid email address";
       case ValidationError.requiredField:

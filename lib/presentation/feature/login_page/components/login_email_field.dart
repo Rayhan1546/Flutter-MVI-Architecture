@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/extension/context_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/custom_text_field.dart';
-import 'package:github_repo_list/presentation/feature/login_page/login_view_model.dart';
+import 'package:github_repo_list/presentation/feature/login_page/view_model/login_view_model.dart';
 
 class LoginEmailField extends StatefulWidget {
   const LoginEmailField({super.key});
@@ -25,13 +25,13 @@ class _LoginEmailFieldState extends State<LoginEmailField> {
     final viewModel = context.getViewModel<LoginViewModel>();
 
     return viewModel.stateListener.buildFor(
-      select: (state) => state.errorStates.emailErrorText,
+      select: (state) => state.emailError,
       builder: (context, state) {
         return CustomTextField(
           controller: _emailController,
           textFieldName: 'Email',
           textFieldType: TextFieldType.email,
-          errorText: state.errorStates.emailErrorText?.getError(),
+          errorText: state.emailError.getError(),
           onChanged: (email) => viewModel.onChangedEmail(email: email),
         );
       },

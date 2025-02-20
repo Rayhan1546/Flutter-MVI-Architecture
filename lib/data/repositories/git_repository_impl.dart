@@ -1,4 +1,4 @@
-import 'package:github_repo_list/data/data_sources/local/drift_database/github_database/github_dao.dart';
+import 'package:github_repo_list/data/data_sources/local/drift/github_database/github_dao.dart';
 import 'package:github_repo_list/data/data_sources/remote/git_api_service.dart';
 import 'package:github_repo_list/data/mapper/git_repository_mapper.dart';
 import 'package:github_repo_list/domain/entities/repository.dart';
@@ -14,7 +14,7 @@ class GitRepositoryImpl extends GitRepository {
   });
 
   @override
-  Future<List<Repository>> getGithubRepository() async {
+  Future<List<Repository>> getGitRepositories() async {
     try {
       final repositories = await gitHubApiService.fetchRepositories();
 

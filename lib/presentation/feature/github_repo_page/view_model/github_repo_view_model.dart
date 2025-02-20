@@ -1,7 +1,7 @@
 import 'package:github_repo_list/domain/use_cases/git_repo_use_case.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/state/github_repo_state.dart';
+import 'package:github_repo_list/presentation/feature/github_repo_page/view_model/github_repo_state.dart';
 
 class GithubRepoViewModel
     extends BaseViewModel<GithubRepoArgument, GithubRepoState> {

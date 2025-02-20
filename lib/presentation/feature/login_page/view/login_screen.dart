@@ -4,7 +4,7 @@ import 'package:github_repo_list/presentation/feature/login_page/argument/login_
 import 'package:github_repo_list/presentation/feature/login_page/components/login_button.dart';
 import 'package:github_repo_list/presentation/feature/login_page/components/login_email_field.dart';
 import 'package:github_repo_list/presentation/feature/login_page/components/login_password_field.dart';
-import 'package:github_repo_list/presentation/feature/login_page/login_view_model.dart';
+import 'package:github_repo_list/presentation/feature/login_page/view_model/login_view_model.dart';
 
 class LoginScreen extends BaseAdaptiveScreen<LoginViewModel, LoginArgument> {
   const LoginScreen({super.key, required super.arguments});

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:github_repo_list/data/data_sources/local/drift_database/github_database/github_dao.dart';
-import 'package:github_repo_list/data/data_sources/local/drift_database/github_database/github_table.dart';
+import 'package:github_repo_list/data/data_sources/local/drift/github_database/github_dao.dart';
+import 'package:github_repo_list/data/data_sources/local/drift/github_database/github_table.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 

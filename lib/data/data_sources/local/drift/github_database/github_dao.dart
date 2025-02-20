@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:github_repo_list/data/data_sources/local/drift_database/app_database.dart';
-import 'package:github_repo_list/data/data_sources/local/drift_database/github_database/github_table.dart';
+import 'package:github_repo_list/data/data_sources/local/drift/app_database.dart';
+import 'package:github_repo_list/data/data_sources/local/drift/github_database/github_table.dart';
 import 'package:github_repo_list/domain/entities/repository.dart';
 
 part 'github_dao.g.dart';
