@@ -5,6 +5,7 @@ import 'package:github_repo_list/domain/use_cases/git_repo_use_case.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/view_model/github_repo_view_model.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_view_model.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/view_model/splash_view_model.dart';
+import 'package:github_repo_list/presentation/feature/hello_page/view_model/hello_view_model.dart';
 
 ///This class will always be factory
 class ViewModelRegisterModule {
@@ -17,7 +18,6 @@ class ViewModelRegisterModule {
 
     diModule.registerFactory<SplashViewModel>(SplashViewModel(
       loginStateManager: loginStateManager,
-      tokenManager: tokenManager,
     ));
 
     diModule.registerFactory<LoginViewModel>(LoginViewModel(
@@ -27,6 +27,8 @@ class ViewModelRegisterModule {
 
     diModule.registerFactory<GithubRepoViewModel>(GithubRepoViewModel(
       gitRepoUseCase: gitRepoUseCase,
+      tokenManager: tokenManager,
     ));
+    diModule.registerFactory<HelloViewModel>(HelloViewModel());
   }
 }

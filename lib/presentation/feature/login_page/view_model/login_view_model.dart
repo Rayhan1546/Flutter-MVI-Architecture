@@ -1,13 +1,15 @@
+import 'package:github_repo_list/core/mixin/encryption_mixin.dart';
 import 'package:github_repo_list/data/data_sources/local/app_config/login_state_manager.dart';
 import 'package:github_repo_list/data/data_sources/local/app_config/token_manager.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
+import 'package:github_repo_list/presentation/feature/hello_page/argument/hello_argument.dart';
 import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_states.dart';
 import 'package:github_repo_list/presentation/navigation/route_path.dart';
 
-class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
+class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates>
+    with EncryptionMixIn {
   final LoginStateManager loginStateManager;
   final TokenManager tokenManager;
 
@@ -15,18 +17,6 @@ class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
     required this.loginStateManager,
     required this.tokenManager,
   }) : super(LoginStates.initial());
-
-  @override
-  void onViewReady({LoginArgument? argument}) {
-    super.onViewReady(argument: argument);
-    _getCredentialData();
-  }
-
-  void _getCredentialData() async {
-    final data = await tokenManager.getLoginCredential();
-
-    updateState(currentState.copyWith(loginCredential: data));
-  }
 
   void onChangedEmail({required String? email}) {
     if (email == null || email.isEmpty) return;
@@ -56,15 +46,29 @@ class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
     ));
   }
 
-  void onTapLoginButton() async {
-    await loginStateManager.saveValue(true);
+  void onTapLoginButton() {
+    // saveLoginCredential();
+    // navigateTo(
+    //   routePath: RoutePaths.githubRepoPage,
+    //   arguments: GithubRepoArgument(
+    //     email: currentState.email.trim(),
+    //     password: currentState.password.trim(),
+    //   ),
+    //   isClearBackStack: true,
+    // );
     navigateTo(
-      routePath: RoutePaths.githubRepoPage,
-      arguments: GithubRepoArgument(
-        email: currentState.email.trim(),
-        password: currentState.password.trim(),
-      ),
+      routePath: RoutePaths.hello,
+      arguments: HelloArgument(),
       isClearBackStack: true,
+    );
+  }
+
+  void saveLoginCredential() async {
+    await loginStateManager.saveValue(true);
+    await tokenManager.saveLoginToken(
+      token: 'dniduhfvfduhivbudfhvbfrjbfghjbgfbfgbfgb',
+      refreshToken: 'dniviufhbvvfgrbfgjbgfbnfjgbfgjknbg',
+      userName: 'Rayhan Mahmud',
     );
   }
 }

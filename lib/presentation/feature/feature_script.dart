@@ -100,9 +100,7 @@ void _createArgumentFile(String basePath, String featureName, String pascalCase,
   file.writeAsStringSync('''
 import 'package:$projectName/presentation/base/base_argument.dart';
 
-class ${pascalCase}Argument extends BaseArgument {
-  ${pascalCase}Argument();
-}
+class ${pascalCase}Argument extends BaseArgument {}
 ''');
   print('✓ Created file: ${file.path}');
 }
@@ -113,8 +111,6 @@ void _createScreenFile(String basePath, String featureName, String pascalCase,
   file.writeAsStringSync('''
 import 'package:flutter/material.dart';
 import 'package:$projectName/presentation/base/base_adaptive_screen.dart';
-import 'package:$projectName/presentation/common/extension/context_ext.dart';
-import 'package:$projectName/presentation/common/extension/build_for_ext.dart';
 import '../argument/${featureName}_argument.dart';
 import '../view_model/${featureName}_view_model.dart';
 import '../components/${featureName}_counter.dart';

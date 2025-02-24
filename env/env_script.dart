@@ -7,7 +7,8 @@ void main() async {
     // Find project root directory
     final projectRoot = await findProjectRoot();
     if (projectRoot == null) {
-      print('Error: Could not find project root (no pubspec.yaml found in parent directories)');
+      print(
+          'Error: Could not find project root (no pubspec.yaml found in parent directories)');
       exit(1);
     }
 
@@ -40,10 +41,10 @@ void main() async {
     // Encrypt the value
     final encryptedValue = encryptValue(value);
 
-    // Update .env.dev file
+    // Update ..env.dev file
     await updateEnvFile(projectRoot, name, encryptedValue, fileName);
 
-    print('\nSuccessfully added encrypted value to .env.dev file');
+    print('\nSuccessfully added encrypted value to ..env.dev file');
     print('Project root: $projectRoot');
     print('Name: $name');
     print('Encrypted Value: $encryptedValue');
@@ -76,7 +77,7 @@ Future<String?> findProjectRoot() async {
 }
 
 String encryptValue(String value) {
-  return EncryptionAlgorithm().encrypt(value);
+  return EncryptionAlgorithm.instance.encrypt(value);
 }
 
 Future<void> updateEnvFile(
@@ -85,7 +86,7 @@ Future<void> updateEnvFile(
   String value,
   String envFIleName,
 ) async {
-  // Create the full path to the .env.dev file
+  // Create the full path to the ..env.dev file
   final envPath = path.join(projectRoot, 'env', envFIleName);
   final envDirectory = Directory(path.dirname(envPath));
   final envFile = File(envPath);

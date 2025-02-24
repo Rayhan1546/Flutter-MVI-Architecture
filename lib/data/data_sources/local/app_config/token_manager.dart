@@ -17,6 +17,8 @@ class TokenManager extends ConfigManager<Map<String, dynamic>> with EncryptionMi
       'username': encrypt(value: userName),
     };
 
+    print(data);
+
     await saveValue(data);
   }
 
