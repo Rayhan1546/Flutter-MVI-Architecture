@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/extension/context_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/custom_text_field.dart';
+import 'package:github_repo_list/presentation/feature/login_page/view_model/login_intend.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_view_model.dart';
 
 class LoginPasswordField extends StatefulWidget {
@@ -33,7 +34,7 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
           errorText: state.passwordError.getError(),
           textFieldType: TextFieldType.password,
           onChanged: (password) {
-            viewModel.onChangedPassword(password: password);
+            viewModel.dispatchIntent(LoginPasswordIntent(password: password));
           },
         );
       },

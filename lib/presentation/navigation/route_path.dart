@@ -5,15 +5,15 @@ import 'package:github_repo_list/presentation/feature/login_page/view/login_scre
 import 'package:github_repo_list/presentation/feature/splash_page/argument/splash_argument.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/view/splash_screen.dart';
 import 'package:go_router/go_router.dart';
-import 'package:github_repo_list/presentation/feature/hello_page/argument/hello_argument.dart';
-import 'package:github_repo_list/presentation/feature/hello_page/view/hello_screen.dart';
+import 'package:github_repo_list/presentation/feature/counter_page/argument/counter_argument.dart';
+import 'package:github_repo_list/presentation/feature/counter_page/view/counter_screen.dart';
 
 abstract class RoutePaths {
   static const String splash = '/splash';
   static const String login = '/login';
   static const String githubRepoPage = '/githubRepoPage';
 
-  static const String hello = '/hello';
+  static const String counter = '/counter';
 }
 
 final GoRouter routerConfig = GoRouter(
@@ -40,10 +40,10 @@ final GoRouter routerConfig = GoRouter(
       },
     ),
       GoRoute(
-      path: RoutePaths.hello,
+      path: RoutePaths.counter,
       builder: (context, state) {
-        final arguments = state.extra as HelloArgument;
-        return HelloScreen(
+        final arguments = state.extra as CounterArgument;
+        return CounterScreen(
           arguments: arguments,
         );
       },

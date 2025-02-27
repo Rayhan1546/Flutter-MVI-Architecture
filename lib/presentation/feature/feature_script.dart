@@ -47,6 +47,8 @@ void main() async {
         baseDir.path, featureName, pascalCaseFeatureName, projectName);
     _createScreenFile(
         baseDir.path, featureName, pascalCaseFeatureName, projectName);
+    _createIntentFile(
+        baseDir.path, featureName, pascalCaseFeatureName, projectName);
     _createViewModelFile(
         baseDir.path, featureName, pascalCaseFeatureName, projectName);
     _createStateFile(
@@ -105,6 +107,29 @@ class ${pascalCase}Argument extends BaseArgument {}
   print('✓ Created file: ${file.path}');
 }
 
+void _createIntentFile(String basePath, String featureName, String pascalCase,
+    String projectName) {
+  final file = File('$basePath/view_model/${featureName}_intent.dart');
+  file.writeAsStringSync('''
+abstract class ${pascalCase}Intent {
+  const ${pascalCase}Intent();
+}
+
+class IncrementCounterIntent extends ${pascalCase}Intent {
+  const IncrementCounterIntent();
+}
+
+class DecrementCounterIntent extends ${pascalCase}Intent {
+  const DecrementCounterIntent();
+}
+
+class ResetCounterIntent extends ${pascalCase}Intent {
+  const ResetCounterIntent();
+}
+''');
+  print('✓ Created file: ${file.path}');
+}
+
 void _createScreenFile(String basePath, String featureName, String pascalCase,
     String projectName) {
   final file = File('$basePath/view/${featureName}_screen.dart');
@@ -139,6 +164,7 @@ void _createViewModelFile(String basePath, String featureName,
 import 'package:$projectName/presentation/base/base_view_model.dart';
 import '../argument/${featureName}_argument.dart';
 import '${featureName}_state.dart';
+import '${featureName}_intent.dart';
 
 class ${pascalCase}ViewModel extends BaseViewModel<${pascalCase}Argument, ${pascalCase}State> {
   ${pascalCase}ViewModel() : super(${pascalCase}State.initial());
@@ -152,10 +178,32 @@ class ${pascalCase}ViewModel extends BaseViewModel<${pascalCase}Argument, ${pasc
     updateState(currentState.copyWith(counter: 0));
   }
 
-  void incrementCounter() {
+  void dispatchIntent(${pascalCase}Intent intent) {
+    if (intent is IncrementCounterIntent) {
+      _incrementCounter();
+    } else if (intent is DecrementCounterIntent) {
+      _decrementCounter();
+    } else if (intent is ResetCounterIntent) {
+      _resetCounter();
+    }
+  }
+
+  void _incrementCounter() {
     updateState(currentState.copyWith(
       counter: currentState.counter + 1,
     ));
+  }
+
+  void _decrementCounter() {
+    if (currentState.counter > 0) {
+      updateState(currentState.copyWith(
+        counter: currentState.counter - 1,
+      ));
+    }
+  }
+
+  void _resetCounter() {
+    updateState(currentState.copyWith(counter: 0));
   }
 }
 ''');
@@ -202,6 +250,7 @@ import 'package:flutter/material.dart';
 import 'package:$projectName/presentation/common/extension/context_ext.dart';
 import 'package:$projectName/presentation/common/extension/build_for_ext.dart';
 import '../view_model/${featureName}_view_model.dart';
+import '../view_model/${featureName}_intent.dart';
 
 class ${pascalCase}Counter extends StatelessWidget {
   const ${pascalCase}Counter({super.key});
@@ -223,10 +272,31 @@ class ${pascalCase}Counter extends StatelessWidget {
               );
             },
           ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  viewModel.dispatchIntent(const DecrementCounterIntent());
+                },
+                child: const Text('-'),
+              ),
+              const SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: () {
+                  viewModel.dispatchIntent(const IncrementCounterIntent());
+                },
+                child: const Text('+'),
+              ),
+            ],
+          ),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: viewModel.incrementCounter,
-            child: const Text('Increment'),
+          TextButton(
+            onPressed: () {
+              viewModel.dispatchIntent(const ResetCounterIntent());
+            },
+            child: const Text('Reset'),
           ),
         ],
       ),
