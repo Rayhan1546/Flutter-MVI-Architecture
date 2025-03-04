@@ -2,12 +2,11 @@ import 'package:github_repo_list/data/data_sources/local/app_config/login_state_
 import 'package:github_repo_list/data/data_sources/local/app_config/token_manager.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
-import 'package:github_repo_list/presentation/feature/counter_page/argument/counter_argument.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
 import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_intend.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_states.dart';
-import 'package:github_repo_list/presentation/navigation/route_path.dart';
+import 'package:github_repo_list/presentation/navigation/routes_config.dart';
 
 class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
   final LoginStateManager loginStateManager;
@@ -31,7 +30,7 @@ class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
   void _validateEmail({required String? email}) {
     if (email == null || email.isEmpty) return;
 
-    updateState(currentState.validateEmail(email));
+    updateState(state.validateEmail(email));
 
     _checkLoginButtonState();
   }
@@ -39,34 +38,38 @@ class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
   void _validatePassword({required String? password}) {
     if (password == null || password.isEmpty) return;
 
-    updateState(currentState.validatePassword(password));
+    updateState(state.validatePassword(password));
 
     _checkLoginButtonState();
   }
 
   void _checkLoginButtonState() {
     final hasAllFieldsFilled =
-        currentState.email.isNotEmpty && currentState.password.isNotEmpty;
+        state.email.isNotEmpty && state.password.isNotEmpty;
 
-    final hasNoErrors = currentState.emailError == ValidationError.none &&
-        currentState.passwordError == ValidationError.none;
+    final hasNoErrors = state.emailError == ValidationError.none &&
+        state.passwordError == ValidationError.none;
 
-    updateState(currentState.copyWith(
+    updateState(state.copyWith(
       showButton: hasNoErrors && hasAllFieldsFilled,
     ));
   }
 
   void _proceedLogin() {
-    // saveLoginCredential();
+    saveLoginCredential();
+    navigateTo(
+      routePath: RoutePaths.githubRepoPage,
+      arguments: GithubRepoArgument(
+        email: state.email.trim(),
+        password: state.password.trim(),
+      ),
+      isClearBackStack: true,
+    );
     // navigateTo(
-    //   routePath: RoutePaths.githubRepoPage,
-    //   arguments: GithubRepoArgument(
-    //     email: currentState.email.trim(),
-    //     password: currentState.password.trim(),
-    //   ),
+    //   routePath: RoutePaths.counter,
+    //   arguments: CounterArgument(),
     //   isClearBackStack: true,
     // );
-    navigateTo(routePath: RoutePaths.counter, arguments: CounterArgument());
   }
 
   void saveLoginCredential() async {

@@ -4,7 +4,7 @@ import 'package:github_repo_list/presentation/feature/github_repo_page/argument/
 import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/argument/splash_argument.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/view_model/splash_state.dart';
-import 'package:github_repo_list/presentation/navigation/route_path.dart';
+import 'package:github_repo_list/presentation/navigation/routes_config.dart';
 
 class SplashViewModel extends BaseViewModel<SplashArgument, SplashState> {
   final LoginStateManager loginStateManager;

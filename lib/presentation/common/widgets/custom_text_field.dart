@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum TextFieldType {
-  email,
-  password,
-  number,
-  text
-}
+enum TextFieldType { email, password, number, text }
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -31,16 +26,14 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  bool _isPasswordVisible = false;
+  final _isPasswordVisible = ValueNotifier<bool>(false);
 
-  final Color _primaryColor = const Color(0xFF6200EE);
-  final Color _labelColor = const Color(0xFF666666);
-  final Color _errorColor = const Color(0xFFB00020);
-  final Color _textColor = const Color(0xFF121212);
-  final Color _borderColor = const Color(0xFFE0E0E0);
-  final Color _focusedBorderColor = const Color(0xFF6200EE);
+  @override
+  void dispose() {
+    _isPasswordVisible.dispose();
+    super.dispose();
+  }
 
-  // Helper method to get keyboard type based on field type
   TextInputType _getKeyboardType() {
     switch (widget.textFieldType) {
       case TextFieldType.email:
@@ -53,7 +46,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
     }
   }
 
-  // Helper method to get input formatters based on field type
   List<TextInputFormatter>? _getInputFormatters() {
     switch (widget.textFieldType) {
       case TextFieldType.number:
@@ -63,80 +55,70 @@ class _CustomTextFieldState extends State<CustomTextField> {
     }
   }
 
+  void _flipVisibilityIcon() {
+    _isPasswordVisible.value = !_isPasswordVisible.value;
+  }
+
+  Widget? _getSuffixIcon(ThemeData theme) {
+    if (widget.textFieldType == TextFieldType.password) {
+      return ValueListenableBuilder<bool>(
+        valueListenable: _isPasswordVisible,
+        builder: (context, isVisible, _) {
+          return IconButton(
+            icon: Icon(
+              isVisible ? Icons.visibility : Icons.visibility_off,
+              color: widget.enable == false ? theme.disabledColor : null,
+            ),
+            onPressed: widget.enable == false ? null : _flipVisibilityIcon,
+          );
+        },
+      );
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controller,
-      enabled: widget.enable,
-      obscureText: widget.textFieldType == TextFieldType.password ? !_isPasswordVisible : false,
-      onChanged: widget.onChanged,
-      keyboardType: _getKeyboardType(),
-      inputFormatters: _getInputFormatters(),
-      decoration: InputDecoration(
-        labelText: widget.textFieldName,
-        labelStyle: TextStyle(
-          color: widget.enable == false ? Colors.grey : _labelColor,
-          fontSize: 16,
-        ),
-        errorText: widget.errorText,
-        errorStyle: TextStyle(
-          color: _errorColor,
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-        ),
-        suffixIcon: widget.textFieldType == TextFieldType.password
-            ? IconButton(
-          icon: Icon(
-            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            color: widget.enable == false ? Colors.grey : _labelColor,
+    final theme = Theme.of(context);
+
+    return ValueListenableBuilder<bool>(
+      valueListenable: _isPasswordVisible,
+      builder: (context, isVisible, _) {
+        return TextFormField(
+          controller: widget.controller,
+          enabled: widget.enable,
+          obscureText: widget.textFieldType == TextFieldType.password
+              ? !isVisible
+              : false,
+          onChanged: widget.onChanged,
+          keyboardType: _getKeyboardType(),
+          inputFormatters: _getInputFormatters(),
+          decoration: InputDecoration(
+            labelText: widget.textFieldName,
+            labelStyle: TextStyle(
+              color: widget.enable == false ? theme.disabledColor : null,
+              fontSize: 16,
+            ),
+            errorText: widget.errorText,
+            suffixIcon: _getSuffixIcon(theme),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+            filled: true,
+            fillColor: widget.enable == false
+                ? theme.colorScheme.surfaceContainerHighest
+                : null,
           ),
-          onPressed: widget.enable == false
-              ? null
-              : () {
-            setState(() {
-              _isPasswordVisible = !_isPasswordVisible;
-            });
-          },
-        )
-            : null,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: _borderColor),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: _borderColor),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: _focusedBorderColor, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: _errorColor),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: _errorColor, width: 2),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
-        filled: true,
-        fillColor: widget.enable == false ? Colors.grey.shade100 : Colors.white,
-      ),
-      style: TextStyle(
-        fontSize: 16,
-        color: widget.enable == false ? Colors.grey : _textColor,
-      ),
-      cursorColor: _primaryColor,
-      textCapitalization: TextCapitalization.none,
-      textInputAction: TextInputAction.next,
+          style: TextStyle(
+            fontSize: 16,
+            color: widget.enable == false ? theme.disabledColor : null,
+          ),
+          cursorColor: theme.colorScheme.primary,
+          textCapitalization: TextCapitalization.none,
+          textInputAction: TextInputAction.next,
+        );
+      },
     );
   }
 }

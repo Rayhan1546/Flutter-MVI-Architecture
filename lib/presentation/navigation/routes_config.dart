@@ -8,13 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:github_repo_list/presentation/feature/counter_page/argument/counter_argument.dart';
 import 'package:github_repo_list/presentation/feature/counter_page/view/counter_screen.dart';
 
-abstract class RoutePaths {
-  static const String splash = '/splash';
-  static const String login = '/login';
-  static const String githubRepoPage = '/githubRepoPage';
-
-  static const String counter = '/counter';
-}
+part 'routes.dart';
 
 final GoRouter routerConfig = GoRouter(
   initialLocation: RoutePaths.splash,
@@ -39,7 +33,7 @@ final GoRouter routerConfig = GoRouter(
         return GithubRepoScreen(arguments: arguments);
       },
     ),
-      GoRoute(
+    GoRoute(
       path: RoutePaths.counter,
       builder: (context, state) {
         final arguments = state.extra as CounterArgument;
@@ -48,5 +42,5 @@ final GoRouter routerConfig = GoRouter(
         );
       },
     ),
-],
+  ],
 );

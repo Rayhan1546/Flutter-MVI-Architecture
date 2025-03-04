@@ -310,7 +310,7 @@ class ${pascalCase}Counter extends StatelessWidget {
 Future<void> _updateRouteConfiguration(String projectRoot, String featureName,
     String pascalCase, String projectName) async {
   final routeFile =
-  File('${projectRoot}/lib/presentation/navigation/route_path.dart');
+  File('${projectRoot}/lib/presentation/navigation/routes_config.dart');
 
   if (!await routeFile.exists()) {
     // Create new route file if it doesn't exist

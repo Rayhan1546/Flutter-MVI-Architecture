@@ -10,7 +10,7 @@ abstract class BaseViewModel<A extends BaseArgument, S extends BaseState> {
   ValueListenable<S> get stateListener => _state;
 
   @protected
-  S get currentState => _state.value;
+  S get state => _state.value;
 
   BaseViewModel(S initialState) : _state = ValueNotifier(initialState);
 

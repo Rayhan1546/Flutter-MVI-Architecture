@@ -6,9 +6,9 @@ import 'package:github_repo_list/presentation/base/base_state.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/navigation/app_router.dart';
 
-abstract class BaseAdaptiveScreen<VM extends BaseViewModel,
-    A extends BaseArgument> extends StatefulWidget {
-  final A? arguments;
+abstract class BaseAdaptiveScreen<ViewModel extends BaseViewModel,
+    Argument extends BaseArgument> extends StatefulWidget {
+  final Argument? arguments;
 
   const BaseAdaptiveScreen({super.key, required this.arguments});
 
@@ -16,14 +16,15 @@ abstract class BaseAdaptiveScreen<VM extends BaseViewModel,
   Widget buildView(BuildContext context);
 
   @override
-  State<BaseAdaptiveScreen<VM, A>> createState() =>
-      _BaseAdaptiveScreenState<VM, A>();
+  State<BaseAdaptiveScreen<ViewModel, Argument>> createState() =>
+      _BaseAdaptiveScreenState<ViewModel, Argument>();
 }
 
-class _BaseAdaptiveScreenState<VM extends BaseViewModel, A extends BaseArgument>
-    extends State<BaseAdaptiveScreen<VM, A>> {
-  late final A? _arguments;
-  late final VM _viewModel;
+class _BaseAdaptiveScreenState<ViewModel extends BaseViewModel,
+        Argument extends BaseArgument>
+    extends State<BaseAdaptiveScreen<ViewModel, Argument>> {
+  late final Argument? _arguments;
+  late final ViewModel _viewModel;
   final diModule = DIModule();
 
   @override
@@ -35,12 +36,12 @@ class _BaseAdaptiveScreenState<VM extends BaseViewModel, A extends BaseArgument>
   @override
   void dispose() {
     _viewModel.onDispose();
-    diModule.disposeViewModel<VM>();
+    diModule.disposeViewModel<ViewModel>();
     super.dispose();
   }
 
   void _initialize() {
-    _viewModel = diModule.get<VM>();
+    _viewModel = diModule.get<ViewModel>();
     _arguments = widget.arguments;
     _onViewReady();
     _setupListener();
@@ -48,7 +49,9 @@ class _BaseAdaptiveScreenState<VM extends BaseViewModel, A extends BaseArgument>
 
   @protected
   void _onViewReady() {
-    _viewModel.onViewReady(argument: _arguments);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _viewModel.onViewReady(argument: _arguments);
+    });
   }
 
   void _setupListener() {
@@ -97,7 +100,6 @@ class _BaseAdaptiveScreenState<VM extends BaseViewModel, A extends BaseArgument>
     }
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return BaseProvider(
