@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/base/base_argument.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 
@@ -33,6 +34,27 @@ abstract class BaseViewModel<A extends BaseArgument, S extends BaseState> {
       arguments: arguments,
       isReplace: isReplace,
       isClearBackStack: isClearBackStack,
+    );
+  }
+
+  @protected
+  void showConfirmationDialog({
+    required String title,
+    required String subTitle,
+    required String rightBtnText,
+    required String leftBtnText,
+    required VoidCallback onTapRightBtn,
+    required VoidCallback onTapLeftBtn,
+    required IconData icon,
+  }) {
+    _baseState.value = ConfirmationDialogState(
+      title: title,
+      subTitle: subTitle,
+      rightBtnText: rightBtnText,
+      leftBtnText: leftBtnText,
+      onTapRightBtn: onTapRightBtn,
+      onTapLeftBtn: onTapLeftBtn,
+      icon: icon,
     );
   }
 

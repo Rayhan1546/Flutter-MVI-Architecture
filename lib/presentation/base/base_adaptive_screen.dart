@@ -4,6 +4,7 @@ import 'package:github_repo_list/presentation/base/base_argument.dart';
 import 'package:github_repo_list/presentation/base/base_provider.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
+import 'package:github_repo_list/presentation/common/widgets/confirmation_dialog_box.dart';
 import 'package:github_repo_list/presentation/navigation/app_router.dart';
 
 abstract class BaseAdaptiveScreen<ViewModel extends BaseViewModel,
@@ -62,42 +63,53 @@ class _BaseAdaptiveScreenState<ViewModel extends BaseViewModel,
           return;
         }
         if (baseState is NavigateState) {
-          _navigateTo(
-            routePath: baseState.routePath,
-            arguments: baseState.arguments,
-            isReplace: baseState.isReplace,
-            isClearBackStack: baseState.isClearBackStack,
-          );
+          _navigateTo(state: baseState);
+        }
+        if (baseState is ConfirmationDialogState) {
+          _showConfirmationDialog(state: baseState);
         }
       },
     );
   }
 
-  void _navigateTo({
-    required String routePath,
-    required BaseArgument arguments,
-    required bool isReplace,
-    required bool isClearBackStack,
-  }) async {
-    if (isReplace) {
+  void _navigateTo({required NavigateState state}) async {
+    if (state.isReplace) {
       await AppRouter.replaceTo(
         context: context,
-        routePath: routePath,
-        arguments: arguments,
+        routePath: state.routePath,
+        arguments: state.arguments,
       );
-    } else if (isClearBackStack) {
+    } else if (state.isClearBackStack) {
       await AppRouter.clearStackAndGo(
         context: context,
-        routePath: routePath,
-        arguments: arguments,
+        routePath: state.routePath,
+        arguments: state.arguments,
       );
     } else {
       await AppRouter.navigateTo(
         context: context,
-        routePath: routePath,
-        arguments: arguments,
+        routePath: state.routePath,
+        arguments: state.arguments,
       );
     }
+  }
+
+  void _showConfirmationDialog({required ConfirmationDialogState state}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return ConfirmationDialogBox(
+          title: state.title,
+          subTitle: state.subTitle,
+          rightBtnText: state.rightBtnText,
+          leftBtnText: state.leftBtnText,
+          onTapRightBtn: state.onTapRightBtn,
+          onTapLeftBtn: state.onTapLeftBtn,
+          icon: state.icon,
+        );
+      },
+    );
   }
 
   @override

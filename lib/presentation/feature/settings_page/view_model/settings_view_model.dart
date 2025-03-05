@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:github_repo_list/data/data_sources/local/app_config/login_state_manager.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
@@ -23,11 +24,21 @@ class SettingsViewModel extends BaseViewModel<SettingsArgument, SettingsState> {
   }
 
   void _logOut() async {
-    await loginStateManager.clearAllConfiguration();
-    navigateTo(
-      routePath: RoutePaths.login,
-      arguments: LoginArgument(),
-      isClearBackStack: true,
+    showConfirmationDialog(
+      title: 'Log Out',
+      subTitle: 'Are you sure, you want to logout?',
+      rightBtnText: 'Proceed',
+      leftBtnText: 'Cancel',
+      icon: Icons.logout,
+      onTapRightBtn: () {
+        loginStateManager.clearAllConfiguration();
+        navigateTo(
+          routePath: RoutePaths.login,
+          arguments: LoginArgument(),
+          isClearBackStack: true,
+        );
+      },
+      onTapLeftBtn: () {},
     );
   }
 }
