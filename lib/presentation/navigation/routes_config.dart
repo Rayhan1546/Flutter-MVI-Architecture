@@ -7,6 +7,8 @@ import 'package:github_repo_list/presentation/feature/splash_page/view/splash_sc
 import 'package:go_router/go_router.dart';
 import 'package:github_repo_list/presentation/feature/counter_page/argument/counter_argument.dart';
 import 'package:github_repo_list/presentation/feature/counter_page/view/counter_screen.dart';
+import 'package:github_repo_list/presentation/feature/settings_page/argument/settings_argument.dart';
+import 'package:github_repo_list/presentation/feature/settings_page/view/settings_screen.dart';
 
 part 'routes.dart';
 
@@ -15,16 +17,11 @@ final GoRouter routerConfig = GoRouter(
   routes: [
     GoRoute(
       path: RoutePaths.splash,
-      builder: (context, state) {
-        return SplashScreen(arguments: SplashArgument());
-      },
+      builder: (context, state) => SplashScreen(arguments: SplashArgument()),
     ),
     GoRoute(
       path: RoutePaths.login,
-      builder: (context, state) {
-        final arguments = state.extra as LoginArgument;
-        return LoginScreen(arguments: arguments);
-      },
+      builder: (context, state) => LoginScreen(arguments: LoginArgument()),
     ),
     GoRoute(
       path: RoutePaths.githubRepoPage,
@@ -37,9 +34,14 @@ final GoRouter routerConfig = GoRouter(
       path: RoutePaths.counter,
       builder: (context, state) {
         final arguments = state.extra as CounterArgument;
-        return CounterScreen(
-          arguments: arguments,
-        );
+        return CounterScreen(arguments: arguments);
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.settings,
+      builder: (context, state) {
+        final arguments = state.extra as SettingsArgument;
+        return SettingsScreen(arguments: arguments);
       },
     ),
   ],

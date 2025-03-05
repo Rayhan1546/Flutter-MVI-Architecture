@@ -35,13 +35,13 @@ class _MyAppState extends State<MyApp> {
       viewModel: _viewModel,
       builder: (context, _) {
         return ValueListenableBuilder(
-          valueListenable: _viewModel.appConfig,
-          builder: (context, appConfig, child) {
+          valueListenable: _viewModel.systemConfig,
+          builder: (context, config, child) {
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme(),
               darkTheme: AppTheme.darkTheme(),
-              themeMode: appConfig.themeMode,
+              themeMode: config.theme.getTheme,
               routerConfig: routerConfig,
             );
           },

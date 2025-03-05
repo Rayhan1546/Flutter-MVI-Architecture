@@ -1,4 +1,5 @@
 import 'package:github_repo_list/data/data_sources/local/app_config/login_state_manager.dart';
+import 'package:github_repo_list/data/data_sources/local/app_config/theme_manager.dart';
 import 'package:github_repo_list/data/data_sources/local/app_config/token_manager.dart';
 import 'package:github_repo_list/di/di_module/di_module.dart';
 import 'package:github_repo_list/domain/use_cases/git_repo_use_case.dart';
@@ -7,6 +8,7 @@ import 'package:github_repo_list/presentation/feature/github_repo_page/view_mode
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_view_model.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/view_model/splash_view_model.dart';
 import 'package:github_repo_list/presentation/feature/counter_page/view_model/counter_view_model.dart';
+import 'package:github_repo_list/presentation/feature/settings_page/view_model/settings_view_model.dart';
 
 ///This class will always be factory
 class ViewModelRegisterModule {
@@ -16,8 +18,11 @@ class ViewModelRegisterModule {
     final gitRepoUseCase = diModule.get<GitRepoUseCase>();
     final loginStateManager = diModule.get<LoginStateManager>();
     final tokenManager = diModule.get<TokenManager>();
+    final themeManager = diModule.get<ThemeManager>();
 
-    diModule.registerFactory<AppViewModel>(AppViewModel());
+    diModule.registerFactory<AppViewModel>(AppViewModel(
+      themeManager: themeManager,
+    ));
 
     diModule.registerFactory<SplashViewModel>(SplashViewModel(
       loginStateManager: loginStateManager,
@@ -32,6 +37,9 @@ class ViewModelRegisterModule {
       gitRepoUseCase: gitRepoUseCase,
       tokenManager: tokenManager,
     ));
+
     diModule.registerFactory<CounterViewModel>(CounterViewModel());
+
+    diModule.registerFactory<SettingsViewModel>(SettingsViewModel());
   }
 }

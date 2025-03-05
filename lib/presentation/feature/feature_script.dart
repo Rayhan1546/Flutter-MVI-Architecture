@@ -170,14 +170,8 @@ class ${pascalCase}ViewModel extends BaseViewModel<${pascalCase}Argument, ${pasc
   ${pascalCase}ViewModel() : super(${pascalCase}State.initial());
 
   @override
-  void onViewReady({${pascalCase}Argument? argument}) {
-    _initialize();
-  }
-
-  Future<void> _initialize() async {
-    updateState(currentState.copyWith(counter: 0));
-  }
-
+  void onViewReady({${pascalCase}Argument? argument});
+  
   void dispatchIntent(${pascalCase}Intent intent) {
     if (intent is IncrementCounterIntent) {
       _incrementCounter();
@@ -189,21 +183,21 @@ class ${pascalCase}ViewModel extends BaseViewModel<${pascalCase}Argument, ${pasc
   }
 
   void _incrementCounter() {
-    updateState(currentState.copyWith(
-      counter: currentState.counter + 1,
+    updateState(state.copyWith(
+      counter: state.counter + 1,
     ));
   }
 
   void _decrementCounter() {
-    if (currentState.counter > 0) {
-      updateState(currentState.copyWith(
-        counter: currentState.counter - 1,
+    if (state.counter > 0) {
+      updateState(state.copyWith(
+        counter: state.counter - 1,
       ));
     }
   }
 
   void _resetCounter() {
-    updateState(currentState.copyWith(counter: 0));
+    updateState(state.copyWith(counter: 0));
   }
 }
 ''');
@@ -309,40 +303,165 @@ class ${pascalCase}Counter extends StatelessWidget {
 
 Future<void> _updateRouteConfiguration(String projectRoot, String featureName,
     String pascalCase, String projectName) async {
-  final routeFile =
-  File('${projectRoot}/lib/presentation/navigation/routes_config.dart');
+  try {
+    final routeConfigFile = File('${projectRoot}/lib/presentation/navigation/routes_config.dart');
+    final routesFile = File('${projectRoot}/lib/presentation/navigation/routes.dart');
 
-  if (!await routeFile.exists()) {
-    // Create new route file if it doesn't exist
-    await _createInitialRouteFile(
-        routeFile, featureName, pascalCase, projectName);
-    print('✓ Created new route file: ${routeFile.path}');
-    return;
+    // Check if the files exist
+    bool routeConfigExists = await routeConfigFile.exists();
+    bool routesExists = await routesFile.exists();
+
+    print('Checking navigation files:');
+    print('- routes_config.dart exists: $routeConfigExists');
+    print('- routes.dart exists: $routesExists');
+
+    if (!routeConfigExists || !routesExists) {
+      print('One or both navigation files are missing. Creating them...');
+      await _createInitialRouteFiles(
+          path.dirname(routeConfigFile.path), featureName, pascalCase, projectName);
+      return;
+    }
+
+    // First, update the routes.dart file to add the route path
+    String routesContent = await routesFile.readAsString();
+
+    // Look for the RoutePaths class in routes.dart
+    if (routesContent.contains('class RoutePaths')) {
+      print('Found RoutePaths class in routes.dart, adding new route path...');
+
+      // Check if the route constant already exists
+      if (!routesContent.contains("static const String $featureName =")) {
+        final routePathConstant = "  static const String $featureName = '/${featureName}';";
+
+        // Find the end of the RoutePaths class to add the new route
+        final routePathsStart = routesContent.indexOf('class RoutePaths');
+        final routePathsEnd = routesContent.indexOf('}', routePathsStart);
+
+        // Add the new route constant
+        routesContent = routesContent.replaceRange(
+            routePathsEnd, routePathsEnd, '\n$routePathConstant\n');
+
+        await routesFile.writeAsString(routesContent);
+        print('✓ Added route path to RoutePaths class in routes.dart');
+      } else {
+        print('ℹ️ Route path for $featureName already exists in RoutePaths');
+      }
+    } else {
+      print('⚠️ Could not find RoutePaths class in routes.dart');
+      return;
+    }
+
+    // Now update routes_config.dart to add the imports and route configuration
+    String routeConfigContent = await routeConfigFile.readAsString();
+
+    // Add imports for the new feature if they don't exist
+    final importStatement =
+        "import 'package:$projectName/presentation/feature/${featureName}_page/argument/${featureName}_argument.dart';\n" +
+            "import 'package:$projectName/presentation/feature/${featureName}_page/view/${featureName}_screen.dart';";
+
+    if (!routeConfigContent.contains("${featureName}_page")) {
+      final lastImportIndex = routeConfigContent.lastIndexOf('import');
+      if (lastImportIndex >= 0) {
+        final lastImportEndIndex = routeConfigContent.indexOf(';', lastImportIndex) + 1;
+        routeConfigContent = routeConfigContent.replaceRange(
+            lastImportEndIndex, lastImportEndIndex, '\n$importStatement');
+      } else {
+        // No imports found, add at the beginning
+        routeConfigContent = importStatement + '\n\n' + routeConfigContent;
+      }
+
+      print('✓ Added imports for $featureName to routes_config.dart');
+    }
+
+    // Check if the route already exists to avoid duplicates
+    if (!routeConfigContent.contains("path: RoutePaths.$featureName")) {
+      // Create the new route entry
+      final routeConfig = '''
+    GoRoute(
+      path: RoutePaths.$featureName,
+      builder: (context, state) {
+        final arguments = state.extra as ${pascalCase}Argument;
+        return ${pascalCase}Screen(arguments: arguments);
+      },
+    ),''';
+
+      // Find where to insert the new route
+      final routesArrayStart = routeConfigContent.indexOf('routes: [');
+      if (routesArrayStart >= 0) {
+        final routesArrayEnd = routeConfigContent.indexOf(']', routesArrayStart);
+        if (routesArrayEnd >= 0) {
+          // Add before the closing bracket of the routes array
+          routeConfigContent = routeConfigContent.replaceRange(
+              routesArrayEnd, routesArrayEnd, '\n$routeConfig\n  ');
+        } else {
+          print('⚠️ Could not find end of routes array. Trying alternative approach...');
+
+          // Try to find the last route and add after it
+          final lastRouteIndex = routeConfigContent.lastIndexOf('GoRoute(');
+          if (lastRouteIndex >= 0) {
+            final lastClosingParen = routeConfigContent.indexOf('),', lastRouteIndex);
+            if (lastClosingParen >= 0) {
+              routeConfigContent = routeConfigContent.replaceRange(
+                  lastClosingParen + 2, lastClosingParen + 2, '\n$routeConfig');
+            } else {
+              print('⚠️ Could not find a good place to insert the route. Adding at the end.');
+              routeConfigContent += '\n$routeConfig';
+            }
+          }
+        }
+
+        await routeConfigFile.writeAsString(routeConfigContent);
+        print('✓ Added route for $featureName to routes_config.dart');
+      } else {
+        print('⚠️ Could not find routes array in routes_config.dart.');
+      }
+    } else {
+      print('ℹ️ Route for $featureName already exists in routes_config.dart');
+    }
+  } catch (e) {
+    print('⚠️ Error while updating route configuration: $e');
+    print('You may need to manually add the route for $featureName');
   }
+}
 
-  // Read existing content
-  String content = await routeFile.readAsString();
+Future<void> _createInitialRouteFiles(String navigationDirPath, String featureName,
+    String pascalCase, String projectName) async {
+  try {
+    // Ensure the directory exists
+    final directory = Directory(navigationDirPath);
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+      print('✓ Created navigation directory: $navigationDirPath');
+    }
 
-  // Add new imports
-  final importStatement =
-      "import 'package:$projectName/presentation/feature/${featureName}_page/argument/${featureName}_argument.dart';\n"
-      "import 'package:$projectName/presentation/feature/${featureName}_page/view/${featureName}_screen.dart';";
+    // Create routes.dart with RoutePaths class
+    final routesFile = File('$navigationDirPath/routes.dart');
+    final routesContent = '''
+part of 'routes_config.dart';
 
-  // Find the last import and add new imports after it
-  final lastImportIndex = content.lastIndexOf('import');
-  final lastImportEndIndex = content.indexOf(';', lastImportIndex) + 1;
-  content = content.replaceRange(
-      lastImportEndIndex, lastImportEndIndex, '\n$importStatement');
+class RoutePaths {
+  RoutePaths._();
+  
+  static const String $featureName = '/${featureName}';
+}
+''';
 
-  // Add route path constant
-  final routePathConstant = "  static const String ${featureName} = '/${featureName}';";
-  final routePathsClassEnd =
-  content.indexOf('}', content.indexOf('abstract class RoutePaths'));
-  content = content.replaceRange(
-      routePathsClassEnd, routePathsClassEnd, '\n$routePathConstant\n');
+    await routesFile.writeAsString(routesContent);
+    print('✓ Created routes.dart with RoutePaths class');
 
-  // Add route configuration
-  final routeConfig = '''
+    // Create routes_config.dart with router configuration
+    final routeConfigFile = File('$navigationDirPath/routes_config.dart');
+    final routeConfigContent = '''
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:$projectName/presentation/feature/${featureName}_page/argument/${featureName}_argument.dart';
+import 'package:$projectName/presentation/feature/${featureName}_page/view/${featureName}_screen.dart';
+
+part 'routes.dart';
+
+final GoRouter routerConfig = GoRouter(
+  initialLocation: RoutePaths.$featureName,
+  routes: [
     GoRoute(
       path: RoutePaths.$featureName,
       builder: (context, state) {
@@ -351,14 +470,17 @@ Future<void> _updateRouteConfiguration(String projectRoot, String featureName,
           arguments: arguments,
         );
       },
-    ),''';
+    ),
+  ],
+);
+''';
 
-  final routesEnd = content.lastIndexOf(']');
-  content = content.replaceRange(routesEnd, routesEnd, '$routeConfig\n');
-
-  // Write updated content back to file
-  await routeFile.writeAsString(content);
-  print('✓ Updated route configuration in: ${routeFile.path}');
+    await routeConfigFile.writeAsString(routeConfigContent);
+    print('✓ Created routes_config.dart with router configuration');
+  } catch (e) {
+    print('⚠️ Error creating navigation files: $e');
+    print('You may need to manually create the navigation files');
+  }
 }
 
 Future<void> _updateViewModelRegistration(String projectRoot, String featureName,
@@ -396,38 +518,6 @@ Future<void> _updateViewModelRegistration(String projectRoot, String featureName
   // Write updated content back to file
   await registerFile.writeAsString(content);
   print('✓ Updated view model registration in: ${registerFile.path}');
-}
-
-Future<void> _createInitialRouteFile(File routeFile, String featureName,
-    String pascalCase, String projectName) async {
-  final content = '''
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:$projectName/presentation/feature/${featureName}_page/argument/${featureName}_argument.dart';
-import 'package:$projectName/presentation/feature/${featureName}_page/view/${featureName}_screen.dart';
-
-abstract class RoutePaths {
-  static const String ${featureName} = '/${featureName}';
-}
-
-final GoRouter routerConfig = GoRouter(
-  initialLocation: RoutePaths.$featureName,
-  routes: [
-    GoRoute(
-      path: RoutePaths.$featureName,
-      builder: (context, state) {
-        final arguments = state.extra as ${pascalCase}Argument;
-        return ${pascalCase}Screen(
-          arguments: arguments,
-        );
-      },
-    ),
-  ],
-);
-''';
-
-  await routeFile.create(recursive: true);
-  await routeFile.writeAsString(content);
 }
 
 Future<void> _createInitialRegisterFile(File registerFile, String featureName,

@@ -1,25 +1,25 @@
-import 'package:flutter/material.dart';
+import 'package:github_repo_list/presentation/common/enum/theme_enum.dart';
 
 class AppStates {
-  final ThemeMode themeMode;
+  final ThemeEnum theme;
 
-  AppStates({required this.themeMode});
+  AppStates({required this.theme});
 
   factory AppStates.initial() {
-    return AppStates(themeMode: ThemeMode.system);
+    return AppStates(theme: ThemeEnum.system);
   }
 
   AppStates copyWith({
-    ThemeMode? themeMode,
+    ThemeEnum? theme,
   }) {
     return AppStates(
-      themeMode: themeMode ?? this.themeMode,
+      theme: theme ?? this.theme,
     );
   }
 
-  void setDarkMode() => copyWith(themeMode: ThemeMode.dark);
+  AppStates setDarkMode() => copyWith(theme: ThemeEnum.dark);
 
-  void setLightMode() => copyWith(themeMode: ThemeMode.light);
+  AppStates setLightMode() => copyWith(theme: ThemeEnum.light);
 
-  void setSystemTheme() => copyWith(themeMode: ThemeMode.system);
+  AppStates setSystemTheme() => copyWith(theme: ThemeEnum.system);
 }
