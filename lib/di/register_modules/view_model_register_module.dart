@@ -40,6 +40,8 @@ class ViewModelRegisterModule {
 
     diModule.registerFactory<CounterViewModel>(CounterViewModel());
 
-    diModule.registerFactory<SettingsViewModel>(SettingsViewModel());
+    diModule.registerFactory<SettingsViewModel>(SettingsViewModel(
+      loginStateManager: loginStateManager,
+    ));
   }
 }

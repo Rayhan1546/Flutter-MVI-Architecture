@@ -1,5 +1,6 @@
 import 'package:github_repo_list/data/data_sources/local/app_config/login_state_manager.dart';
 import 'package:github_repo_list/data/data_sources/local/app_config/token_manager.dart';
+import 'package:github_repo_list/domain/entities/login_credentials.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
@@ -75,9 +76,11 @@ class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
   void saveLoginCredential() async {
     await loginStateManager.saveValue(true);
     await tokenManager.saveLoginToken(
-      token: 'dniduhfvfduhivbudfhvbfrjbfghjbgfbfgbfgb',
-      refreshToken: 'dniviufhbvvfgrbfgjbgfbnfjgbfgjknbg',
-      userName: 'Rayhan Mahmud',
+      loginCredential: LoginCredentials(
+        token: 'djnvkdfnvkhfdbvfdbhvjhbfd',
+        refreshToken: 'fjnvdfnvhbdjfvjdfvd',
+        userName: 'Rayhan Mahmud',
+      ),
     );
   }
 }

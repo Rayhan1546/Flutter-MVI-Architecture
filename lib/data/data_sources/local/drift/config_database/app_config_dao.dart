@@ -5,8 +5,7 @@ import 'package:github_repo_list/data/data_sources/local/drift/config_database/a
 part 'app_config_dao.g.dart';
 
 @DriftAccessor(tables: [AppConfigTable])
-class AppConfigDao extends DatabaseAccessor<AppDatabase>
-    with _$AppConfigDaoMixin {
+class AppConfigDao extends DatabaseAccessor<AppDatabase> with _$AppConfigDaoMixin {
   AppConfigDao(AppDatabase db) : super(db);
 
   Future<String?> getConfig(String key) async {
