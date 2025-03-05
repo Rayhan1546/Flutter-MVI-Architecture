@@ -53,8 +53,7 @@ class LightTheme {
       elevatedButtonTheme: AppButtonThemes.elevatedButtonTheme(colorScheme),
       outlinedButtonTheme: AppButtonThemes.outlinedButtonTheme(colorScheme),
       textButtonTheme: AppButtonThemes.textButtonTheme(colorScheme),
-      floatingActionButtonTheme:
-          AppButtonThemes.floatingActionButtonTheme(colorScheme),
+      floatingActionButtonTheme: AppButtonThemes.floatingActionButtonTheme(colorScheme),
 
       // Component themes
       appBarTheme: AppComponentThemes.lightAppBarTheme(colorScheme),

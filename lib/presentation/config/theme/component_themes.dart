@@ -20,17 +20,18 @@ class AppComponentThemes {
 
   static CardTheme lightCardTheme() {
     return CardTheme(
-      elevation: 2,
+      elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
       color: Colors.white,
-      shadowColor: Colors.black.withOpacity(0.1),
+      shadowColor: Colors.black,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
     );
   }
 
-  static InputDecorationTheme lightInputDecorationTheme(ColorScheme colorScheme) {
+  static InputDecorationTheme lightInputDecorationTheme(
+      ColorScheme colorScheme) {
     return InputDecorationTheme(
       filled: true,
       fillColor: colorScheme.surface,
@@ -88,7 +89,9 @@ class AppComponentThemes {
     );
   }
 
-  static InputDecorationTheme darkInputDecorationTheme(ColorScheme colorScheme) {
+  static InputDecorationTheme darkInputDecorationTheme(
+    ColorScheme colorScheme,
+  ) {
     return InputDecorationTheme(
       filled: true,
       fillColor: const Color(0xFF2C2C2C),
@@ -224,14 +227,17 @@ class AppComponentThemes {
   }
 
   static BottomNavigationBarThemeData bottomNavigationBarTheme(
-      ColorScheme colorScheme, bool isDark) {
+    ColorScheme colorScheme,
+    bool isDark,
+  ) {
     return BottomNavigationBarThemeData(
       backgroundColor: colorScheme.surface,
       selectedItemColor: colorScheme.primary,
       unselectedItemColor: isDark ? Colors.grey[500] : Colors.grey[600],
       elevation: 8,
       type: BottomNavigationBarType.fixed,
-      selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+      selectedLabelStyle:
+          const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
       unselectedLabelStyle: const TextStyle(fontSize: 12),
     );
   }
