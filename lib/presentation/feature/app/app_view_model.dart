@@ -12,6 +12,10 @@ class AppViewModel {
   ValueListenable<AppStates> get systemConfig => _systemConfig;
   AppStates get _states => _systemConfig.value;
 
+  void updateState(AppStates appStates) {
+    _systemConfig.value = appStates;
+  }
+
   void onViewReady() {
     _setInitialTheme();
   }
@@ -29,10 +33,6 @@ class AppViewModel {
     updateState(_states.copyWith(
       theme: ThemeEnum.fromString(theme),
     ));
-  }
-
-  void updateState(AppStates appStates) {
-    _systemConfig.value = appStates;
   }
 
   void setDarkMode() {

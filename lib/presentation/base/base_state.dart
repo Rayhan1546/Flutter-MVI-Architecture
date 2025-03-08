@@ -11,13 +11,13 @@ abstract class BaseState<T> {
 
 class NavigateState extends BaseState<NavigateState> {
   final String routePath;
-  final BaseArgument arguments;
+  final BaseArgument? arguments;
   final bool isReplace;
   final bool isClearBackStack;
 
   NavigateState({
     required this.routePath,
-    required this.arguments,
+    this.arguments,
     required this.isReplace,
     required this.isClearBackStack,
   });

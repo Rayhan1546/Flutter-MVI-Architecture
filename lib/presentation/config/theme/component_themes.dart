@@ -158,7 +158,7 @@ class AppComponentThemes {
       }),
       trackColor: WidgetStateProperty.resolveWith<Color>((states) {
         if (states.contains(WidgetState.selected)) {
-          return colorScheme.primary.withOpacity(0.4);
+          return colorScheme.primary.withAlpha(104);
         }
         return isDark ? Colors.grey[700]! : Colors.grey[300]!;
       }),
@@ -168,9 +168,9 @@ class AppComponentThemes {
   static SliderThemeData sliderTheme(ColorScheme colorScheme) {
     return SliderThemeData(
       activeTrackColor: colorScheme.primary,
-      inactiveTrackColor: colorScheme.primary.withOpacity(0.3),
+      inactiveTrackColor: colorScheme.primary.withAlpha(78),
       thumbColor: colorScheme.primary,
-      overlayColor: colorScheme.primary.withOpacity(0.2),
+      overlayColor: colorScheme.primary.withAlpha(52),
     );
   }
 

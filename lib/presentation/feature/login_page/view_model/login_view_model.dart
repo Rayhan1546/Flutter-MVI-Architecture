@@ -3,13 +3,12 @@ import 'package:github_repo_list/data/data_sources/local/app_config/token_manage
 import 'package:github_repo_list/domain/entities/login_credentials.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/common/enum/validation_error.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
-import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
+import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_arguments.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_intend.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_states.dart';
 import 'package:github_repo_list/presentation/navigation/routes_config.dart';
 
-class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
+class LoginViewModel extends BaseViewModel<LoginStates> {
   final LoginStateManager loginStateManager;
   final TokenManager tokenManager;
 
@@ -60,10 +59,7 @@ class LoginViewModel extends BaseViewModel<LoginArgument, LoginStates> {
     saveLoginCredential();
     navigateTo(
       routePath: RoutePaths.githubRepoPage,
-      arguments: GithubRepoArgument(
-        email: state.email.trim(),
-        password: state.password.trim(),
-      ),
+      arguments: GithubRepoArguments(email: 'ndvhfdvbdfvd.com'),
       isClearBackStack: true,
     );
     // navigateTo(

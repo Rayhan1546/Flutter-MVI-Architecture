@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/data/data_sources/local/app_config/login_state_manager.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
-import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
 import 'package:github_repo_list/presentation/navigation/routes_config.dart';
-import '../argument/settings_argument.dart';
-import 'settings_state.dart';
 import 'settings_intent.dart';
+import 'settings_state.dart';
 
-class SettingsViewModel extends BaseViewModel<SettingsArgument, SettingsState> {
+class SettingsViewModel extends BaseViewModel<SettingsState> {
   SettingsViewModel({
     required this.loginStateManager,
   }) : super(SettingsState.initial());
@@ -15,7 +13,7 @@ class SettingsViewModel extends BaseViewModel<SettingsArgument, SettingsState> {
   final LoginStateManager loginStateManager;
 
   @override
-  void onViewReady({SettingsArgument? argument});
+  void onViewReady();
 
   void dispatchIntent(SettingsIntent intent) {
     if (intent is LogOutIntent) {
@@ -34,7 +32,6 @@ class SettingsViewModel extends BaseViewModel<SettingsArgument, SettingsState> {
         loginStateManager.clearAllConfiguration();
         navigateTo(
           routePath: RoutePaths.login,
-          arguments: LoginArgument(),
           isClearBackStack: true,
         );
       },

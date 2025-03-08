@@ -3,12 +3,10 @@ import 'package:github_repo_list/presentation/base/base_adaptive_screen.dart';
 import 'package:github_repo_list/presentation/feature/settings_page/components/dark_theme_tile.dart';
 import 'package:github_repo_list/presentation/feature/settings_page/components/log_out_button.dart';
 import 'package:github_repo_list/presentation/feature/settings_page/components/system_theme_tile.dart';
-import '../argument/settings_argument.dart';
 import '../view_model/settings_view_model.dart';
 
-class SettingsScreen
-    extends BaseAdaptiveScreen<SettingsViewModel, SettingsArgument> {
-  const SettingsScreen({super.key, required super.arguments});
+class SettingsScreen extends BaseAdaptiveScreen<SettingsViewModel> {
+  const SettingsScreen({super.key});
 
   @override
   Widget buildView(BuildContext context) {

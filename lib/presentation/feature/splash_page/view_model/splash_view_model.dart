@@ -1,13 +1,9 @@
 import 'package:github_repo_list/data/data_sources/local/app_config/login_state_manager.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
-import 'package:github_repo_list/presentation/feature/login_page/argument/login_arguments.dart';
-import 'package:github_repo_list/presentation/feature/settings_page/argument/settings_argument.dart';
-import 'package:github_repo_list/presentation/feature/splash_page/argument/splash_argument.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/view_model/splash_state.dart';
 import 'package:github_repo_list/presentation/navigation/routes_config.dart';
 
-class SplashViewModel extends BaseViewModel<SplashArgument, SplashState> {
+class SplashViewModel extends BaseViewModel<SplashState> {
   final LoginStateManager loginStateManager;
 
   SplashViewModel({
@@ -15,8 +11,8 @@ class SplashViewModel extends BaseViewModel<SplashArgument, SplashState> {
   }) : super(SplashState.inital());
 
   @override
-  void onViewReady({SplashArgument? argument}) {
-    super.onViewReady(argument: argument);
+  void onViewReady() {
+    super.onViewReady();
     _getLoginState();
   }
 
@@ -26,7 +22,6 @@ class SplashViewModel extends BaseViewModel<SplashArgument, SplashState> {
     if (state == null || !state) {
       navigateTo(
         routePath: RoutePaths.login,
-        arguments: LoginArgument(),
         isClearBackStack: true,
       );
       return;
@@ -37,10 +32,6 @@ class SplashViewModel extends BaseViewModel<SplashArgument, SplashState> {
     //   arguments: GithubRepoArgument(email: 'h@gmail.com', password: '123455'),
     //   isClearBackStack: true,
     // );
-    navigateTo(
-      routePath: RoutePaths.settings,
-      arguments: SettingsArgument(),
-      isClearBackStack: true,
-    );
+    navigateTo(routePath: RoutePaths.settings, isClearBackStack: true);
   }
 }

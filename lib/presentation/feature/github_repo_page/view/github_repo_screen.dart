@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/base/base_adaptive_screen.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/extension/context_ext.dart';
-import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_params.dart';
+import 'package:github_repo_list/presentation/feature/github_repo_page/argument/github_repo_arguments.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/components/repo_list.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/components/repo_shimmer.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/view_model/github_repo_view_model.dart';
 
-class GithubRepoScreen extends BaseAdaptiveScreen<GithubRepoViewModel, GithubRepoArgument> {
-  const GithubRepoScreen({super.key, required super.arguments});
+class GithubRepoScreen extends BaseAdaptiveScreen<GithubRepoViewModel> {
+  final GithubRepoArguments arguments;
+
+  const GithubRepoScreen({super.key, required this.arguments});
 
   @override
   Widget buildView(BuildContext context) {
     final viewModel = context.getViewModel<GithubRepoViewModel>();
+    viewModel.setArguments(arguments: arguments);
 
     return Scaffold(
       appBar: AppBar(

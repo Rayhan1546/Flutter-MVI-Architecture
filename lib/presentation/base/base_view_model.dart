@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/base/base_argument.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 
-abstract class BaseViewModel<A extends BaseArgument, S extends BaseState> {
+abstract class BaseViewModel<S extends BaseState> {
   final _baseState = ValueNotifier<BaseState?>(null);
   final ValueNotifier<S> _state;
 
@@ -15,7 +15,7 @@ abstract class BaseViewModel<A extends BaseArgument, S extends BaseState> {
 
   BaseViewModel(S initialState) : _state = ValueNotifier(initialState);
 
-  void onViewReady({A? argument}) {}
+  void onViewReady() {}
 
   @protected
   void updateState(S newState) {
@@ -25,7 +25,7 @@ abstract class BaseViewModel<A extends BaseArgument, S extends BaseState> {
   @protected
   void navigateTo({
     required String routePath,
-    required BaseArgument arguments,
+    BaseArgument? arguments,
     bool isReplace = false,
     bool isClearBackStack = false,
   }) {

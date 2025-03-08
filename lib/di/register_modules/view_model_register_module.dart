@@ -7,7 +7,6 @@ import 'package:github_repo_list/presentation/feature/app/app_view_model.dart';
 import 'package:github_repo_list/presentation/feature/github_repo_page/view_model/github_repo_view_model.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_view_model.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/view_model/splash_view_model.dart';
-import 'package:github_repo_list/presentation/feature/counter_page/view_model/counter_view_model.dart';
 import 'package:github_repo_list/presentation/feature/settings_page/view_model/settings_view_model.dart';
 
 ///This class will always be factory
@@ -37,8 +36,6 @@ class ViewModelRegisterModule {
       gitRepoUseCase: gitRepoUseCase,
       tokenManager: tokenManager,
     ));
-
-    diModule.registerFactory<CounterViewModel>(CounterViewModel());
 
     diModule.registerFactory<SettingsViewModel>(SettingsViewModel(
       loginStateManager: loginStateManager,

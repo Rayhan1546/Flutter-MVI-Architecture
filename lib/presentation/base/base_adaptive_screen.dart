@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/di/di_module/di_module.dart';
-import 'package:github_repo_list/presentation/base/base_argument.dart';
 import 'package:github_repo_list/presentation/base/base_provider.dart';
 import 'package:github_repo_list/presentation/base/base_state.dart';
 import 'package:github_repo_list/presentation/base/base_view_model.dart';
 import 'package:github_repo_list/presentation/common/widgets/confirmation_dialog_box.dart';
 import 'package:github_repo_list/presentation/navigation/app_router.dart';
 
-abstract class BaseAdaptiveScreen<ViewModel extends BaseViewModel,
-    Argument extends BaseArgument> extends StatefulWidget {
-  final Argument? arguments;
+abstract class BaseAdaptiveScreen<ViewModel extends BaseViewModel>
+    extends StatefulWidget {
+  const BaseAdaptiveScreen({super.key});
 
-  const BaseAdaptiveScreen({super.key, required this.arguments});
+  @protected
+  void onReady() {}
 
   @protected
   Widget buildView(BuildContext context);
 
   @override
-  State<BaseAdaptiveScreen<ViewModel, Argument>> createState() =>
-      _BaseAdaptiveScreenState<ViewModel, Argument>();
+  State<BaseAdaptiveScreen<ViewModel>> createState() =>
+      _BaseAdaptiveScreenState<ViewModel>();
 }
 
-class _BaseAdaptiveScreenState<ViewModel extends BaseViewModel,
-        Argument extends BaseArgument>
-    extends State<BaseAdaptiveScreen<ViewModel, Argument>> {
-  late final Argument? _arguments;
+class _BaseAdaptiveScreenState<ViewModel extends BaseViewModel>
+    extends State<BaseAdaptiveScreen<ViewModel>> {
   late final ViewModel _viewModel;
   final diModule = DIModule();
 
@@ -43,15 +41,14 @@ class _BaseAdaptiveScreenState<ViewModel extends BaseViewModel,
 
   void _initialize() {
     _viewModel = diModule.get<ViewModel>();
-    _arguments = widget.arguments;
-    _onViewReady();
+    onViewReady();
     _setupListener();
   }
 
-  @protected
-  void _onViewReady() {
+  void onViewReady() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.onViewReady(argument: _arguments);
+      _viewModel.onViewReady();
+      widget.onReady();
     });
   }
 

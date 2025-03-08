@@ -33,7 +33,6 @@ void main() async {
       '${baseDir.path}/view',
       '${baseDir.path}/view_model',
       '${baseDir.path}/components',
-      '${baseDir.path}/argument',
     ];
 
     print('\nCreating directories...');
@@ -43,8 +42,6 @@ void main() async {
     }
 
     print('\nGenerating files...');
-    _createArgumentFile(
-        baseDir.path, featureName, pascalCaseFeatureName, projectName);
     _createScreenFile(
         baseDir.path, featureName, pascalCaseFeatureName, projectName);
     _createIntentFile(
@@ -96,17 +93,6 @@ Future<String?> getProjectName(String projectRoot) async {
   return yaml['name'] as String?;
 }
 
-void _createArgumentFile(String basePath, String featureName, String pascalCase,
-    String projectName) {
-  final file = File('$basePath/argument/${featureName}_argument.dart');
-  file.writeAsStringSync('''
-import 'package:$projectName/presentation/base/base_argument.dart';
-
-class ${pascalCase}Argument extends BaseArgument {}
-''');
-  print('✓ Created file: ${file.path}');
-}
-
 void _createIntentFile(String basePath, String featureName, String pascalCase,
     String projectName) {
   final file = File('$basePath/view_model/${featureName}_intent.dart');
@@ -136,12 +122,11 @@ void _createScreenFile(String basePath, String featureName, String pascalCase,
   file.writeAsStringSync('''
 import 'package:flutter/material.dart';
 import 'package:$projectName/presentation/base/base_adaptive_screen.dart';
-import '../argument/${featureName}_argument.dart';
 import '../view_model/${featureName}_view_model.dart';
 import '../components/${featureName}_counter.dart';
 
-class ${pascalCase}Screen extends BaseAdaptiveScreen<${pascalCase}ViewModel, ${pascalCase}Argument> {
-  const ${pascalCase}Screen({super.key, required super.arguments});
+class ${pascalCase}Screen extends BaseAdaptiveScreen<${pascalCase}ViewModel> {
+  const ${pascalCase}Screen({super.key});
 
   @override
   Widget buildView(BuildContext context) {
@@ -162,15 +147,14 @@ void _createViewModelFile(String basePath, String featureName,
   final file = File('$basePath/view_model/${featureName}_view_model.dart');
   file.writeAsStringSync('''
 import 'package:$projectName/presentation/base/base_view_model.dart';
-import '../argument/${featureName}_argument.dart';
 import '${featureName}_state.dart';
 import '${featureName}_intent.dart';
 
-class ${pascalCase}ViewModel extends BaseViewModel<${pascalCase}Argument, ${pascalCase}State> {
+class ${pascalCase}ViewModel extends BaseViewModel<${pascalCase}State> {
   ${pascalCase}ViewModel() : super(${pascalCase}State.initial());
 
   @override
-  void onViewReady({${pascalCase}Argument? argument});
+  void onViewReady();
   
   void dispatchIntent(${pascalCase}Intent intent) {
     if (intent is IncrementCounterIntent) {
@@ -304,8 +288,10 @@ class ${pascalCase}Counter extends StatelessWidget {
 Future<void> _updateRouteConfiguration(String projectRoot, String featureName,
     String pascalCase, String projectName) async {
   try {
-    final routeConfigFile = File('${projectRoot}/lib/presentation/navigation/routes_config.dart');
-    final routesFile = File('${projectRoot}/lib/presentation/navigation/routes.dart');
+    final routeConfigFile =
+        File('${projectRoot}/lib/presentation/navigation/routes_config.dart');
+    final routesFile =
+        File('${projectRoot}/lib/presentation/navigation/routes.dart');
 
     // Check if the files exist
     bool routeConfigExists = await routeConfigFile.exists();
@@ -317,8 +303,8 @@ Future<void> _updateRouteConfiguration(String projectRoot, String featureName,
 
     if (!routeConfigExists || !routesExists) {
       print('One or both navigation files are missing. Creating them...');
-      await _createInitialRouteFiles(
-          path.dirname(routeConfigFile.path), featureName, pascalCase, projectName);
+      await _createInitialRouteFiles(path.dirname(routeConfigFile.path),
+          featureName, pascalCase, projectName);
       return;
     }
 
@@ -331,7 +317,8 @@ Future<void> _updateRouteConfiguration(String projectRoot, String featureName,
 
       // Check if the route constant already exists
       if (!routesContent.contains("static const String $featureName =")) {
-        final routePathConstant = "  static const String $featureName = '/${featureName}';";
+        final routePathConstant =
+            "  static const String $featureName = '/${featureName}';";
 
         // Find the end of the RoutePaths class to add the new route
         final routePathsStart = routesContent.indexOf('class RoutePaths');
@@ -355,14 +342,13 @@ Future<void> _updateRouteConfiguration(String projectRoot, String featureName,
     String routeConfigContent = await routeConfigFile.readAsString();
 
     // Add imports for the new feature if they don't exist
-    final importStatement =
-        "import 'package:$projectName/presentation/feature/${featureName}_page/argument/${featureName}_argument.dart';\n" +
-            "import 'package:$projectName/presentation/feature/${featureName}_page/view/${featureName}_screen.dart';";
+    final importStatement = "import 'package:$projectName/presentation/feature/${featureName}_page/view/${featureName}_screen.dart';";
 
     if (!routeConfigContent.contains("${featureName}_page")) {
       final lastImportIndex = routeConfigContent.lastIndexOf('import');
       if (lastImportIndex >= 0) {
-        final lastImportEndIndex = routeConfigContent.indexOf(';', lastImportIndex) + 1;
+        final lastImportEndIndex =
+            routeConfigContent.indexOf(';', lastImportIndex) + 1;
         routeConfigContent = routeConfigContent.replaceRange(
             lastImportEndIndex, lastImportEndIndex, '\n$importStatement');
       } else {
@@ -379,32 +365,33 @@ Future<void> _updateRouteConfiguration(String projectRoot, String featureName,
       final routeConfig = '''
     GoRoute(
       path: RoutePaths.$featureName,
-      builder: (context, state) {
-        final arguments = state.extra as ${pascalCase}Argument;
-        return ${pascalCase}Screen(arguments: arguments);
-      },
+      builder: (context, state) => const ${pascalCase}Screen(),
     ),''';
 
       // Find where to insert the new route
       final routesArrayStart = routeConfigContent.indexOf('routes: [');
       if (routesArrayStart >= 0) {
-        final routesArrayEnd = routeConfigContent.indexOf(']', routesArrayStart);
+        final routesArrayEnd =
+            routeConfigContent.indexOf(']', routesArrayStart);
         if (routesArrayEnd >= 0) {
           // Add before the closing bracket of the routes array
           routeConfigContent = routeConfigContent.replaceRange(
               routesArrayEnd, routesArrayEnd, '\n$routeConfig\n  ');
         } else {
-          print('⚠️ Could not find end of routes array. Trying alternative approach...');
+          print(
+              '⚠️ Could not find end of routes array. Trying alternative approach...');
 
           // Try to find the last route and add after it
           final lastRouteIndex = routeConfigContent.lastIndexOf('GoRoute(');
           if (lastRouteIndex >= 0) {
-            final lastClosingParen = routeConfigContent.indexOf('),', lastRouteIndex);
+            final lastClosingParen =
+                routeConfigContent.indexOf('),', lastRouteIndex);
             if (lastClosingParen >= 0) {
               routeConfigContent = routeConfigContent.replaceRange(
                   lastClosingParen + 2, lastClosingParen + 2, '\n$routeConfig');
             } else {
-              print('⚠️ Could not find a good place to insert the route. Adding at the end.');
+              print(
+                  '⚠️ Could not find a good place to insert the route. Adding at the end.');
               routeConfigContent += '\n$routeConfig';
             }
           }
@@ -424,8 +411,8 @@ Future<void> _updateRouteConfiguration(String projectRoot, String featureName,
   }
 }
 
-Future<void> _createInitialRouteFiles(String navigationDirPath, String featureName,
-    String pascalCase, String projectName) async {
+Future<void> _createInitialRouteFiles(String navigationDirPath,
+    String featureName, String pascalCase, String projectName) async {
   try {
     // Ensure the directory exists
     final directory = Directory(navigationDirPath);
@@ -454,7 +441,6 @@ class RoutePaths {
     final routeConfigContent = '''
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:$projectName/presentation/feature/${featureName}_page/argument/${featureName}_argument.dart';
 import 'package:$projectName/presentation/feature/${featureName}_page/view/${featureName}_screen.dart';
 
 part 'routes.dart';
@@ -464,12 +450,7 @@ final GoRouter routerConfig = GoRouter(
   routes: [
     GoRoute(
       path: RoutePaths.$featureName,
-      builder: (context, state) {
-        final arguments = state.extra as ${pascalCase}Argument;
-        return ${pascalCase}Screen(
-          arguments: arguments,
-        );
-      },
+      builder: (context, state) => ${pascalCase}Screen();
     ),
   ],
 );
@@ -483,10 +464,10 @@ final GoRouter routerConfig = GoRouter(
   }
 }
 
-Future<void> _updateViewModelRegistration(String projectRoot, String featureName,
-    String pascalCase, String projectName) async {
-  final registerFile =
-  File('${projectRoot}/lib/di/register_modules/view_model_register_module.dart');
+Future<void> _updateViewModelRegistration(String projectRoot,
+    String featureName, String pascalCase, String projectName) async {
+  final registerFile = File(
+      '${projectRoot}/lib/di/register_modules/view_model_register_module.dart');
 
   if (!await registerFile.exists()) {
     // Create new register file if it doesn't exist
@@ -512,8 +493,8 @@ Future<void> _updateViewModelRegistration(String projectRoot, String featureName
       "\n    diModule.registerFactory<${pascalCase}ViewModel>(${pascalCase}ViewModel());";
   final lastRegistration = content.lastIndexOf('registerFactory');
   final lastSemicolon = content.indexOf(';', lastRegistration) + 1;
-  content = content.replaceRange(
-      lastSemicolon, lastSemicolon, registrationStatement);
+  content =
+      content.replaceRange(lastSemicolon, lastSemicolon, registrationStatement);
 
   // Write updated content back to file
   await registerFile.writeAsString(content);
