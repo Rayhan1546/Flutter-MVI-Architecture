@@ -4,11 +4,12 @@ import 'package:github_repo_list/presentation/feature/login_page/view/login_scre
 import 'package:github_repo_list/presentation/feature/settings_page/view/settings_screen.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/view/splash_screen.dart';
 import 'package:go_router/go_router.dart';
+import 'package:github_repo_list/presentation/feature/count_page/view/count_screen.dart';
 
 part 'routes.dart';
 
 final GoRouter routerConfig = GoRouter(
-  initialLocation: RoutePaths.splash,
+  initialLocation: RoutePaths.count,
   routes: [
     GoRoute(
       path: RoutePaths.splash,
@@ -31,6 +32,10 @@ final GoRouter routerConfig = GoRouter(
     GoRoute(
       path: RoutePaths.settings,
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.count,
+      builder: (context, state) => const CountScreen(),
     ),
   ],
 );

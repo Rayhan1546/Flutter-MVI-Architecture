@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
 import 'package:github_repo_list/presentation/common/extension/context_ext.dart';
+import 'package:github_repo_list/presentation/common/extension/sume_builder.dart';
 import 'package:github_repo_list/presentation/common/widgets/custom_text_field.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_intend.dart';
+import 'package:github_repo_list/presentation/feature/login_page/view_model/login_states.dart';
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_view_model.dart';
 
 class LoginPasswordField extends StatefulWidget {
@@ -25,8 +27,8 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
   Widget build(BuildContext context) {
     final viewModel = context.getViewModel<LoginViewModel>();
 
-    return viewModel.stateListener.buildFor(
-      select: (state) => state.passwordError,
+    return SumeBuilder<LoginViewModel, LoginStates>(
+      buildWhen: (p, n) => p.passwordError != n.passwordError,
       builder: (context, state) {
         return CustomTextField(
           controller: _passwordController,

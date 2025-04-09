@@ -10,6 +10,7 @@ abstract class BaseViewModel<S extends BaseState> {
   ValueListenable<BaseState?> get baseState => _baseState;
   ValueListenable<S> get stateListener => _state;
 
+
   @protected
   S get state => _state.value;
 

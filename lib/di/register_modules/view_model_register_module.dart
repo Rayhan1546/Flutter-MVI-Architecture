@@ -8,6 +8,7 @@ import 'package:github_repo_list/presentation/feature/github_repo_page/view_mode
 import 'package:github_repo_list/presentation/feature/login_page/view_model/login_view_model.dart';
 import 'package:github_repo_list/presentation/feature/splash_page/view_model/splash_view_model.dart';
 import 'package:github_repo_list/presentation/feature/settings_page/view_model/settings_view_model.dart';
+import 'package:github_repo_list/presentation/feature/count_page/view_model/count_view_model.dart';
 
 ///This class will always be factory
 class ViewModelRegisterModule {
@@ -40,5 +41,7 @@ class ViewModelRegisterModule {
     diModule.registerFactory<SettingsViewModel>(SettingsViewModel(
       loginStateManager: loginStateManager,
     ));
+
+    diModule.registerFactory<CountViewModel>(CountViewModel());
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/presentation/common/extension/build_for_ext.dart';
-import 'package:github_repo_list/presentation/common/extension/context_ext.dart';
 import 'package:github_repo_list/presentation/common/widgets/custom_list_tile.dart';
 import 'package:github_repo_list/presentation/feature/app/app_states.dart';
 import 'package:github_repo_list/presentation/feature/app/app_view_model.dart';
+import 'package:reeve_state/reeve/reeve_context_extension.dart';
 
 class DarkThemeTile extends StatefulWidget {
   const DarkThemeTile({super.key});
@@ -15,7 +15,7 @@ class DarkThemeTile extends StatefulWidget {
 class _DarkThemeTileState extends State<DarkThemeTile> {
   @override
   Widget build(BuildContext context) {
-    final appViewModel = context.getViewModel<AppViewModel>();
+    final appViewModel = context.getReeve<AppViewModel>();
 
     return appViewModel.systemConfig.buildFor(
       select: (state) => state.theme,

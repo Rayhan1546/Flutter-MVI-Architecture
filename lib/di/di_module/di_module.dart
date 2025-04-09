@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
 
+final locator = DIModule();
+
 class DIModule {
   DIModule._internal();
   static final DIModule _instance = DIModule._internal();

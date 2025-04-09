@@ -4,7 +4,6 @@ import 'package:github_repo_list/presentation/feature/app/app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await InjectionContainer().injectDependencies();
   // await dotenv.load(fileName: "env/.env.dev");
   runApp(const MyApp());
