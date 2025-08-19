@@ -9,7 +9,7 @@ import 'package:github_repo_list/presentation/feature/count_page/view/count_scre
 part 'routes.dart';
 
 final GoRouter routerConfig = GoRouter(
-  initialLocation: RoutePaths.count,
+  initialLocation: RoutePaths.settings,
   routes: [
     GoRoute(
       path: RoutePaths.splash,

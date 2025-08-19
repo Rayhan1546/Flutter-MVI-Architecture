@@ -1,30 +1,23 @@
-import 'dart:convert';
-import 'package:github_repo_list/core/mixin/encryption_mixin.dart';
 import 'package:github_repo_list/data/data_sources/local/app_config/config_manager.dart';
 import 'package:github_repo_list/domain/entities/login_credentials.dart';
 
-class TokenManager extends ConfigManager<String> with EncryptionMixIn {
+class TokenManager extends ConfigManager<Map<String, dynamic>> {
   @override
   String get key => 'server_tokens';
 
   Future<void> saveLoginToken({
     required LoginCredentials loginCredential,
   }) async {
-    final jsonString = jsonEncode(loginCredential.toJson());
+    final jsonString = loginCredential.toJson();
 
-    final encryptedJsonString = encrypt(value: jsonString);
-
-    await saveValue(encryptedJsonString);
+    await saveValue(jsonString);
   }
 
   Future<LoginCredentials?> getLoginCredential() async {
-    final encryptedJsonString = await getValue();
+    final json = await getValue();
 
-    if (encryptedJsonString == null) return null;
+    if (json == null) return null;
 
-    final jsonString = decrypt(encryptedValue: encryptedJsonString);
-
-    final Map<String, dynamic> jsonData = jsonDecode(jsonString);
-    return LoginCredentials.fromJson(jsonData);
+    return LoginCredentials.fromJson(json);
   }
 }

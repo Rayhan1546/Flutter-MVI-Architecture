@@ -1,24 +1,21 @@
-import 'package:github_repo_list/presentation/base/base_state.dart';
+import 'package:github_repo_list/presentation/common/listener/listener_state.dart';
 
-class SettingsState extends BaseState<SettingsState> {
-  final int counter;
+class SettingsState {
+  final ListenerState listenerState;
 
   SettingsState({
-    required this.counter,
+    required this.listenerState,
   });
 
   factory SettingsState.initial() {
-    return SettingsState(
-      counter: 0,
-    );
+    return SettingsState(listenerState: EmptyState());
   }
 
-  @override
   SettingsState copyWith({
-    int? counter,
+    ListenerState? listenerState,
   }) {
     return SettingsState(
-      counter: counter ?? this.counter,
+      listenerState: listenerState ?? this.listenerState,
     );
   }
 }

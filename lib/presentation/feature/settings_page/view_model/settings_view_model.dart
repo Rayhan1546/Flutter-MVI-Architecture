@@ -11,9 +11,7 @@ class SettingsViewModel extends Reeve<SettingsState> {
 
   void onViewReady() {}
 
-  void logout() {
-
-  }
+  void logout() {}
 
   //
   // void _logOut() async {
