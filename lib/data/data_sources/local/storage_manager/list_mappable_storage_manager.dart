@@ -2,7 +2,7 @@ import 'package:github_repo_list/data/data_sources/local/storage_manager/app_sto
 import 'package:github_repo_list/data/data_sources/local/storage_manager/mappable_mixin.dart';
 
 abstract class ListMappableStorageManager<T> extends AppStorageManager
-    with Mappable<T> {
+    with MappableMixin<T> {
   Future<List<T>?> getListFromStorage() async {
     final jsonList = await getValue();
 

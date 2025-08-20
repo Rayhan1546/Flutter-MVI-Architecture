@@ -1,13 +1,17 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-abstract class SqfliteStorageManager<T> {
-  final databaseName = 'app_database.db';
+class SqfliteAppDatabase {
+  final String tableName;
+  final Map<String, String> schema;
+
+  SqfliteAppDatabase({
+    required this.tableName,
+    required this.schema,
+  });
+
+  String databaseName = 'app_database.db';
   Database? _db;
-
-  Map<String, dynamic> get schema;
-
-  String get tableName;
 
   Future<Database> get database async {
     if (_db != null) return _db!;
