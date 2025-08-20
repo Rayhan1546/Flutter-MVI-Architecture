@@ -1,7 +1,7 @@
 abstract class StorageInterface {
-  Future<void> save(String key, String value);
+  Future<void> save<T>(String key, T value);
 
-  Future<String?> get(String key);
+  Future<T?> get<T>(String key);
 
   Future<void> remove(String key);
 
