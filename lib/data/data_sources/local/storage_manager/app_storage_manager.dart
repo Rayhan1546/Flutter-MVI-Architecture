@@ -1,19 +1,12 @@
 import 'dart:convert';
-import 'package:github_repo_list/data/data_sources/local/shared_preference/app_storage_manager.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:github_repo_list/data/data_sources/local/storage_manager/storage_interface.dart';
 
-class SharedPrefManager extends AppStorageManager {
-  final SharedPreferencesAsync preferencesAsync = SharedPreferencesAsync();
+abstract class AppStorageManager {
+  StorageInterface get storage;
 
-  SharedPrefManager._privateConstructor();
+  String get key;
 
-  static final SharedPrefManager _instance =
-      SharedPrefManager._privateConstructor();
-
-  factory SharedPrefManager() => _instance;
-
-  @override
-  Future<void> saveValue<T>(String key, T value) async {
+  Future<void> saveValue<T>(T value) async {
     late final String stringValue;
 
     if (value is bool) {
@@ -32,12 +25,11 @@ class SharedPrefManager extends AppStorageManager {
       throw ArgumentError('Unsupported type: ${value.runtimeType}');
     }
 
-    await preferencesAsync.setString(key, stringValue);
+    await storage.save(key, stringValue);
   }
 
-  @override
-  Future<T?> getValue<T>(String key) async {
-    final stringValue = await preferencesAsync.getString(key);
+  Future<T?> getValue<T>() async {
+    final stringValue = await storage.get(key);
     if (stringValue == null) return null;
 
     if (T == bool) {
@@ -65,20 +57,18 @@ class SharedPrefManager extends AppStorageManager {
     }
   }
 
-  @override
-  Future<bool> delete(String key) async {
+  Future<bool> delete() async {
     try {
-      await preferencesAsync.remove(key);
+      await storage.remove(key);
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  @override
   Future<void> clearAll() async {
     try {
-      await preferencesAsync.clear();
+      await storage.clear();
     } catch (e) {
       rethrow;
     }

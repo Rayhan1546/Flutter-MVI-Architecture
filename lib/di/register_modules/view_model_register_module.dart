@@ -1,6 +1,7 @@
 import 'package:github_repo_list/data/data_sources/local/app_config/login_state_manager.dart';
 import 'package:github_repo_list/data/data_sources/local/app_config/theme_manager.dart';
 import 'package:github_repo_list/data/data_sources/local/app_config/token_manager.dart';
+import 'package:github_repo_list/data/data_sources/local/shared_preference/pref_token_manager.dart';
 import 'package:github_repo_list/di/di_module/di_module.dart';
 import 'package:github_repo_list/domain/use_cases/git_repo_use_case.dart';
 import 'package:github_repo_list/presentation/feature/app/app_view_model.dart';
@@ -20,12 +21,15 @@ class ViewModelRegisterModule {
     final tokenManager = diModule.get<TokenManager>();
     final themeManager = diModule.get<ThemeManager>();
 
+    final prefTokenManager = diModule.get<PrefTokenManager>();
+
     diModule.registerFactory<AppViewModel>(AppViewModel(
       themeManager: themeManager,
     ));
 
     diModule.registerFactory<SplashViewModel>(SplashViewModel(
       loginStateManager: loginStateManager,
+      prefTokenManager: prefTokenManager,
     ));
 
     diModule.registerFactory<LoginViewModel>(LoginViewModel(
@@ -36,6 +40,7 @@ class ViewModelRegisterModule {
     diModule.registerFactory<GithubRepoViewModel>(GithubRepoViewModel(
       gitRepoUseCase: gitRepoUseCase,
       tokenManager: tokenManager,
+      prefTokenManager: prefTokenManager,
     ));
 
     diModule.registerFactory<SettingsViewModel>(SettingsViewModel(
