@@ -1,4 +1,4 @@
-import 'package:github_repo_list/data/data_sources/local/secure_storage/secure_storage_interface.dart';
+import 'package:github_repo_list/data/data_sources/local/secure_storage/secure_storage.dart';
 import 'package:github_repo_list/data/data_sources/local/storage_manager/json_mappable_storage_manager.dart';
 import 'package:github_repo_list/data/data_sources/local/storage_manager/storage_interface.dart';
 import 'package:github_repo_list/domain/entities/login_credentials.dart';
@@ -8,7 +8,7 @@ class SecureTokenManager extends JsonMappableStorageManager<LoginCredentials> {
   String get key => "secure_token_manager";
 
   @override
-  StorageInterface get storage => SecureStorageInterface();
+  StorageInterface get storage => SecureStorage();
 
   @override
   LoginCredentials fromJson(Map<String, dynamic> json) {

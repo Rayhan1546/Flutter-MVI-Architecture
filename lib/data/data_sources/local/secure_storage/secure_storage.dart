@@ -3,13 +3,12 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:github_repo_list/data/data_sources/local/storage_manager/storage_interface.dart';
 
-class SecureStorageInterface extends StorageInterface {
-  SecureStorageInterface._privateConstructor();
+class SecureStorage extends StorageInterface {
+  SecureStorage._privateConstructor();
 
-  static final SecureStorageInterface _instance =
-      SecureStorageInterface._privateConstructor();
+  static final SecureStorage _instance = SecureStorage._privateConstructor();
 
-  factory SecureStorageInterface() => _instance;
+  factory SecureStorage() => _instance;
 
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
@@ -50,17 +49,15 @@ class SecureStorageInterface extends StorageInterface {
       try {
         return jsonDecode(value) as T?;
       } catch (e) {
-        return null;
+        throw ArgumentError('Failed to decode JSON: $e');
       }
-    } else if (T == List<dynamic>) {
+    } else {
       try {
         return jsonDecode(value) as T?;
       } catch (e) {
-        return null;
+        throw ArgumentError('Failed to decode JSON: $e');
       }
     }
-
-    return null;
   }
 
   @override

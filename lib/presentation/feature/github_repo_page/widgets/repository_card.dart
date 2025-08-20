@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:github_repo_list/domain/entities/repository.dart';
 
@@ -21,12 +22,12 @@ class RepositoryCard extends StatelessWidget {
             // Repository Avatar
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                repository.imgUrl,
+              child: CachedNetworkImage(
+                imageUrl: repository.imgUrl,
                 width: 60,
                 height: 60,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
+                errorWidget: (context, error, stackTrace) {
                   return Container(
                     width: 60,
                     height: 60,

@@ -24,13 +24,13 @@ class SplashViewModel extends BaseViewModel<SplashState> {
   void _getLoginState() async {
     bool? state = await loginStateManager.getValue();
 
-    if (state == null || !state) {
-      navigateTo(
-        routePath: RoutePaths.login,
-        isClearBackStack: true,
-      );
-      return;
-    }
+    // if (state == null || !state) {
+    //   navigateTo(
+    //     routePath: RoutePaths.login,
+    //     isClearBackStack: true,
+    //   );
+    //   return;
+    // }
 
     // navigateTo(
     //   routePath: RoutePaths.githubRepoPage,

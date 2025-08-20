@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:github_repo_list/data/data_sources/local/storage_manager/storage_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPrefStorageInterface implements StorageInterface {
-  SharedPrefStorageInterface._privateConstructor();
+class SharedPrefStorage implements StorageInterface {
+  SharedPrefStorage._privateConstructor();
 
-  static final SharedPrefStorageInterface _instance =
-      SharedPrefStorageInterface._privateConstructor();
+  static final SharedPrefStorage _instance =
+      SharedPrefStorage._privateConstructor();
 
-  factory SharedPrefStorageInterface() => _instance;
+  factory SharedPrefStorage() => _instance;
 
   final SharedPreferencesAsync _preferencesAsync = SharedPreferencesAsync();
 
@@ -47,22 +47,22 @@ class SharedPrefStorageInterface implements StorageInterface {
         try {
           return jsonDecode(stringValue) as T?;
         } catch (e) {
-          return null;
+          throw ArgumentError('Unsupported type: $T');
         }
       }
       return null;
-    } else if (T == List<dynamic>) {
+    } else {
       final stringValue = await _preferencesAsync.getString(key);
+
       if (stringValue != null) {
         try {
           return jsonDecode(stringValue) as T?;
         } catch (e) {
-          return null;
+          throw ArgumentError('Unsupported type: $T');
         }
       }
       return null;
     }
-    return null;
   }
 
   @override

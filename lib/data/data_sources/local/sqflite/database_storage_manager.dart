@@ -1,7 +1,8 @@
 import 'package:github_repo_list/data/data_sources/local/sqflite/app_database.dart';
+import 'package:github_repo_list/data/data_sources/local/storage_manager/mappable_mixin.dart';
 import 'package:sqflite/sqflite.dart';
 
-abstract class DatabaseStorageManager<T> {
+abstract class DatabaseStorageManager<T> with MappableMixin<T> {
   late final SqfliteAppDatabase _database = SqfliteAppDatabase(
     tableName: tableName,
     schema: schema,
@@ -11,9 +12,6 @@ abstract class DatabaseStorageManager<T> {
   Map<String, String> get schema;
 
   Future<Database> get database async => await _database.database;
-
-  T fromJson(Map<String, dynamic> json);
-  Map<String, dynamic> toJson(T value);
 
   Future<int> insert(T value) async {
     final db = await database;
